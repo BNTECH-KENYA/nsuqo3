@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "502419496860",
+    "firebase_url": "https://nzuqotest-default-rtdb.firebaseio.com",
+    "project_id": "nzuqotest",
+    "storage_bucket": "nzuqotest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502419496860:android:a848c949dcd49157487259",
+        "android_client_info": {
+          "package_name": "com.example.nsuqo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502419496860-f85eckeaonn7ds01seoue62a6td2k3h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nsuqo",
+            "certificate_hash": "9f9797a60a0bdce39957a54e28db0ba9e9debc1c"
+          }
+        },
+        {
+          "client_id": "502419496860-u6t8stk04jd1bvp42kcif93bcorofln7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2kgioLSdaByWJWrZ2Dk5YgbcuJK_QOGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502419496860-u6t8stk04jd1bvp42kcif93bcorofln7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502419496860:android:742d2d9b4ccb4d8d487259",
+        "android_client_info": {
+          "package_name": "com.example.nzuqo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502419496860-u6t8stk04jd1bvp42kcif93bcorofln7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2kgioLSdaByWJWrZ2Dk5YgbcuJK_QOGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502419496860-u6t8stk04jd1bvp42kcif93bcorofln7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
