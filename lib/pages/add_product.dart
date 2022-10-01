@@ -12,8 +12,8 @@ import '../helpers/storage.dart';
 import '../widgets/add_product_photos.dart';
 
 class Add_Products extends StatefulWidget {
-  const Add_Products({Key? key, required this.user_email}) : super(key: key);
-  final String user_email;
+  const Add_Products({Key? key,required this.location, required this.user_email, required this.company_name}) : super(key: key);
+  final String user_email, company_name, location;
 
   @override
   State<Add_Products> createState() => _Add_ProductsState();
@@ -41,10 +41,7 @@ class _Add_ProductsState extends State<Add_Products> {
   String imageLink = "";
   String _subcategory = "";
 
-
   FirebaseFirestore db = FirebaseFirestore.instance;
-
-
 
   Future<String> uploadingItemData()
   async {
@@ -58,6 +55,7 @@ class _Add_ProductsState extends State<Add_Products> {
     {
 
       "wholesalerid": widget.user_email,
+      "company_name":widget.company_name,
       "productname": _productname.text.toString(),
       "category": "computing",
       "subcategory": _subcategory,
@@ -69,6 +67,7 @@ class _Add_ProductsState extends State<Add_Products> {
       "moq": _moq.text.toString(),
       "partno": _partno.text.toString(),
       "photosLinks": fileDownloadUris,
+      "location": widget.location,
 
     };
 
@@ -147,11 +146,11 @@ class _Add_ProductsState extends State<Add_Products> {
                         border: InputBorder.none
                     ),
                     cursorColor: Colors.grey[500],
-
                   ),
 
                 ),
               ),
+
               SizedBox(height: 20,),
               Text("Enter  Product part number", style:TextStyle(
 
@@ -332,12 +331,14 @@ class _Add_ProductsState extends State<Add_Products> {
               ),
 
               SizedBox(height: 20,),
+
               Text("Enter  Warrant Period", style:TextStyle(
 
                   color:Colors.grey[800],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
+
               SizedBox(height: 10,),
 
               Container(

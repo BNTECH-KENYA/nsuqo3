@@ -51,7 +51,12 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                     wholesalerid: element.data()['wholesalerid'],
                     warrant_period: element.data()['warrantperiod'],
                     no_of_clicks: element.data()['noofclicks'],
+                    partno:element.data()['partno'],
+                    moq: element.data()['moq'],
+                    location: element.data()['location'],
 
+                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                    company_name: element.data()['company_name'],
                   )
 
               );
@@ -71,7 +76,11 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                         wholesalerid: element.data()['wholesalerid'],
                         warrant_period: element.data()['warrantperiod'],
                         no_of_clicks: element.data()['noofclicks'],
-
+                        partno:element.data()['partno'],
+                        moq: element.data()['moq'],
+                        searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                        company_name: element.data()['company_name'],
+                        location: element.data()['location'],
                       )
 
                   );

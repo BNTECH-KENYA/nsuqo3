@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nsuqo/pages/places_picker_ai.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/subcategories.dart';
 import 'package:nsuqo/pages/wholesaler_home.dart';
@@ -257,14 +258,14 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               InkWell(
                 onTap:() async {
 
-                  String subcategpory = await Navigator.push(context,
+                  location_data = await Navigator.push(context,
                       MaterialPageRoute(builder:
-                          (context) => SubCategories_Page()));
+                          (context) => Places_Search()));
 
-                  if(subcategpory != null)
+                  if(location_data != null)
                   {
                     setState(() {
-                      distributioncat = subcategpory;
+                      location_data = location_data;
                     });
                   }
                 },

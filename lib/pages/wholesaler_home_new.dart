@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,34 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
 
   bool isLoading = true;
   String user_email = "";
+  String company_name = "";
+  String location = "";
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  Future<void> getuserdata()
+  async {
+    final docref = db.collection("userdd").doc(user_email);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+        setState(
+                (){
+
+              company_name = res.data()!['company_name'];
+              location = res.data()!['location'];
+              isLoading = false;
+
+            }
+        );
+
+
+      }
+
+    });
+
+  }
 
   Future<void> checkAuth()async {
     await FirebaseAuth.instance
@@ -34,9 +63,10 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
         setState(
                 (){
               user_email = user.email!;
-              isLoading = false;
+
             });
-        // getUserData(user.email);
+
+        getuserdata();
 
 
       }
@@ -217,7 +247,10 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                     onTap: (){
                       Navigator.of(context).push(
                           MaterialPageRoute
-                            (builder: (context)=>Add_Products(user_email: user_email,)));
+                            (builder: (context)=>Add_Products(
+                            user_email: user_email,
+                            company_name:company_name,
+                            location: location ,)));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left:16.0, right:16.0),

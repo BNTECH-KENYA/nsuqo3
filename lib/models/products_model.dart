@@ -10,6 +10,12 @@ class Item_Model {
   final String availability;
   final String warrant_period;
   final String no_of_clicks;
+  final String moq;
+  final String partno;
+  final String searchalgopartnoname;
+  final String company_name;
+  final String location;
+
 
 
   Item_Model({required
@@ -23,5 +29,10 @@ class Item_Model {
     required this.itemdescription,
     required this.no_of_clicks,
     required this.warrant_period,
+    required this.moq,
+    required this.partno,
+    required this.searchalgopartnoname,
+    required this.company_name,
+    required this.location,
   });
 }

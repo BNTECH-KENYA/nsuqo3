@@ -10,10 +10,11 @@ import 'add_product.dart';
 import 'messanger.dart';
 
 class WholeSaler_Home_Page extends StatefulWidget {
-  const WholeSaler_Home_Page({Key? key,}) : super(key: key);
 
+  const WholeSaler_Home_Page({Key? key,}) : super(key: key);
   @override
   State<WholeSaler_Home_Page> createState() => _WholeSaler_Home_PageState();
+
 }
 
 class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
@@ -49,9 +50,12 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                     wholesalerid: element.data()['wholesalerid'],
                     warrant_period: element.data()['warrantperiod'],
                     no_of_clicks: element.data()['noofclicks'],
-
+                    partno:element.data()['partno'],
+                    moq: element.data()['moq'],
+                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                    company_name: element.data()['company_name'],
+                    location: element.data()['location'],
                   )
-
               );
 
               if(!categories.contains(element.data()['category']))
@@ -65,10 +69,7 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
       );
     });
 
-
   }
-
-
 
   Future<void> checkAuth()async {
     await FirebaseAuth.instance
@@ -80,8 +81,8 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
         setState(
                 (){
 
-
               user_email = user.email!;
+
             });
        // getUserData(user.email);
 
@@ -126,6 +127,7 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
             ),
           )
       ),
+
       body: isLoading? Container(
         width: MediaQuery.of(context).size.width,
         height:MediaQuery.of(context).size.height,
@@ -147,6 +149,7 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                   itemBuilder: (BuildContext context, int index) {
 
                     return Column(
+
                       children: [
                         SizedBox(height: 20,),
                         if(categories[index] == "computing") Icon(Icons.computer, color: Colors.grey[800],size:30,)
@@ -183,7 +186,10 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                       onTap: (){
                         Navigator.of(context).push(
                             MaterialPageRoute
-                              (builder: (context)=>Add_Products(user_email: user_email,)));
+                              (builder: (context)=>Add_Products(
+                              user_email: user_email,
+                              company_name: '',
+                              location: '',)));
                       },
                       child: Container(
                         height: 40,
@@ -211,10 +217,13 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                       ),
                     ),
                   );
+
                 }
               else
                 {
+
                   return Categories_Grid(category:categories[index-1], items: products,);
+
                 }
             }
             ),
@@ -326,12 +335,10 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                   InkWell(
 
                     onTap: () async {
-
                       await FirebaseAuth.instance.signOut();
                       Navigator.of(context).push(
                           MaterialPageRoute
                             (builder: (context)=>Sign_In())
-
                       );                      //await Share.share("link to download app");
                     },
 

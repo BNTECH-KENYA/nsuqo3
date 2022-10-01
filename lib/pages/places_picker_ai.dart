@@ -108,7 +108,7 @@ class _Places_SearchState extends State<Places_Search> {
                       return InkWell(
                         onTap:(){
 
-
+                          Navigator.pop(context,search_results[index].description );
 
 
                         },
