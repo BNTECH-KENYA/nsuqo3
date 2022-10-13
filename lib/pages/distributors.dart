@@ -22,7 +22,7 @@ class _DistributorState extends State<Distributor> {
       appBar: AppBar(
         backgroundColor: Colors.deepOrange,
         leading: Icon(Icons.arrow_back, color:Colors.white),
-        title: Text("Part No:"),
+        title: Text("Distributors:"),
       ),
       body:  ListView.builder(
           itemCount: widget.item_models.length,

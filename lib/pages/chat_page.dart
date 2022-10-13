@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nsuqo/models/messagemodel.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../widgets/date_chat_widget.dart';
 import '../widgets/otherCard.dart';
 import '../widgets/owncontributor.dart';
 
@@ -28,7 +30,8 @@ class Chat_Page extends StatefulWidget {
 
 class _Chat_PageState extends State<Chat_Page> {
 
-
+  final itemController = ItemScrollController();
+  final itemPositionsListener  = ItemPositionsListener.create();
 
    dot_notation_remover () {
 
@@ -189,17 +192,43 @@ class _Chat_PageState extends State<Chat_Page> {
   }
   
   
-  
+    String date_data = "";
+    bool onScroll = false;
+
+  List<MesssageModel> messagemodels = [];
   
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+
         ()async{
       await check_chat_stream_id();
 
     }();
+
+        itemPositionsListener.itemPositions.addListener(() {
+
+          final indices =
+              itemPositionsListener.itemPositions.value
+                  .where((element) {
+
+                    final isTopVisible = element.itemLeadingEdge >=0;
+                    final isBottomVisible = element.itemTrailingEdge <=1;
+
+                    return isTopVisible && isBottomVisible;
+
+              })
+                  .map((e) => e.index).toList();
+
+          setState(
+              (){
+                  date_data =  "${messagemodels[indices[indices.length-1]].timestamp}";
+              }
+          );
+
+        });
     
   }
 
@@ -254,8 +283,6 @@ class _Chat_PageState extends State<Chat_Page> {
               title: InkWell(
                 onTap: (){
 
-
-
                 },
 
                 child: Container(
@@ -264,7 +291,7 @@ class _Chat_PageState extends State<Chat_Page> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Jane",
+                      Text("${widget.sender_name}",
                           style:TextStyle(
                               fontSize: 18.5,
                               fontWeight: FontWeight.bold,
@@ -283,6 +310,7 @@ class _Chat_PageState extends State<Chat_Page> {
             width: MediaQuery.of(context).size.width,
             child: Stack(
               children: [
+
                 Container(
                   height: MediaQuery.of(context).size.height-159,
                   child:StreamBuilder(
@@ -300,53 +328,90 @@ class _Chat_PageState extends State<Chat_Page> {
                         return Center(child: CircularProgressIndicator(),);
                       }
 
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data?.size,
-                        itemBuilder: (context, index){
-                          QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
+                      messagemodels = [];
 
-                          if(course?['message'] !="" )
-                          {
-                            if(course?['sender_email'] == widget.auth_email)
+                      return NotificationListener(
+
+                        child: ScrollablePositionedList.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.size,
+                          itemBuilder: (context, index){
+
+                            QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
+
+                            if(course?['message'] !="" )
                             {
-                              return OwnMessageCard(messageModel:  MesssageModel(
-                                  timestamp: (DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())))
-                                      ==
-                                      (DateFormat('dd/MMM/yyy').format(DateTime.now()))?
 
-                                  (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))):
+                              if(course?['sender_email'] == widget.auth_email)
+                              {
+                                messagemodels.add(MesssageModel(
+                                    timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
 
-                                  (DateFormat('dd/MMM/yyy hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
+                                    name: course?['retailer_name'].split('-')[0],
+                                    message:course?['message'],
+                                    time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
+                                ));
+                                return OwnMessageCard(messageModel:  MesssageModel(
+                                  timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
+
                                   name: course?['retailer_name'].split('-')[0],
-                                  message:course?['message']
-                              ),);
+                                  message:course?['message'],
+                                  time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
+                                ),);
 
+                              }
+                              else
+                              {
+                                messagemodels.add(MesssageModel(
+                                  timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
+
+                                  name: course?['retailer_name'].split('-')[0],
+                                  message:course?['message'],
+                                  time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
+                                ));
+                                return ReplCard(messageModel:  MesssageModel(
+                                  timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
+
+                                  name: course?['retailer_name'].split('-')[0],
+                                  message:course?['message'],
+                                  time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),),);
+                              }
                             }
                             else
                             {
-                              return ReplCard(messageModel:  MesssageModel(
-                                  timestamp: (DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())))
-
-                                      ==
-                                      (DateFormat('dd/MMM/yyy').format(DateTime.now()))?
-
-                                  (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))):
-
-                                  (DateFormat('dd/MMM/yyy hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
-                                  name: course?['wholesaler_name'].split('-')[0],
-                                  message: course?['message']),);
+                              return Container();
                             }
-                          }
+
+
+
+                          },
+                          itemPositionsListener: itemPositionsListener,
+                          itemScrollController: itemController,
+
+                        ),
+                        onNotification: (t){
+                          if(t is ScrollUpdateNotification)
+                            {
+                              setState(
+                                  (){
+
+                                    onScroll = true;
+                                  }
+                              );
+                              return true;
+                            }
                           else
-                          {
-                            return Container();
-                          }
+                            {
+                              setState(
+                                      (){
 
-
+                                    onScroll = false;
+                                  }
+                              );
+                              return false;
+                            }
 
                         },
-
                       );
                     },
 
@@ -407,6 +472,13 @@ class _Chat_PageState extends State<Chat_Page> {
                     ],
                   ),
                 ),
+
+                onScroll ?  Positioned(
+                    top: 10,
+                    left: MediaQuery.of(context).size.width*0.35,
+                    child: Chat_Dates(date_data: date_data,)
+
+                ): Container(),
               ],
             ),
           ),

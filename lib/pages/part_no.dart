@@ -37,7 +37,7 @@ class _Part_NoState extends State<Part_No> {
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Card(
                   child: ListTile(
-                    leading: Icon(Icons.location_on, color:Colors.grey[800]),
+                    leading: Icon(Icons.star, color:Colors.grey[800]),
                     title: Text("${widget.item_models[index].partno}"),
                   ),
                 ),

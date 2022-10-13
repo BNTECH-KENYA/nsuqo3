@@ -76,7 +76,7 @@ class Chat_Stream_Widget extends StatelessWidget {
                         ),),
                       ),
 
-                     messagermodel.unreadmsg <1 ?Container() :Positioned(
+                     messagermodel.unreadmsg < 1 ? Container() :Positioned(
                           right: 10,
                           child: CircleAvatar(
                             radius: 10,

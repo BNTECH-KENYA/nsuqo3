@@ -25,7 +25,11 @@ class _SubCategories_PageState extends State<SubCategories_Page> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 30,),
-                Icon(Icons.arrow_back, color: Colors.grey[800], size: 30,),
+                InkWell(
+                    onTap:(){
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.arrow_back, color: Colors.grey[800], size: 30,)),
                 SizedBox(height: 20,),
                 Text("Computing",style:TextStyle(
                     fontWeight: FontWeight.w600,

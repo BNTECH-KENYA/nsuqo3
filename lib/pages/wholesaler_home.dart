@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 
 import '../categories_grids.dart';
+import '../models/filters_params.dart';
 import '../models/products_model.dart';
 import 'add_product.dart';
 import 'messanger.dart';
@@ -39,8 +40,7 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
             ref.docs.forEach((element) {
               products.add(
                   Item_Model(
-
-                    availability:"",
+                    availability:element.data()['availability'],
                     itemname: element.data()['productname'],
                     itemId: element.id,
                     itemprice: element.data()['productprice'],
@@ -50,11 +50,37 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                     wholesalerid: element.data()['wholesalerid'],
                     warrant_period: element.data()['warrantperiod'],
                     no_of_clicks: element.data()['noofclicks'],
-                    partno:element.data()['partno'],
+                    partno: element.data()['partno'],
                     moq: element.data()['moq'],
                     searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
                     company_name: element.data()['company_name'],
                     location: element.data()['location'],
+                    ram: element.data()['ram'],
+                    brand:element.data()['brand'],
+                    storage: element.data()['storage'],
+                    screen: element.data()['screen'],
+                    processor: element.data()['processor'],
+                    screensize: element.data()['screensize'],
+                    resolution: element.data()['resolution'],
+                    package: element.data()['package'],
+                    partner: element.data()['partner'],
+                    filters_params: element.data()['filters'].map((e) => Filters_Params_Model(
+                        availability: e.availability,
+                        warrant_period:e.warrant_period,
+                        moq: e.moq,
+                        partno: e.partno,
+                        company_name: e.company_name,
+                        location: e.location,
+                        ram: e.ram,
+                        processor: e.processor,
+                        screen: e.screen,
+                        brand: e.brand,
+                        resolution: e.resolution,
+                        storage: e.storage,
+                        screensize: e.screensize,
+                        partner: e.partner,
+                        package: e.package,
+                        size: e.size)),
                   )
               );
 

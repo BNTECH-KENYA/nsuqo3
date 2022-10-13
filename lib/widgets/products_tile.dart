@@ -22,9 +22,12 @@ class Product_Tile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: CircleAvatar(
+          leading: item_model.photosLinks.length >0? CircleAvatar(
             radius: 30,
             backgroundImage: NetworkImage(item_model.photosLinks[0]),
+          ):CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.deepOrange,
           ),
           title: Text("${item_model.itemname}",
               style:TextStyle(

@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:nsuqo/pages/chat_page.dart';
+import 'package:nsuqo/pages/specific_wholesaler_products.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/wholesalers_model.dart';
 
@@ -26,9 +32,89 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
    String working_hours="0-0";
    bool isLoading = true;
 
+   late String user_email;
+   String email_reciever = "";
+   String sender_name = "";
+   bool isWholesaler = false;
+
+   String product_name ="";
+   String product_description ="";
+   String product_price = "";
+   String product_id = "";
+   String retailer_id = "";
+   String opponent_name ="";
+   List photosLinks = [];
+
   int imageindex = 0;
 
   FirebaseFirestore db = FirebaseFirestore.instance;
+
+   Future<void> getUserData(user_email)
+   async {
+
+     final docref = db.collection("userdd").doc(user_email);
+     await docref.get().then((res) {
+
+       if(res.data() != null)
+       {
+         if(res.data()!['accounttype'] =="wholesaler")
+         {
+           setState(
+                   (){
+                 isWholesaler = true;
+                 sender_name = res.data()!['company_name'];
+                 email_reciever = retailer_id;
+               }
+           );
+
+         }
+         else
+         {
+           setState(
+                   (){
+
+                 retailer_id= res.id;
+
+                 sender_name = "${res.data()!['firstNameinput']} ${res.data()!['lastNameInput']}";
+               }
+           );
+
+         }
+
+       }
+       else
+       {
+         print("out");
+         FirebaseAuth.instance.signOut();
+       }
+
+     });
+
+   }
+
+   Future<void> checkAuth()async {
+     await FirebaseAuth.instance
+         .authStateChanges()
+         .listen((user)
+     {
+       if(user != null)
+       {
+         setState(
+                 (){
+               user_email =  user.email!;
+             }
+         );
+
+         getUserData(user_email);
+       }
+       else{
+
+
+       }
+     });
+
+   }
+
 
   Future<void> getWholeSalerinfo()
   async {
@@ -55,6 +141,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
             }
         );
 
+         checkAuth();
 
       }
 
@@ -89,296 +176,402 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
       body:SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left:16.0, right:16.0),
-            child: Column(
-              children: [
-                SizedBox(height:20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                        onTap: ()
-                        {
-                          Navigator.pop(context);
-                        },
-
-                        child: Icon(Icons.arrow_back,  color:Colors.deepOrange, size:30)),
-                    Text("${company_name}", style:TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    )),
-                    Icon(Icons.cancel,  color:Colors.grey[100], size:30),
-                  ],
-                ),
-                SizedBox(height: 20,),
-                SingleChildScrollView(
-                  child: Column(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height:20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      InkWell(
+                          onTap: ()
+                          {
+                            Navigator.pop(context);
+                          },
 
-
-                      SizedBox(height: 20,),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              child: Icon(Icons.book, size: 40, color: Colors.deepOrange,),
-
-                            ),
-
-                            SizedBox(
-                              width: 30,
-                            ),
-
-                            Container(
-                              child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-                                  Text("About Us", style:TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-
-                                  SizedBox(height: 10,),
-
-                                  Container(
-                                    width: MediaQuery.of(context).size.width-122,
-                                    child: Text("${business_description}", style:TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                                  ),
-
-                                ],
-                              ),
-
-
-                            ),
-                          ],
-                        ),
-                      ) ,
-
-                      SizedBox(height: 20,),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              child: Icon(Icons.payment, size: 40, color: Colors.deepOrange,),
-
-                            ),
-
-                            SizedBox(
-                              width: 30,
-                            ),
-
-                            Container(
-                              child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-                                  Text("Payment Details And Terms", style:TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-
-                                  SizedBox(height: 10,),
-
-                                  Container(
-                                    width: MediaQuery.of(context).size.width-122,
-                                    child: Text("${payment_details_terms}", style:TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                                  ),
-
-                                ],
-                              ),
-
-
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              child: Icon(Icons.bubble_chart_outlined, size: 40, color: Colors.deepOrange,),
-
-                            ),
-
-                            SizedBox(
-                              width: 30,
-                            ),
-
-                            Container(
-                              child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Products", style:TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-
-                                  SizedBox(height: 10,),
-
-                                  Container(
-                                    width: MediaQuery.of(context).size.width-122,
-                                    child: Text("${distribution_category}", style:TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                                  ),
-
-                                ],
-                              ),
-
-
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              child: Icon(Icons.access_time_filled_sharp, size: 40, color: Colors.deepOrange,),
-
-                            ),
-
-                            SizedBox(
-                              width: 30,
-                            ),
-
-                            Container(
-                              child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Working Hours", style:TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-
-                                  SizedBox(height: 10,),
-
-                                  Container(
-                                    width: MediaQuery.of(context).size.width-122,
-                                    child: Text("open: ${working_hours.split("-")[0]} \n close: ${working_hours.split("-")[1]}", style:TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                                  ),
-
-                                ],
-                              ),
-
-
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              child: Icon(Icons.call, size: 40, color: Colors.deepOrange,),
-
-                            ),
-
-                            SizedBox(
-                              width: 30,
-                            ),
-
-                            Container(
-                              child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Contact us", style:TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-
-                                  SizedBox(height: 10,),
-
-                                  Container(
-                                    width: MediaQuery.of(context).size.width-122,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(Icons.email,color: Colors.grey[500], ),
-                                            Text(" : ${email}", style:TextStyle(
-                                              color: Colors.grey[500],
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                            )),
-                                          ],
-                                        ),
-                                        SizedBox(height: 7,),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.call,color: Colors.grey[500], ),
-                                            Text(" : ${contact_details}", style:TextStyle(
-                                              color: Colors.grey[500],
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                            )),
-                                          ],
-                                        ),
-                                        SizedBox(height: 7,),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.message,color: Colors.grey[500], ),
-                                            Text(" : in app chat", style:TextStyle(
-                                              color: Colors.grey[500],
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500,
-                                            )),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-
-                                ],
-                              ),
-
-
-                            ),
-                          ],
-                        ),
-                      ),
+                          child: Icon(Icons.arrow_back,  color:Colors.deepOrange, size:30)),
+                      Text("${company_name}", style:TextStyle(
+                        color: Colors.deepOrange,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                      Icon(Icons.cancel,  color:Colors.grey[100], size:30),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 20,),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+
+
+                        SizedBox(height: 20,),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                child: Icon(Icons.book, size: 25, color: Colors.deepOrange,),
+
+                              ),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+
+                              Container(
+                                child:Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+
+                                    Text("About Us", style:TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+
+                                    SizedBox(height: 10,),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Text("${business_description}", style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                child: Icon(Icons.payment, size: 25, color: Colors.deepOrange,),
+
+                              ),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+
+                              Container(
+                                child:Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+
+                                    Text("Payment Details And Terms", style:TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+
+                                    SizedBox(height: 10,),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Text("${payment_details_terms}", style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                    ),
+
+                                  ],
+                                ),
+
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                child: Icon(Icons.bubble_chart_outlined, size: 25, color: Colors.deepOrange,),
+
+                              ),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+
+                              InkWell(
+                                onTap:(){
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute
+                                      (builder: (context)=>Wholesaler_Products(
+                                        wholesaler_name: company_name,
+                                        wholesaler_id: wholesalerid,)));
+                                },
+                                child: Container(
+
+                                  child:Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("View Our Products", style:TextStyle(
+                                        color: Colors.deepOrange,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700,
+                                      )),
+
+                                      SizedBox(height: 10,),
+
+                                      Container(
+                                        width: MediaQuery.of(context).size.width-122,
+                                        child: Text("${distribution_category}", style:TextStyle(
+                                          color: Colors.grey[500],
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                      ),
+
+                                    ],
+                                  ),
+
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                child: Icon(Icons.access_time_filled_sharp, size: 25, color: Colors.deepOrange,),
+
+                              ),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+
+                              Container(
+                                child:Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Working Hours", style:TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+
+                                    SizedBox(height: 10,),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Text("open: ${working_hours.split("-")[0]} \n close: ${working_hours.split("-")[1]}", style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                    ),
+
+                                  ],
+                                ),
+
+
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                child: Icon(Icons.location_on, size: 25, color: Colors.deepOrange,),
+
+                              ),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+
+                              Container(
+                                child:Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Location", style:TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+
+                                    SizedBox(height: 10,),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Text("located in:${location}", style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                    ),
+
+                                  ],
+                                ),
+
+
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                child: Icon(Icons.call, size: 25, color: Colors.deepOrange,),
+
+                              ),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+
+                              Container(
+                                child:Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Contact us", style:TextStyle(
+                                      color: Colors.deepOrange,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+
+                                    SizedBox(height: 10,),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Column(
+                                        children: [
+                                          InkWell(
+                                            onTap:() async {
+                                              final Email email_data = Email(
+                                                body: 'Email body',
+                                                subject: 'Email subject',
+                                                recipients: ['${email}'],
+                                                attachmentPaths: ['/path/to/attachment.zip'],
+                                                isHTML: false,
+                                              );
+
+                                              await FlutterEmailSender.send(email_data);
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.email,color: Colors.grey[500], ),
+                                                Text(" : ${email}", style:TextStyle(
+                                                  color: Colors.grey[500],
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 7,),
+                                          InkWell(
+                                            onTap:() async {
+
+
+                                              await FlutterPhoneDirectCaller.callNumber(contact_details);
+
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.call,color: Colors.grey[500], ),
+                                                Text(" : ${contact_details}", style:TextStyle(
+                                                  color: Colors.grey[500],
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+
+                                          SizedBox(height: 7,),
+                                          InkWell(
+                                            onTap:() async {
+
+
+                                            if(user_email == ''){
+
+                                              //toast please try again or
+
+
+                                            }
+                                            else
+                                              {
+
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute
+                                                      (builder: (context)=>Chat_Page(
+                                                      wholesaler_id: widget.wholesalerid,
+                                                      retailer_id:retailer_id ,
+                                                      email_reciever:email_reciever ,
+                                                      email_user: user_email,
+                                                      sender_name:sender_name,
+                                                      opponent_name: opponent_name,
+                                                      auth_email:user_email,)));
+
+                                              }
+
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.message,color: Colors.grey[500], ),
+                                                Text(" : Leave a message", style:TextStyle(
+                                                  color: Colors.grey[500],
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                )),
+                                              ],
+                                            ),
+                                          ),
+
+                                          SizedBox(height: 7,),
+
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              SizedBox(height: 20,),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
       )

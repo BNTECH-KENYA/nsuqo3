@@ -5,6 +5,7 @@ import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
 import 'package:nsuqo/pages/wholesalers.dart';
+import 'package:share/share.dart';
 
 import '../helpers/exit_pop.dart';
 import 'all_categories.dart';
@@ -22,7 +23,7 @@ class _Home_CategoriesState extends State<Home_Categories> {
 
 
 
-  List<String> categories = ["Home & Office", "Phones & Tablets", "Computing", "Electronics", "Fashion", "Gaming"];
+  List<String> categories = ["Phones and Tablets", "Consumer Electronic", "Computing", "More"];
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +34,12 @@ class _Home_CategoriesState extends State<Home_Categories> {
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Container(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height-189,
             width:  MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 Container(
-                  height: 150,
+                  height: 150-83,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [
@@ -140,7 +141,30 @@ class _Home_CategoriesState extends State<Home_Categories> {
 
                                         Navigator.of(context).push(
                                             MaterialPageRoute
-                                              (builder: (context)=>Sub_Categories(subcat: 'Computing',)));
+                                              (builder: (context)=>Sub_Categories(subcat:'Computing',)));
+
+                                      }
+                                    else if(categories[index] == "Phones and Tablets")
+                                      {
+
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute
+                                              (builder: (context)=>Sub_Categories(subcat: 'Phones and Tablets',)));
+
+                                      }
+                                    else if(categories[index] == "Consumer Electronic")
+                                      {
+
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute
+                                              (builder: (context)=>Sub_Categories(subcat: 'Consumer Electronic',)));
+
+                                      }
+                                    else if(categories[index] == "More")
+                                      {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute
+                                              (builder: (context)=>Sub_Categories(subcat: 'More',)));
 
                                       }
 
@@ -158,10 +182,10 @@ class _Home_CategoriesState extends State<Home_Categories> {
                                                 radius: 28,
                                                 backgroundColor: Colors.white,
                                                  child:(categories[index] == "Computing") ? Icon(Icons.computer, color: Colors.deepOrange,size:30,)
-                                                     :(categories[index] == "Home & Office") ? Icon(Icons.desk, color: Colors.deepPurpleAccent,size:30,)
+                                                     :(categories[index] == "More") ? Icon(Icons.more, color: Colors.deepPurpleAccent,size:30,)
                                                      :(categories[index] == "Gaming") ? Icon(Icons.gamepad, color: Colors.purple,size:30,)
-                                                     :(categories[index] == "Phones & Tablets") ? Icon(Icons.phone_android, color: Colors.blue,size:30,)
-                                                     :(categories[index] == "Electronics") ? Icon(Icons.cable, color: Colors.green,size:30,)
+                                                     :(categories[index] == "Phones and Tablets") ? Icon(Icons.phone_android, color: Colors.blue,size:30,)
+                                                     :(categories[index] == "Consumer Electronic") ? Icon(Icons.cable, color: Colors.green,size:30,)
                                                      :(categories[index] == "Fashion") ? Icon(Icons.man_rounded, color: Colors.amber,size:30,):Container()
 
                                               ),
@@ -259,7 +283,10 @@ class _Home_CategoriesState extends State<Home_Categories> {
 
                     InkWell(
 
-                      onTap: (){
+                      onTap: () async {
+
+                        await Share.share("Link to download app");
+
 
                       },
 
@@ -282,11 +309,11 @@ class _Home_CategoriesState extends State<Home_Categories> {
                     InkWell(
 
                       onTap: () async {
-                        await FirebaseAuth.instance.signOut();
+
+
                         Navigator.of(context).push(
                             MaterialPageRoute
                               (builder: (context)=>Edit_Retailer_Profile())
-
                         );
                         //await Share.share("link to download app");
                       },

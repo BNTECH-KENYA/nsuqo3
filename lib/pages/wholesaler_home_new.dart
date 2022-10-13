@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nsuqo/pages/messangerwholesaler.dart';
 import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
+import 'package:share/share.dart';
 
 import '../helpers/exit_pop.dart';
 import 'Edit_Profile.dart';
@@ -20,7 +22,7 @@ class Whole_Saler_categories extends StatefulWidget {
 
 class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
 
-  List<String> categories = ["Home & Office", "Phones & Tablets", "Computing", "Electronics", "Fashion", "Gaming"];
+  List<String> categories = ["Phones and Tablets", "Consumer Electronic", "Computing", "More"];
 
   bool isLoading = true;
   String user_email = "";
@@ -189,7 +191,30 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
 
                                             Navigator.of(context).push(
                                                 MaterialPageRoute
-                                                  (builder: (context)=>Sub_Categories(subcat: 'Computing',)));
+                                                  (builder: (context)=>Sub_Categories(subcat:'Computing',)));
+
+                                          }
+                                          else if(categories[index] == "Phones and Tablets")
+                                          {
+
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute
+                                                  (builder: (context)=>Sub_Categories(subcat: 'Phones and Tablets',)));
+
+                                          }
+                                          else if(categories[index] == "Consumer Electronic")
+                                          {
+
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute
+                                                  (builder: (context)=>Sub_Categories(subcat: 'Consumer Electronic',)));
+
+                                          }
+                                          else if(categories[index] == "More")
+                                          {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute
+                                                  (builder: (context)=>Sub_Categories(subcat: 'More',)));
 
                                           }
 
@@ -207,10 +232,10 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                                                       radius: 28,
                                                       backgroundColor: Colors.white,
                                                       child:(categories[index] == "Computing") ? Icon(Icons.computer, color: Colors.deepOrange,size:30,)
-                                                          :(categories[index] == "Home & Office") ? Icon(Icons.desk, color: Colors.deepPurpleAccent,size:30,)
+                                                          :(categories[index] == "More") ? Icon(Icons.more, color: Colors.deepPurpleAccent,size:30,)
                                                           :(categories[index] == "Gaming") ? Icon(Icons.gamepad, color: Colors.purple,size:30,)
-                                                          :(categories[index] == "Phones & Tablets") ? Icon(Icons.phone_android, color: Colors.blue,size:30,)
-                                                          :(categories[index] == "Electronics") ? Icon(Icons.cable, color: Colors.green,size:30,)
+                                                          :(categories[index] == "Phones and Tablets") ? Icon(Icons.phone_android, color: Colors.blue,size:30,)
+                                                          :(categories[index] == "Consumer Electronic") ? Icon(Icons.cable, color: Colors.green,size:30,)
                                                           :(categories[index] == "Fashion") ? Icon(Icons.man_rounded, color: Colors.amber,size:30,):Container()
 
                                                   ),
@@ -328,7 +353,7 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
 
                         Navigator.of(context).push(
                             MaterialPageRoute
-                              (builder: (context)=>Messanger()));
+                              (builder: (context)=>Messanger_WholeSaler()));
                       },
 
                       child: Container(
@@ -349,7 +374,8 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
 
                     InkWell(
 
-                      onTap: (){
+                      onTap: () async {
+                        await Share.share("link to download app");
 
                       },
 
@@ -378,7 +404,6 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                               (builder: (context)=>Edit_Profile())
 
                         );
-                        //await Share.share("link to download app");
                       },
 
                       child: Container(

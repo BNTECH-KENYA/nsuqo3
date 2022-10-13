@@ -45,7 +45,7 @@ class OwnMessageCard extends StatelessWidget {
 
                 child: Row(
                   children: [
-                    Text(messageModel.timestamp, style: TextStyle(
+                    Text(messageModel.time_ui, style: TextStyle(
                       fontSize: 13,
                       color:Colors.white,
                     ),),

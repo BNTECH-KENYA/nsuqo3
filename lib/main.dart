@@ -14,7 +14,6 @@ import 'package:nsuqo/pages/product_information.dart';
 import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/single_category.dart';
-import 'package:nsuqo/pages/single_message.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
 import 'package:nsuqo/pages/wholesaler_home.dart';
 import 'package:nsuqo/pages/wholesalerinfo.dart';

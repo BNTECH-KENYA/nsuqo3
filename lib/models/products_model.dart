@@ -1,3 +1,5 @@
+import 'package:nsuqo/models/filters_params.dart';
+
 class Item_Model {
 
   final String wholesalerid;
@@ -15,8 +17,16 @@ class Item_Model {
   final String searchalgopartnoname;
   final String company_name;
   final String location;
-
-
+  final String ram;
+  final String processor;
+  final String screen;
+  final String brand;
+  final String resolution;
+  final String storage;
+  final String screensize;
+  final String partner;
+  final String package;
+  final Filters_Params_Model filters_params;
 
   Item_Model({required
   this.wholesalerid,
@@ -34,5 +44,16 @@ class Item_Model {
     required this.searchalgopartnoname,
     required this.company_name,
     required this.location,
+    required this.ram,
+    required this.processor,
+    required this.screen,
+    required this.brand,
+    required this.resolution,
+    required this.storage,
+    required this.screensize,
+    required this.partner,
+    required this.package,
+    required this.filters_params,
+
   });
 }

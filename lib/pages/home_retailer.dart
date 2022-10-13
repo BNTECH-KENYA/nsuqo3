@@ -8,9 +8,13 @@ import 'package:nsuqo/pages/product_information.dart';
 import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/single_category.dart';
+import 'package:share/share.dart';
 
+import '../models/filters_params.dart';
 import '../models/products_model.dart';
 import 'all_categories.dart';
+import 'edit_profile_retailer.dart';
+import 'home_page_categories.dart';
 
 class Home_Ui_Retailer extends StatefulWidget {
   const Home_Ui_Retailer({Key? key}) : super(key: key);
@@ -41,7 +45,7 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
               products.add(
                   Item_Model(
 
-                    availability:"",
+                    availability:element.data()['availability'],
                     itemname: element.data()['productname'],
                     itemId: element.id,
                     itemprice: element.data()['productprice'],
@@ -51,12 +55,38 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                     wholesalerid: element.data()['wholesalerid'],
                     warrant_period: element.data()['warrantperiod'],
                     no_of_clicks: element.data()['noofclicks'],
-                    partno:element.data()['partno'],
+                    partno: element.data()['partno'],
                     moq: element.data()['moq'],
-                    location: element.data()['location'],
-
                     searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
                     company_name: element.data()['company_name'],
+                    location: element.data()['location'],
+                    ram: element.data()['ram'],
+                    brand:element.data()['brand'],
+                    storage: element.data()['storage'],
+                    screen: element.data()['screen'],
+                    processor: element.data()['processor'],
+                    screensize: element.data()['screensize'],
+                    resolution: element.data()['resolution'],
+                    package: element.data()['package'],
+                    partner: element.data()['partner'],
+                    filters_params: element.data()['filters'].map((e) => Filters_Params_Model(
+                        availability: e.availability,
+                        warrant_period:e.warrant_period,
+                        moq: e.moq,
+                        partno: e.partno,
+                        company_name: e.company_name,
+                        location: e.location,
+                        ram: e.ram,
+                        processor: e.processor,
+                        screen: e.screen,
+                        brand: e.brand,
+                        resolution: e.resolution,
+                        storage: e.storage,
+                        screensize: e.screensize,
+                        partner: e.partner,
+                        package: e.package,
+                        size: e.size)),
+
                   )
 
               );
@@ -66,7 +96,7 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                   top_ranking.add(
                       Item_Model(
 
-                        availability:"",
+                        availability:element.data()['availability'],
                         itemname: element.data()['productname'],
                         itemId: element.id,
                         itemprice: element.data()['productprice'],
@@ -76,11 +106,38 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                         wholesalerid: element.data()['wholesalerid'],
                         warrant_period: element.data()['warrantperiod'],
                         no_of_clicks: element.data()['noofclicks'],
-                        partno:element.data()['partno'],
+                        partno: element.data()['partno'],
                         moq: element.data()['moq'],
                         searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
                         company_name: element.data()['company_name'],
                         location: element.data()['location'],
+                        ram: element.data()['ram'],
+                        brand:element.data()['brand'],
+                        storage: element.data()['storage'],
+                        screen: element.data()['screen'],
+                        processor: element.data()['processor'],
+                        screensize: element.data()['screensize'],
+                        resolution: element.data()['resolution'],
+                        package: element.data()['package'],
+                        partner: element.data()['partner'],
+                        filters_params: element.data()['filters'].map((e) => Filters_Params_Model(
+                            availability: e.availability,
+                            warrant_period:e.warrant_period,
+                            moq: e.moq,
+                            partno: e.partno,
+                            company_name: e.company_name,
+                            location: e.location,
+                            ram: e.ram,
+                            processor: e.processor,
+                            screen: e.screen,
+                            brand: e.brand,
+                            resolution: e.resolution,
+                            storage: e.storage,
+                            screensize: e.screensize,
+                            partner: e.partner,
+                            package: e.package,
+                            size: e.size)),
+
                       )
 
                   );
@@ -553,6 +610,11 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
 
                     onTap: (){
 
+
+                      Navigator.of(context).push(
+                          MaterialPageRoute
+                            (builder: (context)=>Home_Categories()));
+
                     },
 
                     child: Container(
@@ -601,8 +663,9 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
 
                   InkWell(
 
-                    onTap: (){
+                    onTap: () async {
 
+                      await Share.share("Link to download app");
                     },
 
                     child: Container(
@@ -624,13 +687,13 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                   InkWell(
 
                     onTap: () async {
-                     await FirebaseAuth.instance.signOut();
-                     Navigator.of(context).push(
-                         MaterialPageRoute
-                           (builder: (context)=>Sign_In())
 
-                     );
-                      //await Share.share("link to download app");
+
+
+                      Navigator.of(context).push(
+                          MaterialPageRoute
+                            (builder: (context)=>Edit_Retailer_Profile())
+                      );
                     },
 
                     child: Container(

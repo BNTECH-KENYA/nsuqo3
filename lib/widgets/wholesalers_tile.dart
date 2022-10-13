@@ -22,7 +22,7 @@ class Wholesaler_Tile extends StatelessWidget {
       children: [
         ListTile(
           leading: CircleAvatar(
-            radius: 30,
+            radius: 23,
             backgroundColor:wholesaler_model.bgcolor,
             child: Text("${wholesaler_model.company_name[0]}",
             style: TextStyle(
@@ -33,14 +33,17 @@ class Wholesaler_Tile extends StatelessWidget {
           ),
           title: Text("${wholesaler_model.company_name}",
               style:TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold
               )),
-          subtitle: Text("Specializes on ${wholesaler_model.distribution_category}",
+
+          subtitle: Text("located in ${wholesaler_model.location}",
               style:TextStyle(
                   fontSize: 13
               )),
-          trailing: Text("Open"),
+
+          trailing: Icon(Icons.read_more_sharp, color:Colors.grey[600]),
+
         ),
         Padding(
           padding: const EdgeInsets.only(right: 20, left: 80),

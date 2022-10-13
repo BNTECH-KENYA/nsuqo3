@@ -45,6 +45,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
       if(res.data() != null)
       {
+        print(res.data()!['working_hours']);
         setState(
                 (){
               working_hours = res.data()!['working_hours'];

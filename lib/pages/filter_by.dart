@@ -1,14 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/models/filters.dart';
+import 'package:nsuqo/models/filters_params.dart';
 import 'package:nsuqo/models/products_model.dart';
 import 'package:nsuqo/pages/distributors.dart';
 import 'package:nsuqo/pages/part_no.dart';
+import 'package:nsuqo/pages/partner.dart';
 import 'package:nsuqo/pages/places_picker_ai.dart';
+import 'package:nsuqo/pages/processor.dart';
+import 'package:nsuqo/pages/ram.dart';
+import 'package:nsuqo/pages/resolution.dart';
+import 'package:nsuqo/pages/screen.dart';
+import 'package:nsuqo/pages/scrrensize.dart';
+import 'package:nsuqo/pages/storage.dart';
+
+import 'brands.dart';
+import 'package.dart';
 
 class Filter_By extends StatefulWidget {
-  const Filter_By({Key? key, required this.item_model}) : super(key: key);
+  const Filter_By({Key? key, required this.item_model, required this.filters_params}) : super(key: key);
   final List<Item_Model> item_model;
+  final  Filters_Params_Model filters_params;
 
   @override
   State<Filter_By> createState() => _Filter_ByState();
@@ -17,6 +29,8 @@ class Filter_By extends StatefulWidget {
 
 class _Filter_ByState extends State<Filter_By> {
 
+
+    List<dynamic> array_filters = [];
     RangeValues value_prices = RangeValues(0, 100000);
     RangeValues value_moq = RangeValues(0, 100);
     RangeValues value_yrs = RangeValues(0, 3);
@@ -25,20 +39,20 @@ class _Filter_ByState extends State<Filter_By> {
      String warrant = "";
      String distributor = "";
      String location ="";
-
-    String partno_selected = "false";
-    String distributor_selected = "false";
-    String price_selected = "false";
-    String moq_selected = "false";
-    String warrant_selected = "false";
-    String location_selected = "false";
+     String ram = "";
+     String processor ="";
+     String screensize ="";
+     String resolution ="";
+     String storage ="";
+     String brand ="";
+     String screen ="";
+     String partner ="";
+     String package ="";
 
     final double min_price = 0;
     final double max_price = 100000;
 
     bool available = false;
-
-
 
 
   @override
@@ -70,15 +84,7 @@ class _Filter_ByState extends State<Filter_By> {
           InkWell(
             onTap:(){
 
-              Navigator.pop(context, Filters_Model(
-
-                  price: [value_prices.start.round().toString(), value_prices.end.round().toString(), price_selected],
-                  moq: [value_moq.start.round().toString(), value_moq.end.round().toString(), moq_selected],
-                  warant: [warrant,warrant_selected],
-                  available: available,
-                  distributor: [distributor, distributor_selected],
-                  partno: [part_no, partno_selected],
-                  location: [location,location_selected]));
+              Navigator.pop(context,array_filters);
 
             },
             child: Text("Done",
@@ -156,7 +162,9 @@ class _Filter_ByState extends State<Filter_By> {
                       activeColor: Colors.deepOrange,
                       onChanged: (value_prices)=> setState((){
                         this.value_prices = value_prices;
-                        price_selected ="true";
+
+                        array_filters.add(["price","${value_prices.start.round()}-${value_prices.end.round()}"]);
+
                       }),
 
                     ),
@@ -174,11 +182,19 @@ class _Filter_ByState extends State<Filter_By> {
                   MaterialPageRoute
                     (builder: (context)=>Distributor(item_models: widget.item_model)));
 
-              if(distributor_selected != null)
+              if(distributor != null)
               {
                 setState(
                         (){
-                          distributor_selected = "true";
+                          array_filters.add(["distributor","${distributor}"]);
+                    }
+                );
+              }
+              else{
+
+                setState(
+                        (){
+                          distributor = "";
                     }
                 );
               }
@@ -236,10 +252,19 @@ class _Filter_ByState extends State<Filter_By> {
               {
                 setState(
                         (){
-                      partno_selected = "true";
+                          array_filters.add(["partno","${part_no}"]);
                     }
                 );
               }
+              else
+                {
+                  setState(
+                          (){
+                        part_no = "";
+                      }
+                  );
+
+                }
             },
 
             child: Container(
@@ -282,6 +307,612 @@ class _Filter_ByState extends State<Filter_By> {
               ),
               SizedBox(height: 10,),
 
+             widget.filters_params.ram ?  InkWell(
+            onTap: () async {
+
+              ram = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Ram(item_models: widget.item_model)));
+
+              if(ram != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["ram",ram]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                        ram = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Ram", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.ram ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${ram}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+             widget.filters_params.processor ?  InkWell(
+            onTap: () async {
+
+              processor = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Processor(item_models: widget.item_model)));
+
+              if(processor != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["processor",processor]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                        ram = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Processor", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.processor ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${processor}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+
+              widget.filters_params.screensize ?  InkWell(
+            onTap: () async {
+
+              screensize = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Screen_Size(item_models: widget.item_model)));
+
+              if(screensize != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["screensize",screensize]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                            screensize = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Screensize", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.screensize ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${screensize}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+              widget.filters_params.resolution ?  InkWell(
+            onTap: () async {
+
+              resolution = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Resolution(item_models: widget.item_model)));
+
+              if(resolution != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["resolution",resolution]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                            resolution = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Resolution", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.resolution ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${resolution}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+              widget.filters_params.storage ?  InkWell(
+            onTap: () async {
+
+              storage = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Storage(item_models: widget.item_model)));
+
+              if(storage != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["storage",storage]);
+                    }
+                );
+              }
+
+              else
+                {
+                  setState(
+                          (){
+                            storage = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Storage", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.storage ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${storage}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+              widget.filters_params.brand ?  InkWell(
+            onTap: () async {
+
+              brand = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Brands(item_models: widget.item_model)));
+
+              if(brand != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["brand",brand]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                            brand = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("brand", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.brand ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${brand}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+              widget.filters_params.screen ?  InkWell(
+            onTap: () async {
+
+              screen = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Screen(item_models: widget.item_model)));
+
+              if(screen != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["screen",screen]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                            screen = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Screen", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.screen ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${screen}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+
+              widget.filters_params.partner ?  InkWell(
+            onTap: () async {
+
+              partner = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Partner(item_models: widget.item_model)));
+
+              if(partner != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["partner",partner]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                            partner = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Partner", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.partner ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${partner}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
+
+              widget.filters_params.package ?  InkWell(
+            onTap: () async {
+
+              package = await Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Package(item_models: widget.item_model)));
+
+              if(package != null)
+              {
+                setState(
+                        (){
+                      array_filters.add(["package",package]);
+                    }
+                );
+              }
+              else
+                {
+                  setState(
+                          (){
+                            package = "";
+                      }
+                  );
+
+                }
+            },
+
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              child: Row(
+                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.add_circle, size: 30, color: Colors.deepOrange,),
+                      SizedBox(width: 10,),
+
+                      Text("Package", style:TextStyle(
+                          color:Colors.grey[700],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ): Container(),
+
+             widget.filters_params.package ? Container(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${package}", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                    )),
+                    Icon(Icons.arrow_forward, size: 20,color:Colors.grey[600])
+                  ],
+                ),
+              ):Container(),
+
+              SizedBox(height: 10,),
+
           InkWell(
             onTap:() async {
 
@@ -293,10 +924,19 @@ class _Filter_ByState extends State<Filter_By> {
                 {
                   setState(
                       (){
-                        location_selected = "true";
+                        array_filters.add(["location","${location}"]);
                       }
                   );
                 }
+              else{
+
+                setState(
+                        (){
+                      location = "";
+                    }
+                );
+
+              }
 
             },
             child: Container(
@@ -396,7 +1036,7 @@ class _Filter_ByState extends State<Filter_By> {
                       activeColor: Colors.deepOrange,
                       onChanged: (value_moq)=> setState((){
                         this.value_moq = value_moq;
-                        moq_selected = "true";
+                        array_filters.add(["moq","${value_moq.start.round()}"]);
 
                       }),
 
@@ -440,6 +1080,13 @@ class _Filter_ByState extends State<Filter_By> {
                               ()
                                   {
                                     available = !available;
+                                    if(array_filters.contains(["available",true]) ||array_filters.contains(["available",false]) )
+                                      {
+                                        array_filters.remove(["available",true]);
+                                        array_filters.remove(["available",false]);
+                                        array_filters.add(["available",available]);
+
+                                      }
                                   }
                           );
 
@@ -481,7 +1128,7 @@ class _Filter_ByState extends State<Filter_By> {
                             setState(
                                 (){
 
-                                  warrant_selected = "true";
+                                  array_filters.add(['warrant','1']);
                                   warrant = "1";
                                 }
                             );
@@ -509,7 +1156,7 @@ class _Filter_ByState extends State<Filter_By> {
                             setState(
                                     (){
 
-                                  warrant_selected = "true";
+                                      array_filters.add(['warrant','2']);
                                   warrant = "2";
                                 }
                             );
@@ -536,7 +1183,7 @@ class _Filter_ByState extends State<Filter_By> {
                             setState(
                                     (){
 
-                                  warrant_selected = "true";
+                                      array_filters.add(['warrant','3']);
                                   warrant = "3";
                                 }
                             );
@@ -563,7 +1210,7 @@ class _Filter_ByState extends State<Filter_By> {
                             setState(
                                     (){
 
-                                  warrant_selected = "true";
+                                      array_filters.add(['warrant','4']);
                                   warrant = "4";
                                 }
                             );
@@ -590,7 +1237,7 @@ class _Filter_ByState extends State<Filter_By> {
                             setState(
                                     (){
 
-                                  warrant_selected = "true";
+                                      array_filters.add(['warrant','5']);
                                   warrant = "5";
                                 }
                             );

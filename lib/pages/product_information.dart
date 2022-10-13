@@ -180,11 +180,7 @@ class _Product_InformationState extends State<Product_Information> {
                       width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-                            image: DecorationImage(
-                              image: AssetImage("assets/IMG-20220714-WA0001.jpg"),
-                              fit:BoxFit.contain,
 
-                            )
                         ),
 
 
@@ -441,10 +437,17 @@ class _Product_InformationState extends State<Product_Information> {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.grey.withOpacity(0.5),
-                                radius: 20,
-                                child: Icon(Icons.arrow_back,color: Colors.white,),
+                              InkWell(
+                                onTap:(){
+
+                                  Navigator.pop(context);
+
+                                      },
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.grey.withOpacity(0.5),
+                                  radius: 20,
+                                  child: Icon(Icons.arrow_back,color: Colors.white,),
+                                ),
                               ),
                               SizedBox(width: 10,),
                               Container(

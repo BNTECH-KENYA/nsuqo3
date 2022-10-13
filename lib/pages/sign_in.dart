@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nsuqo/pages/reset_password.dart';
 import 'package:nsuqo/pages/wholesaler_home.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
@@ -25,27 +26,31 @@ class _Sign_InState extends State<Sign_In> {
   TextEditingController _password = TextEditingController();
 
   bool isLoading = false;
+  bool obsuretext = true;
 
   Future <void> sign_in_wholesaler ( email, password) async{
     setState(
             (){
           isLoading = true;
         });
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) {
-      print("success");
-      getUserData(email);
+    try{
+     await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) {
+        print("success");
+        getUserData(email);
 
-    }
+      }
 
-    ).onError((error, stackTrace) {
-      Toast.show("${error.toString()}".toString(), context,duration:Toast.LENGTH_SHORT,
-          gravity: Toast.BOTTOM);
+      );
+
+    }on FirebaseAuthException catch(e) {
+      Toast.show("${e}".toString(), context,duration:Toast.LENGTH_SHORT,
+          gravity: Toast.TOP);
       setState(
       (){
       isLoading = false;
       });
     }
-    );
+
 
   }
 
@@ -138,6 +143,262 @@ class _Sign_InState extends State<Sign_In> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    return Scaffold(
+
+      backgroundColor: Colors.white,
+      body: SafeArea(
+
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              Container(
+                width:MediaQuery.of(context).size.width,
+                height:MediaQuery.of(context).size.height*0.3,
+                child: Center(
+                  child: Image(
+                    image: AssetImage("assets/launch_image.png"),
+                    width: 150,
+                    height: 150,
+
+                  ),
+                ),
+              ),
+
+              Text("Login", style: TextStyle(
+
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+              ),),
+
+              SizedBox(height: 30,),
+
+
+              Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Enter Email", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontWeight: FontWeight.w400,
+                        fontSize:14
+                    )),
+
+                    SizedBox(height: 10,),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            color: Colors.white
+                        ),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.alternate_email,color: Colors.grey[400],),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5.0, right: 12.0,top: 12.0, bottom: 4),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width-83,
+                              child: TextField(
+                                controller: _email,
+                                decoration: InputDecoration(
+                                    hintText: 'example@gmail.com',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[400],
+
+                                    ),
+
+                                    border: InputBorder.none
+                                ),
+                                cursorColor: Colors.grey[500],
+                              ),
+                            ),
+
+                          ),
+                        ],
+                      ),
+                    ),
+
+
+                    SizedBox(height: 20,),
+
+                    Text("Enter Password", style:TextStyle(
+                        color:Colors.grey[600],
+                        fontWeight: FontWeight.w400,
+                        fontSize:14
+                    )),
+
+                    SizedBox(height: 10,),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            color: Colors.white
+                        ),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.lock_outline,color: Colors.grey[400],),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5, right: 12.0,top: 12.0, bottom: 4),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width-108,
+                              child: TextField(
+
+                                obscureText: obsuretext,
+                                controller: _password,
+                                decoration: InputDecoration(
+                                    hintText: 'password',
+                                    hintStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[400],
+
+                                    ),
+
+                                    border: InputBorder.none
+                                ),
+                                cursorColor: Colors.grey[500],
+
+                              ),
+                            ),
+
+                          ),
+
+                          obsuretext ?
+
+                          InkWell(
+
+                              onTap: (){
+                                setState(
+                                        (){
+                                      obsuretext = !obsuretext;
+                                    }
+                                );
+
+                              },
+                              child: Icon(Icons.visibility_off_outlined,color: Colors.grey[400],))
+                              :
+                          InkWell(
+
+                              onTap: (){
+                                setState(
+                                        (){
+                                      obsuretext = !obsuretext;
+                                    }
+                                );
+                              },
+                              child: Icon(Icons.visibility_outlined,color: Colors.grey[400],))
+
+                          ,
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 10,),
+
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 40,
+                child: Stack(
+
+                  children:[
+                    Positioned(
+                      top:2,
+                      right: 8,
+                      child: InkWell(
+                        onTap:(){
+                          Navigator.of(context).push(
+                              MaterialPageRoute
+                                (builder: (context)=>Reset_Password()));
+                         //Reset_Password
+                        },
+                        child: Text("Forgot password?", style:TextStyle(
+                            color:Colors.deepOrange,
+                            fontWeight: FontWeight.w700,
+                            fontSize:14
+                        )),
+                      ),
+                    )
+                  ]
+                ),
+              ),
+
+              SizedBox(height: 5,),
+
+              InkWell(
+                onTap: () async {
+
+                  if(_email.text.toString().trim().isEmpty || !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(_email.text.toString()))
+                  {
+                    Toast.show("Enter a valid email address".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+                  }
+                  else if(_password.text.toString().trim().isEmpty)
+                  {
+                    Toast.show("Enter your password".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+                  }
+                  else
+                  {
+                    //login code
+                    await sign_in_wholesaler ( _email.text.toString(), _password.text.toString());
+                  }
+
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      border: Border.all(
+                          color: Colors.deepOrange
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text("Login", style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                      ),),
+                    )
+                ),
+              ),
+
+            ],
+          ),
+        ),
+
+
+
+
+      ),
+    );
+  }
+}
+
+
+/*
+
+
     return Scaffold(
       backgroundColor: Colors.deepOrange,
       body: SafeArea(
@@ -322,5 +583,5 @@ class _Sign_InState extends State<Sign_In> {
             ),
           )),
     );
-  }
-}
+
+ */

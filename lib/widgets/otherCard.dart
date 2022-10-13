@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../models/messagemodel.dart';
 
-
 class ReplCard extends StatelessWidget {
   const ReplCard({Key? key, required this.messageModel}) : super(key: key);
   final MesssageModel messageModel;
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,7 @@ class ReplCard extends StatelessWidget {
 
                 child: Row(
                   children: [
-                    Text(messageModel.timestamp, style: TextStyle(
+                    Text(messageModel.time_ui, style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey[600],
                     ),),
