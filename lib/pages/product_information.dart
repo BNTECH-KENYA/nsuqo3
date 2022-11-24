@@ -3,12 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/chat_page.dart';
+import 'package:nsuqo/pages/home_page_categories.dart';
+import 'package:nsuqo/pages/messangerwholesaler.dart';
+import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:nsuqo/pages/wholesalerinfo.dart';
+
+import 'edit_item.dart';
 
 class Product_Information extends StatefulWidget {
   const Product_Information({Key? key, required this.document_id}) : super(key: key);
   final String document_id;
-
   @override
   State<Product_Information> createState() => _Product_InformationState();
 }
@@ -21,6 +25,7 @@ class _Product_InformationState extends State<Product_Information> {
  bool isWholesaler = false;
  bool isLoading = true;
 
+
   String product_name ="";
   String product_description ="";
   String product_price = "";
@@ -28,6 +33,8 @@ class _Product_InformationState extends State<Product_Information> {
   String retailer_id = "";
   String wholesaler_id ="";
   String company_name ="";
+  String location ="";
+  String doc_id ="";
   String opponent_name ="";
   List photosLinks = [];
 
@@ -50,6 +57,8 @@ class _Product_InformationState extends State<Product_Information> {
              product_price=  res.data()!['productprice'];
              wholesaler_id=  res.data()!['wholesalerid'];
              company_name=  res.data()!['company_name'];
+             location=  res.data()!['location'];
+             doc_id=  res.id;
              product_id=  res.id;
              isLoading = false;
              if(!isWholesaler)
@@ -180,7 +189,11 @@ class _Product_InformationState extends State<Product_Information> {
                       width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
+                            image: DecorationImage(
+                              image: AssetImage("assets/computing.jpeg"),
+                              fit:BoxFit.contain,
 
+                            )
                         ),
 
 
@@ -249,7 +262,7 @@ class _Product_InformationState extends State<Product_Information> {
                       child: Row(
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width-60 ,
+                            width: MediaQuery.of(context).size.width-10 ,
                             child: Padding(
                               padding: const EdgeInsets.only(left:16.0),
                               child: Text("Best selling ${product_name} with ${product_description}",
@@ -262,17 +275,14 @@ class _Product_InformationState extends State<Product_Information> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 60,
-                            child:Icon(Icons.heart_broken, size: 30,color:Colors.grey[800])
-                          )
+                        
                         ],
                       ),
                     ),
                     SizedBox(height: 30,),
                     Padding(
                       padding: const EdgeInsets.only(left:16.0),
-                      child: Text("KES ${product_price}",
+                      child: Text("USD ${product_price}",
 
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -300,44 +310,69 @@ class _Product_InformationState extends State<Product_Information> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Container(
-                          width: MediaQuery.of(context).size.width *0.45,
-                          height: 55,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey[800]!,
+                        InkWell(
+                          onTap: (){
 
-                              ),
-                              borderRadius:BorderRadius.all( Radius.circular(30), ),
-                              color: Colors.white
-                          ),
-                          child: Center(
-                            child: Text("Chats",
-                              style: TextStyle(
-                                  color: Colors.grey[800],
-                                  fontWeight: FontWeight.w700
+                              Navigator.of(context).push(
+                                  MaterialPageRoute
+                                    (builder: (context)=>Messanger_WholeSaler(
+                                    )));
+
+
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width *0.45,
+                            height: 55,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey[800]!,
+
+                                ),
+                                borderRadius:BorderRadius.all( Radius.circular(30), ),
+                                color: Colors.white
+                            ),
+                            child: Center(
+                              child: Text("Chats",
+                                style: TextStyle(
+                                    color: Colors.grey[800],
+                                    fontWeight: FontWeight.w700
+                                ),
                               ),
                             ),
-                          ),
 
+                          ),
                         ),
 
-                        Container(
-                          width: MediaQuery.of(context).size.width *0.45,
-                          height: 55,
-                          decoration: BoxDecoration(
-                              borderRadius:BorderRadius.all( Radius.circular(30), ),
-                              color: Colors.deepOrange
-                          ),
-                          child: Center(
-                            child: Text("Edit Product",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700
+                        InkWell(
+                          onTap: (){
+
+                            Navigator.of(context).push(
+                                MaterialPageRoute
+                                  (builder: (context)=>Edit_Item(
+                                  doc_ic: doc_id,
+                                  user_email: wholesaler_id,
+                                  company_name: company_name,
+                                  location: location,
+
+                                )));
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width *0.45,
+                            height: 55,
+                            decoration: BoxDecoration(
+                                borderRadius:BorderRadius.all( Radius.circular(30), ),
+                                color: Colors.deepOrange
+                            ),
+                            child: Center(
+                              child: Text("Edit Product",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700
+                                ),
                               ),
                             ),
-                          ),
 
+                          ),
                         ),
 
                       ],
@@ -450,39 +485,37 @@ class _Product_InformationState extends State<Product_Information> {
                                 ),
                               ),
                               SizedBox(width: 10,),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                                  child: TextField(
 
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.search, color: Colors.white,),
-                                        hintText: 'Search',
-                                        hintStyle: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-
-                                        ),
-                                        border: InputBorder.none
-                                    ),
-                                    cursorColor: Colors.grey[500],
-
-                                  ),
-
-                                ),
-                              ),
                             ],
                           ),
-                          CircleAvatar(
-                            backgroundColor: Colors.grey.withOpacity(0.5),
-                            radius: 20,
-                            child: Icon(Icons.home,color: Colors.white,),
+                          isWholesaler? InkWell(
+                            onTap:(){
+
+                              Navigator.of(context).push(
+                                  MaterialPageRoute
+                                    (builder: (context)=>(
+                                  Whole_Saler_categories()
+                                  )));
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey.withOpacity(0.5),
+                              radius: 20,
+                              child: Icon(Icons.home,color: Colors.white,),
+                            ),
+                          ): InkWell(
+                            onTap:(){
+
+                              Navigator.of(context).push(
+                                  MaterialPageRoute
+                                    (builder: (context)=>(
+                                  Home_Categories()
+                                  )));
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey.withOpacity(0.5),
+                              radius: 20,
+                              child: Icon(Icons.home,color: Colors.white,),
+                            ),
                           ),
 
                         ],

@@ -71,6 +71,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502419496860:android:776f6e01a1f42d76487259",
+        "android_client_info": {
+          "package_name": "com.nsuqo.opasso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502419496860-u6t8stk04jd1bvp42kcif93bcorofln7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2kgioLSdaByWJWrZ2Dk5YgbcuJK_QOGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502419496860-u6t8stk04jd1bvp42kcif93bcorofln7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

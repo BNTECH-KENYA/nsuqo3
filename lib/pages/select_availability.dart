@@ -19,7 +19,7 @@ class Availability extends StatelessWidget {
         children: [
           InkWell(
             onTap: (){
-              Navigator.pop(context,"available ");
+              Navigator.pop(context,"available");
             },
 
             child: Padding(
@@ -38,7 +38,7 @@ class Availability extends StatelessWidget {
           InkWell(
             onTap:(){
 
-              Navigator.pop(context,"not available ");
+              Navigator.pop(context,"not available");
                   },
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
@@ -46,6 +46,34 @@ class Availability extends StatelessWidget {
                 child: ListTile(
                   leading: Icon(Icons.cancel_outlined, color:Colors.grey[800]),
                   title: Text("not available "),
+                ),
+              ),
+            ),
+          ),          InkWell(
+            onTap:(){
+
+              Navigator.pop(context,"Out Of Stock");
+                  },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Card(
+                child: ListTile(
+                  leading: Icon(Icons.cancel_outlined, color:Colors.grey[800]),
+                  title: Text("Out Of Stock "),
+                ),
+              ),
+            ),
+          ),          InkWell(
+            onTap:(){
+
+              Navigator.pop(context,"Expected");
+                  },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Card(
+                child: ListTile(
+                  leading: Icon(Icons.escalator, color:Colors.grey[800]),
+                  title: Text("Expected"),
                 ),
               ),
             ),

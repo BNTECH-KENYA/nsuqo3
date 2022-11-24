@@ -2,14 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nsuqo/pages/create_account_wholesaler.dart';
 import 'package:nsuqo/pages/messangerwholesaler.dart';
 import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
+import 'package:nsuqo/pages/verify_email_wholesaler.dart';
 import 'package:share/share.dart';
 
 import '../helpers/exit_pop.dart';
 import 'Edit_Profile.dart';
+import 'account_approval_wholesaler.dart';
 import 'add_product.dart';
 import 'messanger.dart';
 
@@ -18,6 +21,7 @@ class Whole_Saler_categories extends StatefulWidget {
 
   @override
   State<Whole_Saler_categories> createState() => _Whole_Saler_categoriesState();
+
 }
 
 class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
@@ -38,15 +42,33 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
 
       if(res.data() != null)
       {
-        setState(
-                (){
 
-              company_name = res.data()!['company_name'];
-              location = res.data()!['location'];
-              isLoading = false;
+        if(res.data()!['fname'] != "")
+          {
+            if(res.data()!['approved'] == "approved"){
+              setState(
+                      (){
 
+                    company_name = res.data()!['company_name'];
+                    location = res.data()!['location'];
+                    isLoading = false;
+
+                  }
+              );
             }
-        );
+            else
+            {
+              Navigator.of(context).push(
+                  MaterialPageRoute
+                    (builder: (context)=>Account_Approval_WholeSaler(email_val: user_email,)));
+            }
+          }
+        else
+          {
+            Navigator.of(context).push(
+                MaterialPageRoute
+                  (builder: (context)=>Create_Account_WholeSaler()));
+          }
 
 
       }
@@ -62,13 +84,23 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
     {
       if(user != null)
       {
-        setState(
-                (){
-              user_email = user.email!;
+        user.reload();
+       if(user.emailVerified)
+         {
+           setState(
+                   (){
+                 user_email = user.email!;
 
-            });
+               });
 
-        getuserdata();
+           getuserdata();
+         }
+       else
+         {
+           Navigator.of(context).push(
+               MaterialPageRoute
+                 (builder: (context)=>Verify_Email_WholeSaler()));
+         }
 
 
       }

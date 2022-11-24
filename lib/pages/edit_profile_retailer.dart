@@ -39,8 +39,8 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
         setState(
                 (){
                   _firstname.text = res.data()!['firstNameinput'];
-                  _lastname.text = res.data()!['LastNameinput'];
-                  _companyname.text = res.data()!['compnayNameinput'];
+                  _lastname.text = res.data()!['lastNameinput'];
+                  _companyname.text = res.data()!['companyNameinput'];
                   _phonenumber.text = res.data()!['phonenumberInput'];
                   _emailaddress.text = user_email;
                   _address.text = res.data()!['address1ControLTextArea'];
@@ -496,8 +496,8 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                     {
 
                       "firstNameinput":_firstname.text,
-                      "LastNameinput":_lastname.text,
-                      "compnayNameinput":_companyname.text,
+                      "lastNameinput":_lastname.text,
+                      "companyNameinput":_companyname.text,
                       "phonenumberInput":_phonenumber.text,
                       "emailidInput":_emailaddress.text,
                       "address1ControLTextArea":_address.text,

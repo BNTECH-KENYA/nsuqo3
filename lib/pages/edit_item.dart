@@ -19,18 +19,18 @@ import '../models/filters_params.dart';
 import '../models/subsubcategory_model.dart';
 import '../widgets/add_product_photos.dart';
 
-class Add_Products extends StatefulWidget {
-  const Add_Products({Key? key,required this.location, required this.user_email, required this.company_name}) : super(key: key);
-  final String user_email, company_name, location;
+class Edit_Item extends StatefulWidget {
+  const Edit_Item({Key? key,required this.location, required this.user_email, required this.company_name, required this.doc_ic}) : super(key: key);
+  final String user_email, company_name, location, doc_ic;
 
   @override
-  State<Add_Products> createState() => _Add_ProductsState();
+  State<Edit_Item> createState() => _Edit_ItemState();
 }
 
-class _Add_ProductsState extends State<Add_Products> {
+class _Edit_ItemState extends State<Edit_Item> {
 
-  bool isLoading = false;
-  late String document_id;
+  bool isLoading = true;
+   String document_id = "";
 
   final storage _storage = storage();
 
@@ -53,27 +53,29 @@ class _Add_ProductsState extends State<Add_Products> {
 
   List<File> ? photoFiles;
   List<String> ? fileDownloadUris= [];
-   Filters_Params_Model _filters_params_model =
-   Filters_Params_Model(
+  List<dynamic> ? photoLinksin= [];
+  int max_photos =2;
+  Filters_Params_Model _filters_params_model =
+  Filters_Params_Model(
 
-       availability: true,
-       warrant_period: true,
-       moq: true,
-       partno: true,
-       company_name: true,
-       location: true,
-       ram: false,
-       processor: false,
-       screen: false,
-       brand: false,
-       resolution: false,
-       storage: false,
-       screensize: false,
-       partner: false,
-       package: false,
-       size: false
+      availability: true,
+      warrant_period: true,
+      moq: true,
+      partno: true,
+      company_name: true,
+      location: true,
+      ram: false,
+      processor: false,
+      screen: false,
+      brand: false,
+      resolution: false,
+      storage: false,
+      screensize: false,
+      partner: false,
+      package: false,
+      size: false
 
-   );
+  );
 
   var imagePath;
   var imageName;
@@ -82,8 +84,8 @@ class _Add_ProductsState extends State<Add_Products> {
   String _category = "";
   String _categoryId = "";
   String _subcategoryId = "";
-  String _subsubcategory = "";
   String _availablility = "";
+  String _subsubcategory = "";
   String ram ="";
   String processor = "";
   String screen = "";
@@ -124,48 +126,129 @@ class _Add_ProductsState extends State<Add_Products> {
       "photosLinks": fileDownloadUris,
       "location": widget.location,
       "ram":_ram.text.toString(),
-     "processor":_processor.text.toString(),
-     "screen":_screen.text.toString(),
-     "brand":_brand.text.toString(),
-     "resolution":_resolution.text.toString(),
-     "storage":_storageproduct.text.toString(),
-     "screensize":_screensize.text.toString(),
-     "partner":_partner.text.toString(),
-     "package":_package.text.toString(),
+      "processor":_processor.text.toString(),
+      "screen":_screen.text.toString(),
+      "brand":_brand.text.toString(),
+      "resolution":_resolution.text.toString(),
+      "storage":_storageproduct.text.toString(),
+      "screensize":_screensize.text.toString(),
+      "partner":_partner.text.toString(),
+      "package":_package.text.toString(),
       "size":_size.text.toString(),
-     "filters_params":{
+      "filters_params":{
 
-           "availability":_filters_params_model.availability,
-           "warrant_period":_filters_params_model.warrant_period,
-           "moq": _filters_params_model.moq,
-           "partno": _filters_params_model.partno,
-           "company_name": _filters_params_model.company_name,
-           "location": _filters_params_model.location,
-           "ram": _filters_params_model.ram,
-           "processor": _filters_params_model.processor,
-           "screen":_filters_params_model.screen,
-           "brand": _filters_params_model.brand,
-           "resolution": _filters_params_model.resolution,
-           "storage": _filters_params_model.storage,
-           "screensize": _filters_params_model.screensize,
-           "partner": _filters_params_model.partner,
-           "package": _filters_params_model.package,
-           "size": _filters_params_model.size,
+        "availability":_filters_params_model.availability,
+        "warrant_period":_filters_params_model.warrant_period,
+        "moq": _filters_params_model.moq,
+        "partno": _filters_params_model.partno,
+        "company_name": _filters_params_model.company_name,
+        "location": _filters_params_model.location,
+        "ram": _filters_params_model.ram,
+        "processor": _filters_params_model.processor,
+        "screen":_filters_params_model.screen,
+        "brand": _filters_params_model.brand,
+        "resolution": _filters_params_model.resolution,
+        "storage": _filters_params_model.storage,
+        "screensize": _filters_params_model.screensize,
+        "partner": _filters_params_model.partner,
+        "package": _filters_params_model.package,
+        "size": _filters_params_model.size,
 
-    }
+      }
 
     };
 
-    await db.collection("products").add(data).then(
-            (DocumentReference doc) {
-              document_id = doc.id;
-        }
-    );
+    await db.collection("products").doc(widget.doc_ic).update(data);
 
     return document_id;
 
   }
 
+
+  Future<void> getProductDeatil()
+  async {
+    final docref = db.collection("products").doc(widget.doc_ic);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+        setState(
+                (){
+
+                  _filters_params_model = Filters_Params_Model(
+                      availability: res.data()!['filters_params']["availability"],
+                      warrant_period: res.data()!['filters_params']["warrant_period"],
+                      moq: res.data()!['filters_params']["moq"],
+                      partno: res.data()!['filters_params']["partno"],
+                      company_name: res.data()!['filters_params']["company_name"],
+                      location: res.data()!['filters_params']["location"],
+                      ram: res.data()!['filters_params']["ram"],
+                      processor: res.data()!['filters_params']["processor"],
+                      screen: res.data()!['filters_params']["screen"],
+                      brand: res.data()!['filters_params']["brand"],
+                      resolution: res.data()!['filters_params']["resolution"],
+                      storage: res.data()!['filters_params']["storage"],
+                      screensize: res.data()!['filters_params']["screensize"],
+                      partner: res.data()!['filters_params']["partner"],
+                      package: res.data()!['filters_params']["package"],
+                      size: res.data()!['filters_params']["size"],
+                  );
+
+                    _productname.text = res.data()!['productname'];
+                   _productdescription.text =res.data()!['productdescription'];
+                   _warrantperiod.text= res.data()!['warrantperiod'];
+                   _productprice.text = res.data()!['productprice'];
+                   _moq.text =res.data()!['moq'];
+                   _partno.text =res.data()!['partno'];
+                   _brand.text =res.data()!['brand'];
+                   _processor.text =res.data()!['processor'];
+                   _storageproduct.text =res.data()!['storage'];
+                   _size.text =res.data()!['size'];
+                   _screen.text =res.data()!['screen'];
+                   _screensize.text =res.data()!['screensize'];
+                   _package.text =res.data()!['package'];
+                   _partner.text =res.data()!['partner'];
+                   _resolution.text =res.data()!['resolution'];
+                   _ram.text =res.data()!['ram'];
+                   photoLinksin = res.data()!['photosLinks'];
+                   max_photos = 2- photoLinksin!.length;
+
+                   _subcategory = res.data()!['subcategory'];
+                   _category = res.data()!['category'];
+                   _availablility = res.data()!['availability'];
+                   _subsubcategory = res.data()!['subsubcategory'];
+
+              isLoading = false;
+
+              /*
+               if(!isWholesaler)
+              {
+                opponent_name = company_name;
+                email_reciever = wholesaler_id;
+              }
+               */
+            }
+        );
+
+
+      }
+
+    });
+
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    () async {
+
+      await getProductDeatil();
+    }();
+
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -191,7 +274,7 @@ class _Add_ProductsState extends State<Add_Products> {
               },
               child: Icon(Icons.arrow_back, color:Colors.white)),
           title:Text(
-            'Add Product',
+            'Edit Product',
             style: TextStyle(
                 color:Colors.white
             ),
@@ -206,9 +289,9 @@ class _Add_ProductsState extends State<Add_Products> {
 
               Text("Enter  Product Name", style:TextStyle(
 
-                color:Colors.grey[800],
-                fontWeight: FontWeight.w400,
-                fontSize:16
+                  color:Colors.grey[800],
+                  fontWeight: FontWeight.w400,
+                  fontSize:16
               )),
               SizedBox(height: 10,),
 
@@ -218,7 +301,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                    color: Colors.grey[500]!
+                      color: Colors.grey[500]!
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -245,9 +328,9 @@ class _Add_ProductsState extends State<Add_Products> {
               SizedBox(height: 20,),
               Text("Enter  Product part number", style:TextStyle(
 
-                color:Colors.grey[800],
-                fontWeight: FontWeight.w400,
-                fontSize:16
+                  color:Colors.grey[800],
+                  fontWeight: FontWeight.w400,
+                  fontSize:16
 
               )),
               SizedBox(height: 10,),
@@ -258,7 +341,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                    color: Colors.grey[500]!
+                      color: Colors.grey[500]!
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -330,8 +413,8 @@ class _Add_ProductsState extends State<Add_Products> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                 "${_category}", style: TextStyle(
-                    color: Colors.grey[700]
+                    "${_category}", style: TextStyle(
+                      color: Colors.grey[700]
                   ),
 
                   ),
@@ -346,26 +429,26 @@ class _Add_ProductsState extends State<Add_Products> {
 
                   if(_category.length <1)
 
-                    {
-                      Toast.show("Select Product Category".toString(), context,duration:Toast.LENGTH_SHORT,
-                          gravity: Toast.BOTTOM);
-                    }
+                  {
+                    Toast.show("Select Product Category".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+                  }
 
                   else
-                    {
-                      SubCategoriesModel subcategory_model= await Navigator.push(context,
-                          MaterialPageRoute(builder:
-                              (context) => Select_Sub_Category(categoryId: _categoryId,)));
+                  {
+                    SubCategoriesModel subcategory_model= await Navigator.push(context,
+                        MaterialPageRoute(builder:
+                            (context) => Select_Sub_Category(categoryId: _categoryId,)));
 
-                      if(subcategory_model != null)
-                      {
-                        setState(() {
-                          _subcategory = subcategory_model.sub_category_name;
-                          _subcategoryId = subcategory_model.sub_category_id;
-                          _filters_params_model = subcategory_model.filters_params_model;
-                        });
-                      }
+                    if(subcategory_model != null)
+                    {
+                      setState(() {
+                        _subcategory = subcategory_model.sub_category_name;
+                        _subcategoryId = subcategory_model.sub_category_id;
+                        _filters_params_model = subcategory_model.filters_params_model;
+                      });
                     }
+                  }
 
                 },
                 child: Row(
@@ -398,8 +481,8 @@ class _Add_ProductsState extends State<Add_Products> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                 "${_subcategory}", style: TextStyle(
-                    color: Colors.grey[700]
+                    "${_subcategory}", style: TextStyle(
+                      color: Colors.grey[700]
                   ),
 
                   ),
@@ -414,24 +497,24 @@ class _Add_ProductsState extends State<Add_Products> {
 
                   if(_subcategory.length <1)
 
-                    {
-                      Toast.show("Select Product Subcategory".toString(), context,duration:Toast.LENGTH_SHORT,
-                          gravity: Toast.BOTTOM);
-                    }
+                  {
+                    Toast.show("Select Product Subcategory".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+                  }
 
                   else
-                    {
-                      SubSubCategoriesModel subsubcategory_model= await Navigator.push(context,
-                          MaterialPageRoute(builder:
-                              (context) => Select_Sub_Sub_Category(subcategoryId: _subcategoryId,)));
+                  {
+                    SubSubCategoriesModel subsubcategory_model= await Navigator.push(context,
+                        MaterialPageRoute(builder:
+                            (context) => Select_Sub_Sub_Category(subcategoryId: _subcategoryId,)));
 
-                      if(subsubcategory_model != null)
-                      {
-                        setState(() {
-                          _subsubcategory = subsubcategory_model.sub_sub_category_name;
-                        });
-                      }
+                    if(subsubcategory_model != null)
+                    {
+                      setState(() {
+                        _subsubcategory = subsubcategory_model.sub_sub_category_name;
+                      });
                     }
+                  }
 
                 },
                 child: Row(
@@ -464,8 +547,8 @@ class _Add_ProductsState extends State<Add_Products> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                 "${_subsubcategory}", style: TextStyle(
-                    color: Colors.grey[700]
+                    "${_subsubcategory}", style: TextStyle(
+                      color: Colors.grey[700]
                   ),
 
                   ),
@@ -500,7 +583,6 @@ class _Add_ProductsState extends State<Add_Products> {
                     controller: _productdescription,
                     maxLines: 5,
                     minLines: 5,
-                    maxLength: 200,
                     decoration: InputDecoration(
                         hintText: 'product description',
                         hintStyle: TextStyle(
@@ -520,7 +602,6 @@ class _Add_ProductsState extends State<Add_Products> {
 
               SizedBox(height: 20,),
               Text("Enter  Product Price(USD)", style:TextStyle(
-
                   color:Colors.grey[800],
                   fontWeight: FontWeight.w400,
                   fontSize:16
@@ -606,22 +687,22 @@ class _Add_ProductsState extends State<Add_Products> {
               InkWell(
                 onTap:() async {
 
-                 String _availablility_passed = await Navigator.push(context,
+                String   _availablility_passed = await Navigator.push(context,
                       MaterialPageRoute(builder:
                           (context) => Availability()));
 
-                  if(_availablility_passed == null)
-                    {
-                      setState(() {
-                        _availablility = "";
-                      });
-                    }
-                  else
-                    {
-                      setState(() {
-                        _availablility = _availablility_passed;
-                      });
-                    }
+                if(_availablility_passed == null)
+                {
+                  setState(() {
+                    _availablility = "";
+                  });
+                }
+                else
+                {
+                  setState(() {
+                    _availablility = _availablility_passed;
+                  });
+                }
                 },
                 child: Row(
 
@@ -648,7 +729,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[400]!
+                      color: Colors.grey[500]!
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -691,7 +772,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: TextField(
-                      controller: _moq,
+                    controller: _moq,
                     decoration: InputDecoration(
                         hintText: '10 cartons',
                         hintStyle: TextStyle(
@@ -712,7 +793,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
               SizedBox(height: 20,),
 
-            _filters_params_model.brand? Text("Enter Brand Name", style:TextStyle(
+              _filters_params_model.brand? Text("Enter Brand Name", style:TextStyle(
 
                   color:Colors.grey[800],
                   fontWeight: FontWeight.w400,
@@ -1107,6 +1188,82 @@ class _Add_ProductsState extends State<Add_Products> {
 
               _filters_params_model.storage? SizedBox( height: 20,): Container(),
 
+              SizedBox(height: 20,),
+
+              Text("Prevously Uploaded photos", style:TextStyle(
+
+                  color:Colors.grey[800],
+                  fontWeight: FontWeight.w400,
+                  fontSize:16
+              )
+              ),
+
+
+              SizedBox(height: 10,),
+
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height:100,
+                child: ListView.builder(
+
+                    itemCount: photoLinksin!.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+
+                      return Container(
+                        width: 100,
+                        height: 80,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey[500]!
+                            ),
+
+                            borderRadius:BorderRadius.all( Radius.circular(2), ),
+                            image: DecorationImage(
+                              image: NetworkImage(photoLinksin![index]),
+                              fit:BoxFit.contain,
+
+                            )
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                                right: 5,
+                                bottom: 5,
+                                child: 
+                                InkWell(
+                                    onTap: () async{
+                                      
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      
+                                      final update_doc = db.collection("products").doc(widget.doc_ic);
+
+                                     await update_doc.update({
+                                        "photosLinks":FieldValue.arrayRemove(photoLinksin![index]),
+                                      });
+
+                                     await getProductDeatil();
+
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      
+                                    },
+                                    child: Icon(Icons.delete, color: Colors.red,))),
+                          ],
+                        ),
+                      );
+
+                    }
+
+                ),
+              ),
+
+
+              SizedBox(height: 10,),
+
               InkWell(
                 onTap: () async {
 
@@ -1116,19 +1273,23 @@ class _Add_ProductsState extends State<Add_Products> {
                       type: FileType.custom,
                       allowedExtensions: ['png','jpg']
                   );
+
                   if(result == null) return;
                   print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> |-result ${result.count}");
-                  if(result.count <= 2){
+                  if(result.count <= max_photos){
                     setState(
                             (){
 
                           photoFiles =result.paths.map((path) => File(path!)).toList() ;
                         }
                     );
+
                   }
                   else
                   {
 
+                    Toast.show("Maximum photos eceeded".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
                   }
 
                 },
@@ -1136,16 +1297,17 @@ class _Add_ProductsState extends State<Add_Products> {
 
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Add Product Photo\n (optional max 2)", style:TextStyle(
+                    Text("Add new photos\n (optional max ${max_photos})", style:TextStyle(
 
                         color:Colors.grey[800],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.add_a_photo, size: 30, color:Colors.grey[600]),
+                    Icon(Icons.edit_sharp, size: 30, color:Colors.grey[600]),
                   ],
                 ),
               ),
+
 
               SizedBox(height: 10,),
 
@@ -1153,15 +1315,15 @@ class _Add_ProductsState extends State<Add_Products> {
                 width: MediaQuery.of(context).size.width,
                 height:(photoFiles?.length == null)? 0 :photoFiles!.length * 280,
                 child: ListView.builder(
-                itemCount: (photoFiles?.length == null)? 0:photoFiles?.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
+                    itemCount: (photoFiles?.length == null)? 0:photoFiles?.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (BuildContext context, int index) {
 
-                  return Product_Photos(
-                       path: photoFiles![index].path,
-                  );
+                      return Product_Photos(
+                        path: photoFiles![index].path,
+                      );
 
-                }
+                    }
 
                 ),
               ),
@@ -1225,26 +1387,26 @@ class _Add_ProductsState extends State<Add_Products> {
                   }
 
                   else if(photoFiles == null)
-                    {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      String groupServiceId = await uploadingItemData();
+                  {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    String groupServiceId = await uploadingItemData();
 
-                      setState(
-                              (){
-                            isLoading = false;
+                    setState(
+                            (){
+                          isLoading = false;
 
-                          }
-                      );
+                        }
+                    );
 
-                      print("~~~~~~~~~~~~~~Success in Jesus Name~~~~~~~~~~~~~");
-                      Navigator.of(context).push(
-                          MaterialPageRoute
-                            (builder: (context)=>Product_Information(document_id: document_id,))
-                      );
+                    print("~~~~~~~~~~~~~~Success in Jesus Name~~~~~~~~~~~~~");
+                    Navigator.of(context).push(
+                        MaterialPageRoute
+                          (builder: (context)=>Product_Information(document_id: widget.doc_ic,))
+                    );
 
-                    }
+                  }
 
                   else{
 
@@ -1259,44 +1421,82 @@ class _Add_ProductsState extends State<Add_Products> {
                       fileDownloadUris?.add(dowbloaduri!);
                     }
 
-                    final dataupdate = <String, dynamic>
-                    {
-                      "photosLinks":fileDownloadUris,
-                    };
+                    if(fileDownloadUris!.length == 2)
+                      {
+                        final dataupdate = <String, dynamic>
+                        {
 
-                    await db.collection("products").doc(groupServiceId).update(dataupdate)
-                        .then((value) {
-                      setState(
-                              (){
-                            isLoading = false;
+                          "photosLinks":FieldValue.arrayUnion(
 
-                          }
-                      );
+                            [fileDownloadUris![0], fileDownloadUris![1]],
 
-                      print("~~~~~~~~~~~~~~Success in Jesus Name~~~~~~~~~~~~~");
-                      Navigator.of(context).push(
-                          MaterialPageRoute
-                            (builder: (context)=>Product_Information(document_id: document_id,))
-                      );
-                    });
+                          ),
+                        };
+
+                        await db.collection("products").doc(widget.doc_ic).update(dataupdate)
+                            .then((value) {
+                          setState(
+                                  (){
+                                isLoading = false;
+
+                              }
+                          );
+
+                          print("~~~~~~~~~~~~~~Success in Jesus Name~~~~~~~~~~~~~");
+                          Navigator.of(context).push(
+                              MaterialPageRoute
+                                (builder: (context)=>Product_Information(document_id: widget.doc_ic,))
+                          );
+                        });
+                      }
+
+                    else if(fileDownloadUris!.length == 1)
+                      {
+                        final dataupdate = <String, dynamic>
+                        {
+
+                          "photosLinks":FieldValue.arrayUnion(
+
+                            [fileDownloadUris![0]],
+
+                          ),
+                        };
+
+                        await db.collection("products").doc(groupServiceId).update(dataupdate)
+                            .then((value) {
+                          setState(
+                                  (){
+                                isLoading = false;
+
+                              }
+                          );
+
+                          print("~~~~~~~~~~~~~~Success in Jesus Name~~~~~~~~~~~~~");
+                          Navigator.of(context).push(
+                              MaterialPageRoute
+                                (builder: (context)=>Product_Information(document_id: widget.doc_ic,))
+                          );
+                        });
+                      }
+
                   }
 
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.deepOrange,
-                    border: Border.all(
-                        color: Colors.grey[500]!
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      border: Border.all(
+                          color: Colors.grey[500]!
+                      ),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text("Save Product", style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16
+                    child: Center(
+                      child: Text("Save Changes", style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
                       ),),
                     )
 

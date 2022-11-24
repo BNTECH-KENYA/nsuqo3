@@ -26,6 +26,10 @@ class _Edit_ProfileState extends State<Edit_Profile> {
   TextEditingController _wholesalerPhoneNumber = TextEditingController();
   TextEditingController _wholesaleremail = TextEditingController();
 
+
+  List <dynamic> payment_details_and_terms = [];
+
+
   String distributioncat ="";
   String location_data ="";
   String working_hours ="0-0";
@@ -56,7 +60,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               _wholesalerPhoneNumber.text = res.data()!['contact_details'];
               _companyname.text = res.data()!['company_name'];
               location_data = res.data()!['location'];
-              _paymentdetterms.text = res.data()!['payment_detailsterms'];
+              payment_details_and_terms = res.data()!['payment_detailsterms'];
               _marketcoverage.text = res.data()!['market_coverage'];
               distributioncat = res.data()!['distribution_category'];
 

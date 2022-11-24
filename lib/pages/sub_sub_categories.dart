@@ -19,7 +19,14 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
   bool isLoading = true;
 
   List<SubSubCategoriesModel> subsubcategories = [];
+  List<Color> colors_list=[
 
+    Colors.deepOrange, Colors.blue, Colors.deepPurpleAccent, Colors.lightGreen,
+    Colors.pinkAccent, Colors.yellowAccent,Colors.purple, Colors.greenAccent,
+    Colors.orange, Colors.teal, Colors.brown, Colors.limeAccent
+
+  ];
+  int color_increment = 0;
   Future <void> get_subsubcategories() async{
 
     final service_listings = db.collection("subsubcategories")
@@ -30,13 +37,21 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
               () {
 
             ref.docs.forEach((element) {
+
+              if(color_increment == 11)
+              {
+                color_increment = 0;
+              }
+
               subsubcategories.add(
                   SubSubCategoriesModel(
                       sub_sub_category_name: element.data()['subsubcategoryname'],
-                      sub_category_id: element.id,)
+                      sub_category_id: element.id,
+                    color: colors_list[color_increment],)
               );
 
 
+              color_increment++;
             });
 
             isLoading = false;
@@ -61,7 +76,8 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+
+      backgroundColor: Colors.grey[100],
       
       body: SafeArea(
           child: Padding(
@@ -85,7 +101,7 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
                 SizedBox(height: 10,),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: subsubcategories.length *45,
+                  height: subsubcategories.length *65,
                   child: ListView.builder(
                       itemCount: subsubcategories.length,
 
@@ -100,23 +116,35 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
                                    subsubcategory: subsubcategories[index].sub_sub_category_name,)));
                           },
 
-                          child: Card(
+                          child:Card(
                             color: Colors.white,
                             child: Container(
 
                               width: MediaQuery.of(context).size.width,
-                              height: 35,
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left:16.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Text("${subsubcategories[index].sub_sub_category_name}",
+                              height: 50,
+                              child:
+                              Padding(
+                                padding: const EdgeInsets.only(left:0.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: subsubcategories[index].color,
+                                      child: Text("${subsubcategories[index].sub_sub_category_name[0].toUpperCase()}${subsubcategories[index].sub_sub_category_name[1].toUpperCase()}",
+
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text("${subsubcategories[index].sub_sub_category_name}",
                                       style: TextStyle(
                                         color: Colors.grey[600],
 
                                       ),
                                     ),
+                                    trailing: Icon(Icons.arrow_forward_ios, size: 20,),
                                   ),
                                 ),
                               ),

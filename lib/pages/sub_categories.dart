@@ -22,6 +22,16 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
   bool isLoading = true;
 
   List<SubCategoriesModel> subcategories = [];
+  List<Color> colors_list=[
+
+    Colors.deepOrange, Colors.blue, Colors.deepPurpleAccent, Colors.lightGreen,
+    Colors.pinkAccent, Colors.yellowAccent,Colors.purple, Colors.greenAccent,
+    Colors.orange, Colors.teal, Colors.brown, Colors.limeAccent
+
+  ];
+
+  int color_increment =0;
+
 
   Future <void> get_subcategories() async{
 
@@ -33,6 +43,13 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
               () {
 
             ref.docs.forEach((element) {
+
+
+              if(color_increment == 11)
+              {
+                color_increment = 0;
+              }
+
               subcategories.add(
                   SubCategoriesModel(
                       sub_category_name: element.data()['subcategoryname'],
@@ -54,12 +71,14 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                           package: element.data()['filters_params']['package'],
                           size: element.data()['filters_params']['size']),
                           sub_category_id: element.id,
+                    color: colors_list[color_increment],
 
 
                   )
               );
 
 
+              color_increment++;
             });
 
             isLoading = false;
@@ -84,7 +103,7 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       
       body: SafeArea(
           child: Padding(
@@ -108,7 +127,7 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                 SizedBox(height: 10,),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: subcategories.length *45,
+                  height: subcategories.length *60,
                   child: ListView.builder(
                       itemCount: subcategories.length,
 
@@ -125,18 +144,30 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                             child: Container(
 
                               width: MediaQuery.of(context).size.width,
-                              height: 35,
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left:16.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Text("${subcategories[index].sub_category_name}",
+                              height: 50,
+                              child:
+                              Padding(
+                                padding: const EdgeInsets.only(left:0.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: subcategories[index].color,
+                                      child: Text("${subcategories[index].sub_category_name[0].toUpperCase()}${subcategories[index].sub_category_name[1].toUpperCase()}",
+
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text("${subcategories[index].sub_category_name}",
                                       style: TextStyle(
                                         color: Colors.grey[600],
 
                                       ),
                                     ),
+                                    trailing: Icon(Icons.arrow_forward_ios, size: 20,),
                                   ),
                                 ),
                               ),

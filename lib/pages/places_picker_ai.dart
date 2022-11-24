@@ -13,7 +13,6 @@ class Places_Search extends StatefulWidget {
 
 class _Places_SearchState extends State<Places_Search> {
 
-
   List<AutoCompleteResult> search_results = [];
 
   final String key = 'AIzaSyCAawMnC6vfUa40ZNFsLN-ov7Pa4DjcUrM';

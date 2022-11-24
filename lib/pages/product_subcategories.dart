@@ -20,6 +20,15 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
   bool isLoading = true;
 
   List<SubCategoriesModel> subcategories = [];
+  List<Color> colors_list=[
+
+    Colors.deepOrange, Colors.blue, Colors.deepPurpleAccent, Colors.lightGreen,
+    Colors.pinkAccent, Colors.yellowAccent,Colors.purple, Colors.greenAccent,
+    Colors.orange, Colors.teal, Colors.brown, Colors.limeAccent
+
+  ];
+
+  int color_increment =0;
 
   Future <void> get_subcategories() async{
 
@@ -31,6 +40,11 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
               () {
 
             ref.docs.forEach((element) {
+
+              if(color_increment == 11)
+                {
+                  color_increment = 0;
+                }
               subcategories.add(
                   SubCategoriesModel(
                       sub_category_name: element.data()['subcategoryname'],
@@ -51,10 +65,11 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
                           screensize: element.data()['filters_params']['screensize'],
                           partner: element.data()['filters_params']['partner'],
                           package: element.data()['filters_params']['package'],
-                          size: element.data()['filters_params']['size'])),
+                          size: element.data()['filters_params']['size']),
+                      color: colors_list[color_increment]),
 
               );
-
+              color_increment++;
 
             });
 

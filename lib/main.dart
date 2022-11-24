@@ -1,23 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nsuqo/pages/add_product.dart';
-import 'package:nsuqo/pages/all_categories.dart';
-import 'package:nsuqo/pages/chat_page.dart';
-import 'package:nsuqo/pages/filter_by.dart';
-import 'package:nsuqo/pages/home_page_categories.dart';
-import 'package:nsuqo/pages/home_page_products.dart';
-import 'package:nsuqo/pages/home_retailer.dart';
-import 'package:nsuqo/pages/messanger.dart';
-import 'package:nsuqo/pages/places_picker_ai.dart';
-import 'package:nsuqo/pages/product_information.dart';
-import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
-import 'package:nsuqo/pages/single_category.dart';
-import 'package:nsuqo/pages/sub_categories.dart';
-import 'package:nsuqo/pages/wholesaler_home.dart';
-import 'package:nsuqo/pages/wholesalerinfo.dart';
-import 'package:nsuqo/pages/wholesalers.dart';
+
 
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();

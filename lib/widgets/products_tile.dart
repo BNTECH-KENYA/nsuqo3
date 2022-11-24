@@ -38,7 +38,9 @@ class Product_Tile extends StatelessWidget {
               style:TextStyle(
                   fontSize: 13
               )),
-          trailing: Text("part no:1234"),
+          trailing: Text("${item_model.partno}", style: TextStyle(
+            fontSize: 8,
+          ),),
         ),
         Padding(
           padding: const EdgeInsets.only(right: 20, left: 80),

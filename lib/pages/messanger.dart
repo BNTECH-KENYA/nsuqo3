@@ -19,7 +19,6 @@ class Messanger extends StatefulWidget {
 
   @override
   State<Messanger> createState() => _MessangerState();
-
 }
 
 class _MessangerState extends State<Messanger> {
@@ -30,7 +29,6 @@ class _MessangerState extends State<Messanger> {
   bool isWholesaler = false;
 
   List<MessangerModel> chat_streams = [];
-
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 

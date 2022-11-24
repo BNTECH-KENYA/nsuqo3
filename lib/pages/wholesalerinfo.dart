@@ -28,7 +28,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
    String email="";
    String location="";
    String market_coverage="";
-   String payment_details_terms="";
+   List<dynamic> payment_details_terms=[];
    String working_hours="0-0";
    bool isLoading = true;
 
@@ -277,14 +277,30 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
 
                                     SizedBox(height: 10,),
 
-                                    Container(
+                                    payment_details_terms.length == 1?   Container(
                                       width: MediaQuery.of(context).size.width-122,
-                                      child: Text("${payment_details_terms}", style:TextStyle(
+                                      child: Text("${payment_details_terms[0]}", style:TextStyle(
                                         color: Colors.grey[500],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
-                                    ),
+                                    ):
+                                    payment_details_terms.length == 2?   Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]}", style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                    ):
+                                    payment_details_terms.length == 3?   Container(
+                                      width: MediaQuery.of(context).size.width-122,
+                                      child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]} \n  ${payment_details_terms[2]}", style:TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                    ):Container() ,
 
                                   ],
                                 ),

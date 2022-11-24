@@ -319,7 +319,7 @@ class _Unread_Messanger_RetailerState extends State<Unread_Messanger_Retailer> {
                             QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
 
                             course?['sender_email'] == user_email? unreadmsgin = unreadmessages + 0
-                                : unreadmsgin = int.parse(course!['unrdmessage']) + unreadmessages;
+                                : unreadmsgin = course!['unrdmessage'] + unreadmessages;
 
                             return course?['unrdmessage'] < 1 ? Container():   Chat_Stream_Widget(messagermodel: MessangerModel(
                               unreadmsg:course?['sender_email'] == user_email? 0 : course?['unrdmessage'],
