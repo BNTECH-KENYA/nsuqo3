@@ -16,6 +16,8 @@ class _Home_Page_design_uiState extends State<Home_Page_design_ui> {
 
   List<String> categories = ["Phones and Tablets", "Consumer Electronic", "Computing", "More"];
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

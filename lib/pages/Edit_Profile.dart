@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/places_picker_ai.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/subcategories.dart';
+import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';

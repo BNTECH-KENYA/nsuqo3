@@ -190,7 +190,9 @@ class _Chat_PageState extends State<Chat_Page> {
     
     
   }
-  
+
+
+  // wholesaler_id_mm
   
     String date_data = "";
     bool onScroll = false;
@@ -291,7 +293,13 @@ class _Chat_PageState extends State<Chat_Page> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("${widget.sender_name}",
+                      widget.auth_email == widget.wholesaler_id ?  Text("${widget.sender_name}",
+                          style:TextStyle(
+                              fontSize: 18.5,
+                              fontWeight: FontWeight.bold,
+                              color:Colors.white
+                          )):
+                      Text("${widget.opponent_name}",
                           style:TextStyle(
                               fontSize: 18.5,
                               fontWeight: FontWeight.bold,

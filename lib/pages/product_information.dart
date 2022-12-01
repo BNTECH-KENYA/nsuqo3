@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/chat_page.dart';
 import 'package:nsuqo/pages/home_page_categories.dart';
 import 'package:nsuqo/pages/messangerwholesaler.dart';
+import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:nsuqo/pages/wholesalerinfo.dart';
 
@@ -103,7 +104,7 @@ class _Product_InformationState extends State<Product_Information> {
 
                    retailer_id= res.id;
 
-                   sender_name = "${res.data()!['firstNameinput']} ${res.data()!['lastNameInput']}";
+                   sender_name = "${res.data()!['firstNameinput']} ${res.data()!['lastNameinput']}";
              }
          );
 

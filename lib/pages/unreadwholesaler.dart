@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nsuqo/pages/messangerwholesaler.dart';
 import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:nsuqo/widgets/chat_stream.dart';
 import 'package:share/share.dart';

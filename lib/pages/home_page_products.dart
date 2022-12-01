@@ -14,6 +14,8 @@ import 'package:toast/toast.dart';
 import '../models/filters.dart';
 import '../models/products_model.dart';
 import '../widgets/products_tile.dart';
+import 'account_approval_wholesaler.dart';
+import 'create_account_wholesaler.dart';
 import 'edit_profile_retailer.dart';
 import 'messanger.dart';
 
@@ -33,6 +35,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
   List<Item_Model> products = [];
   List<Item_Model> search_results = [ ];
   List<dynamic> filters = [];
+  String ? user_email;
 
   bool isLoading= true;
 
@@ -44,6 +47,127 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
         .where("category", isEqualTo: widget.category)
         .where("subcategory", isEqualTo: widget.subcategory)
         .where("subsubcategory", isEqualTo: widget.subsubcategory);
+
+    await service_listings.get().then((ref) {
+      print("redata 1 &****************************${ref.docs}");
+      setState(
+              () {
+
+            ref.docs.forEach((element) {
+              print(element.data()['productname']);
+
+              products.add(
+                  Item_Model(
+
+                    availability:element.data()['availability'],
+                    itemname: element.data()['productname'],
+                    itemId: element.id,
+                    itemprice: element.data()['productprice'],
+                    itemdescription: element.data()['productdescription'],
+                    category: element.data()['category'],
+                    photosLinks:element.data()['photosLinks'],
+                    wholesalerid: element.data()['wholesalerid'],
+                    warrant_period: element.data()['warrantperiod'],
+                    no_of_clicks: element.data()['noofclicks'],
+                    partno: element.data()['partno'],
+                    moq: element.data()['moq'],
+                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                    company_name: element.data()['company_name'],
+                    location: element.data()['location'],
+                    ram: element.data()['ram'],
+                    brand:element.data()['brand'],
+                    storage: element.data()['storage'],
+                    screen: element.data()['screen'],
+                    processor: element.data()['processor'],
+                    screensize: element.data()['screensize'],
+                    resolution: element.data()['resolution'],
+                    package: element.data()['package'],
+                    partner: element.data()['partner'],
+                    filters_params: Filters_Params_Model(
+                        availability: element.data()['filters_params']['availability'],
+                        warrant_period:element.data()['filters_params']['warrant_period'],
+                        moq: element.data()['filters_params']['moq'],
+                        partno:element.data()['filters_params']['partno'],
+                        company_name: element.data()['filters_params']['company_name'],
+                        location: element.data()['filters_params']['location'],
+                        ram: element.data()['filters_params']['ram'],
+                        processor:element.data()['filters_params']['processor'],
+                        screen: element.data()['filters_params']['screen'],
+                        brand: element.data()['filters_params']['brand'],
+                        resolution: element.data()['filters_params']['resolution'],
+                        storage: element.data()['filters_params']['storage'],
+                        screensize: element.data()['filters_params']['screensize'],
+                        partner: element.data()['filters_params']['partner'],
+                        package: element.data()['filters_params']['package'],
+                        size: element.data()['filters_params']['size']),
+
+                  )
+
+              );
+              search_results.add(
+                  Item_Model(
+
+                    availability:element.data()['availability'],
+                    itemname: element.data()['productname'],
+                    itemId: element.id,
+                    itemprice: element.data()['productprice'],
+                    itemdescription: element.data()['productdescription'],
+                    category: element.data()['category'],
+                    photosLinks:element.data()['photosLinks'],
+                    wholesalerid: element.data()['wholesalerid'],
+                    warrant_period: element.data()['warrantperiod'],
+                    no_of_clicks: element.data()['noofclicks'],
+                    partno: element.data()['partno'],
+                    moq: element.data()['moq'],
+                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                    company_name: element.data()['company_name'],
+                    location: element.data()['location'],
+                    ram: element.data()['ram'],
+                    brand:element.data()['brand'],
+                    storage: element.data()['storage'],
+                    screen: element.data()['screen'],
+                    processor: element.data()['processor'],
+                    screensize: element.data()['screensize'],
+                    resolution: element.data()['resolution'],
+                    package: element.data()['package'],
+                    partner: element.data()['partner'],
+                    filters_params: Filters_Params_Model(
+                        availability: element.data()['filters_params']['availability'],
+                        warrant_period:element.data()['filters_params']['warrant_period'],
+                        moq: element.data()['filters_params']['moq'],
+                        partno:element.data()['filters_params']['partno'],
+                        company_name: element.data()['filters_params']['company_name'],
+                        location: element.data()['filters_params']['location'],
+                        ram: element.data()['filters_params']['ram'],
+                        processor:element.data()['filters_params']['processor'],
+                        screen: element.data()['filters_params']['screen'],
+                        brand: element.data()['filters_params']['brand'],
+                        resolution: element.data()['filters_params']['resolution'],
+                        storage: element.data()['filters_params']['storage'],
+                        screensize: element.data()['filters_params']['screensize'],
+                        partner: element.data()['filters_params']['partner'],
+                        package: element.data()['filters_params']['package'],
+                        size: element.data()['filters_params']['size']),
+
+                  )
+
+              );
+
+            });
+
+            isLoading = false;
+          }
+      );
+    });
+
+  }  Future<void> get_Products2() async {
+
+    // remember to change to required data
+    final service_listings = db.collection("products")
+        .where("category", isEqualTo: widget.category)
+        .where("subcategory", isEqualTo: widget.subcategory)
+        .where("subsubcategory", isEqualTo: widget.subsubcategory)
+        .where("wholesalerid", isEqualTo: user_email);
 
     await service_listings.get().then((ref) {
       print("redata 1 &****************************${ref.docs}");
@@ -338,14 +462,79 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
   }
 
+  Future<void> getUserData(user_email)
+  async {
+    final docref = db.collection("userdd").doc(user_email);
+    await docref.get().then((res) async {
+
+      if(res.data() != null)
+      {
+        if(res.data()!['accounttype'] =="wholesaler")
+        {
 
 
+         await get_Products2();
+          setState(
+                  (){
+                isLoading = false;
+              }
+          );
+
+        }
+        else
+        {
+
+          await get_Products();
+
+          setState(
+                  (){
+                isLoading = false;
+              }
+          );
+        }
+      }
+      else
+      {
+        setState(
+                (){
+              isLoading = false;
+            }
+        );
+        print("out");
+        FirebaseAuth.instance.signOut();
+
+      }
+
+    });
+
+  }
+
+  Future<void> checkAuth()async {
+    await FirebaseAuth.instance
+        .authStateChanges()
+        .listen((user)
+    {
+      if(user != null)
+      {
+        getUserData(user.email);
+
+      }
+      else{
+        setState(
+                (){
+              isLoading = false;
+            }
+        );
+
+      }
+    });
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
         () async {
-      await get_Products();
+      await checkAuth();
     }();
   }
 
@@ -581,7 +770,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                   InkWell(
                     onTap: () async {
 
-                      await Share.share("Link to download app");
+                      await Share.share("https://play.google.com/store/apps/details?id=com.nsuqo.opassoLink to download app");
 
                     },
 

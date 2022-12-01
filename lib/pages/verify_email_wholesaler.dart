@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
 
@@ -19,7 +20,6 @@ class Verify_Email_WholeSaler extends StatefulWidget {
 class _Verify_Email_WholeSalerState extends State<Verify_Email_WholeSaler> {
 
   TextEditingController _email = TextEditingController();
-
   final auth = FirebaseAuth.instance;
   late User user;
   Timer? timer;
@@ -28,11 +28,10 @@ class _Verify_Email_WholeSalerState extends State<Verify_Email_WholeSaler> {
     user = auth.currentUser!;
     await user.reload();
 
-
     if(user.emailVerified){
-
       timer!.cancel();
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(context)=> Whole_Saler_categories()));
+
     }
   }
   @override
@@ -180,7 +179,6 @@ class _Verify_Email_WholeSalerState extends State<Verify_Email_WholeSaler> {
                         )
                     ),
                   ),
-
                 ],
               ),
             ),

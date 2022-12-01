@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/unreadwholesaler.dart';
+import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:nsuqo/widgets/chat_stream.dart';
 import 'package:share/share.dart';
@@ -392,7 +393,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                                   child: CircleAvatar(
                                     radius: 6,
                                     backgroundColor: Colors.red,
-                                    child: Text("3", style: TextStyle(
+                                    child: Text("${unreadmessages}", style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 8,
                                     ),),
@@ -415,7 +416,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                   InkWell(
 
                     onTap: () async {
-                    await Share.share("link to download app");
+                    await Share.share("https://play.google.com/store/apps/details?id=com.nsuqo.opasso");
                     },
 
                     child: Container(

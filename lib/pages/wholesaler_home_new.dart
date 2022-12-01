@@ -16,15 +16,15 @@ import 'account_approval_wholesaler.dart';
 import 'add_product.dart';
 import 'messanger.dart';
 
-class Whole_Saler_categories extends StatefulWidget {
-  const Whole_Saler_categories({Key? key}) : super(key: key);
+class Whole_Saler_categories_old extends StatefulWidget {
+  const Whole_Saler_categories_old({Key? key}) : super(key: key);
 
   @override
-  State<Whole_Saler_categories> createState() => _Whole_Saler_categoriesState();
+  State<Whole_Saler_categories_old> createState() => _Whole_Saler_categories_oldState();
 
 }
 
-class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
+class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old> {
 
   List<String> categories = ["Phones and Tablets", "Consumer Electronic", "Computing", "More"];
 
@@ -407,7 +407,7 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                     InkWell(
 
                       onTap: () async {
-                        await Share.share("link to download app");
+                        await Share.share("https://play.google.com/store/apps/details?id=com.nsuqo.opasso");
 
                       },
 
