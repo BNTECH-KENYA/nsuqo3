@@ -256,7 +256,14 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                               ],
                             ),
 
-                            Icon(Icons.share, color: Colors.white,)
+                            InkWell(
+                                onTap:()async{
+
+                                  await Share.share("https://play.google.com/store/apps/details?id=com.nsuqo.opasso");
+
+
+                                },
+                                child: Icon(Icons.share, color: Colors.white,))
 
                           ],
                         ),

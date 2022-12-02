@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/places_picker_ai.dart';
+import 'package:nsuqo/pages/product_category.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/subcategories.dart';
 import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
+
+import '../models/categories_model.dart';
 
 class Edit_Profile extends StatefulWidget {
   const Edit_Profile({Key? key}) : super(key: key);
@@ -23,12 +26,21 @@ class _Edit_ProfileState extends State<Edit_Profile> {
   TextEditingController _companyname = TextEditingController();
   TextEditingController _businessdescription = TextEditingController();
   TextEditingController _marketcoverage = TextEditingController();
-  TextEditingController _paymentdetterms = TextEditingController();
   TextEditingController _wholesalerPhoneNumber = TextEditingController();
   TextEditingController _wholesaleremail = TextEditingController();
 
+  bool credit_card = false;
+  bool mobilemoney = false;
+  bool cash = false;
 
-  List <dynamic> payment_details_and_terms = [];
+  String start_hours ="";
+  String stop_hours ="";
+
+  TimeOfDay timeOfDay = TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().hour);
+  DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+
+
+  List <dynamic> payment_details_terms = [];
 
 
   String distributioncat ="";
@@ -61,9 +73,17 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               _wholesalerPhoneNumber.text = res.data()!['contact_details'];
               _companyname.text = res.data()!['company_name'];
               location_data = res.data()!['location'];
-              payment_details_and_terms = res.data()!['payment_detailsterms'];
+              payment_details_terms = res.data()!['payment_detailsterms'];
               _marketcoverage.text = res.data()!['market_coverage'];
               distributioncat = res.data()!['distribution_category'];
+
+              start_hours = "${working_hours.split("-")[0]}";
+              stop_hours = "${working_hours.split("-")[1]}";
+
+              if(payment_details_terms.contains("Cash")) cash = true;
+              if(payment_details_terms.contains("Mobile Money")) mobilemoney = true;
+              if(payment_details_terms.contains("Credit Card")) credit_card = true;
+
 
               isLoading = false;
 
@@ -122,6 +142,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    final hours = dateTime.hour.toString().padLeft(2,'0');
+    final minutes = dateTime.hour.toString().padLeft(2,'0');
+
     return isLoading? Container(
       width: MediaQuery.of(context).size.width,
       height:MediaQuery.of(context).size.height,
@@ -367,39 +392,100 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               )),
 
               SizedBox(height: 10,),
-
               Container(
+                height: 205,
                 width: MediaQuery.of(context).size.width,
-                height: 160,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 2.0, bottom: 2),
-                  child: TextField(
-                    controller: _paymentdetterms,
-                    maxLines: 5,
-                    minLines: 5,
-                    maxLength: 200,
-                    decoration: InputDecoration(
-                        hintText: 'product description',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10,),
+                    Text("Select Payment Terms", style: TextStyle(
+                        color: Colors.black
+                    ),),
+                    ListTile(
+                      leading: Checkbox(
+                          value: cash,
+                          onChanged: (val){
 
-                        ),
+                            setState(() {
+                              cash = !cash;
+                              if(cash == true)
+                              {
+                                if(!payment_details_terms.contains("Cash"))
+                                {
+                                  payment_details_terms.add("Cash");
+                                }
+                              }
+                              else
+                              {
+                                if(payment_details_terms.contains("Cash"))
+                                {
+                                  payment_details_terms.remove("Cash");
+                                }
+                              }
 
-                        border: InputBorder.none
+                            });
+                          }),
+                      title: Text("Cash"),
                     ),
-                    cursorColor: Colors.grey[500],
+                    SizedBox(height:5),
+                    ListTile(
+                      leading: Checkbox(
+                          value: mobilemoney,
+                          onChanged: (val){
 
-                  ),
+                            setState(() {
+                              mobilemoney = !mobilemoney;
+                              if(mobilemoney == true)
+                              {
+                                if(!payment_details_terms.contains("Mobile Money"))
+                                {
+                                  payment_details_terms.add("Mobile Money");
+                                }
+                              }
+                              else
+                              {
+                                if(payment_details_terms.contains("Mobile Money"))
+                                {
+                                  payment_details_terms.remove("Mobile Money");
+                                }
+                              }
 
+                            });
+                          }),
+                      title: Text("Mobile Money"),
+
+                    ),
+                    SizedBox(height:5),
+                    ListTile(
+                      leading: Checkbox(
+                          value: credit_card,
+                          onChanged: (val){
+                            setState(() {
+                              credit_card = !credit_card;
+                              if(credit_card == true)
+                              {
+                                if(!payment_details_terms.contains("Credit Card"))
+                                {
+                                  payment_details_terms.add("Credit Card");
+                                }
+                              }
+                              else
+                              {
+                                if(payment_details_terms.contains("Credit Card"))
+                                {
+                                  payment_details_terms.remove("Credit Card");
+                                }
+                              }
+
+                            });
+                          }),
+                      title: Text("Credit Card"),
+
+                    ),
+                  ],
                 ),
+
               ),
 
               SizedBox(height: 20,),
@@ -439,8 +525,22 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               SizedBox(height: 5,),
 
               InkWell(
-                onTap: (){
+                onTap: () async {
 
+                  final time = await pickTime();
+                  if(time == null) return;
+
+                  final timeofdayin = TimeOfDay(
+                    hour: time.hour, minute: time.minute,
+                  );
+
+
+                  setState(
+                          (){
+                        timeOfDay = timeofdayin;
+                        start_hours = "${timeofdayin.hour}:${timeofdayin.minute}";
+                      }
+                  );
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -458,7 +558,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${working_hours.split("-")[0]}", style: TextStyle(
+                          start_hours, style: TextStyle(
                             color: Colors.grey[700]
                         ),
 
@@ -499,8 +599,23 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               SizedBox(height: 5,),
 
               InkWell(
-                onTap: (){
+                onTap: () async {
 
+
+                  final time = await pickTime();
+                  if(time == null) return;
+
+                  final timeofdayin = TimeOfDay(
+                    hour: time.hour, minute: time.minute,
+                  );
+
+
+                  setState(
+                          (){
+                        timeOfDay = timeofdayin;
+                        stop_hours = "${timeofdayin.hour}:${timeofdayin.minute}";
+                      }
+                  );
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -518,7 +633,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${working_hours.split("-")[1]}", style: TextStyle(
+                          stop_hours, style: TextStyle(
                             color: Colors.grey[700]
                         ),
 
@@ -536,14 +651,14 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               InkWell(
                 onTap:() async {
 
-                  String subcategpory = await Navigator.push(context,
+                  CategoriesModel category = await Navigator.push(context,
                       MaterialPageRoute(builder:
-                          (context) => SubCategories_Page()));
+                          (context) => Select_Category()));
 
-                  if(subcategpory != null)
+                  if(category != null)
                   {
                     setState(() {
-                      distributioncat = subcategpory;
+                      distributioncat = category.category_name;
                     });
                   }
                 },
@@ -735,19 +850,18 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
                       "business_description":_businessdescription.text,
                       "company_name":_companyname.text,
-                      "contact_detail":_wholesalerPhoneNumber.text,
+                      "contact_details":_wholesalerPhoneNumber.text,
                       "distribution_category":distributioncat,
                       "email":_wholesaleremail.text,
                       "location":location_data,
                       "market_coverage":_marketcoverage.text,
-                      "working_hours":working_hours,
+                      "working_hours":"$start_hours-$stop_hours",
+                      "payment_detailsterms":payment_details_terms,
 
                     };
-                    print("333333333333333333333333333333333333333333333333");
 
                     await db.collection("userdd").doc(user_email).update(dataupdate);
 
-                    print("333333333333333333333333333333333333333333333333");
                     setState(
                             (){
                           isLoading = false;
@@ -792,4 +906,8 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
     );
   }
+
+  Future<TimeOfDay?> pickTime() =>showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: dateTime.hour, minute: dateTime.minute));
 }

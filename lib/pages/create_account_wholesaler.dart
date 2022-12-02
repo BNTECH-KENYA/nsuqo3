@@ -384,6 +384,7 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                         if(value!.isEmpty){
 
                           return " Please Enter Company's Name";
+
                         }
                         return null;
                       },

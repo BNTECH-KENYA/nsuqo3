@@ -14,6 +14,7 @@ import 'package:toast/toast.dart';
 import '../models/filters.dart';
 import '../models/products_model.dart';
 import '../widgets/products_tile.dart';
+import 'Edit_Profile.dart';
 import 'account_approval_wholesaler.dart';
 import 'create_account_wholesaler.dart';
 import 'edit_profile_retailer.dart';
@@ -160,14 +161,15 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
       );
     });
 
-  }  Future<void> get_Products2() async {
+  }
+  Future<void> get_Products2(useremail) async {
 
     // remember to change to required data
     final service_listings = db.collection("products")
+        .where("wholesalerid", isEqualTo: useremail)
         .where("category", isEqualTo: widget.category)
         .where("subcategory", isEqualTo: widget.subcategory)
-        .where("subsubcategory", isEqualTo: widget.subsubcategory)
-        .where("wholesalerid", isEqualTo: user_email);
+        .where("subsubcategory", isEqualTo: widget.subsubcategory);
 
     await service_listings.get().then((ref) {
       print("redata 1 &****************************${ref.docs}");
@@ -462,6 +464,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
   }
 
+  bool isWholesaler = false;
   Future<void> getUserData(user_email)
   async {
     final docref = db.collection("userdd").doc(user_email);
@@ -473,10 +476,12 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
         {
 
 
-         await get_Products2();
+         await get_Products2(user_email);
+
           setState(
                   (){
                 isLoading = false;
+                isWholesaler = true;
               }
           );
 
@@ -794,10 +799,22 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
                     onTap: () async {
 
-                      Navigator.of(context).push(
-                          MaterialPageRoute
-                            (builder: (context)=>Edit_Retailer_Profile())
-                      );
+
+                      if(isWholesaler)
+                        {
+                          Navigator.of(context).push(
+                              MaterialPageRoute
+                                (builder: (context)=>Edit_Profile())
+                          );
+                        }
+                      else
+                        {
+                          Navigator.of(context).push(
+                              MaterialPageRoute
+                                (builder: (context)=>Edit_Retailer_Profile())
+                          );
+                        }
+
                       //await Share.share("link to download app");
                     },
 
