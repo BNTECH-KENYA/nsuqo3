@@ -10,7 +10,7 @@ class Wholesalers_Model {
   final String email;
   final String location;
   final String market_coverage;
-  final String payment_details_terms;
+  final List<dynamic> payment_details_terms;
   final String working_hours;
   final Color bgcolor;
 

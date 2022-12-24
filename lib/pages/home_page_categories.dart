@@ -30,7 +30,6 @@ class _Home_CategoriesState extends State<Home_Categories> {
   List<String> categories = ["Phones and Tablets", "Consumer Electronic", "Computing", "More"];
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-
   String user_email = "Hello...";
   String business_name_disp= "";
 
@@ -115,7 +114,6 @@ class _Home_CategoriesState extends State<Home_Categories> {
 
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -178,7 +176,6 @@ class _Home_CategoriesState extends State<Home_Categories> {
                                   child: Cat_New_Ui( category: 'Consumer Electronic', imagepath: 'assets/electronics.jpeg', )),
                             ),
 
-
                             Positioned(
                               right: 50,
 
@@ -195,8 +192,12 @@ class _Home_CategoriesState extends State<Home_Categories> {
                               child: InkWell(
                                   onTap: (){
 
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute
+                                          (builder: (context)=>WholeSalers()));
+
                                   },
-                                  child: Cat_New_Ui_cc()),
+                                  child: Cat_New_Ui_cc(cat_name: "Wholesalers PriceList",)),
                             ),
                             Positioned(
                               right: 50,
@@ -241,20 +242,23 @@ class _Home_CategoriesState extends State<Home_Categories> {
                                 Text("Hello ${business_name_disp}", style: TextStyle(
                                     color:Colors.white,
                                     fontWeight: FontWeight.bold
-                                ),)
+                                ),),
                               ],
                             ),
+                            InkWell(
+                                onTap:() async {
 
-                            Icon(Icons.share, color: Colors.white,)
+                                  await Share.share("https://play.google.com/store/apps/details?id=com.nsuqo.opasso");
 
+                                },
+                                child: Icon(Icons.share, color: Colors.white,))
                           ],
                         ),
                       ),
-                    ))
+                    )),
               ],
             ),
           )
-
       ),
     ),
     );

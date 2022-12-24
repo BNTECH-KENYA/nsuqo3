@@ -84,8 +84,10 @@ class _Home_Page_design_uiState extends State<Home_Page_design_ui> {
                               child: InkWell(
                                   onTap: (){
 
+
+
                                   },
-                                  child: Cat_New_Ui_cc()),
+                                  child: Cat_New_Ui_cc(cat_name: "Wholesalers PriceList",)),
                             ),
                             Positioned(
                               right: 50,

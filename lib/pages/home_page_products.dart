@@ -8,6 +8,7 @@ import 'package:nsuqo/pages/home_page_categories.dart';
 import 'package:nsuqo/pages/product_information.dart';
 import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/wholesalers.dart';
 import 'package:share/share.dart';
 import 'package:toast/toast.dart';
 
@@ -26,7 +27,6 @@ class Home_Page_Products extends StatefulWidget {
 
   @override
   State<Home_Page_Products> createState() => _Home_Page_ProductsState();
-
 }
 
 class _Home_Page_ProductsState extends State<Home_Page_Products> {
@@ -37,9 +37,8 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
   List<Item_Model> search_results = [ ];
   List<dynamic> filters = [];
   String ? user_email;
-
   bool isLoading= true;
-
+  List<dynamic> whos_can_view = [];
 
   Future<void> get_Products() async {
 
@@ -57,102 +56,107 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             ref.docs.forEach((element) {
               print(element.data()['productname']);
 
-              products.add(
-                  Item_Model(
+              if(whos_can_view.contains(element.data()['wholesalerid']))
+                {
+                  products.add(
+                      Item_Model(
 
-                    availability:element.data()['availability'],
-                    itemname: element.data()['productname'],
-                    itemId: element.id,
-                    itemprice: element.data()['productprice'],
-                    itemdescription: element.data()['productdescription'],
-                    category: element.data()['category'],
-                    photosLinks:element.data()['photosLinks'],
-                    wholesalerid: element.data()['wholesalerid'],
-                    warrant_period: element.data()['warrantperiod'],
-                    no_of_clicks: element.data()['noofclicks'],
-                    partno: element.data()['partno'],
-                    moq: element.data()['moq'],
-                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
-                    company_name: element.data()['company_name'],
-                    location: element.data()['location'],
-                    ram: element.data()['ram'],
-                    brand:element.data()['brand'],
-                    storage: element.data()['storage'],
-                    screen: element.data()['screen'],
-                    processor: element.data()['processor'],
-                    screensize: element.data()['screensize'],
-                    resolution: element.data()['resolution'],
-                    package: element.data()['package'],
-                    partner: element.data()['partner'],
-                    filters_params: Filters_Params_Model(
-                        availability: element.data()['filters_params']['availability'],
-                        warrant_period:element.data()['filters_params']['warrant_period'],
-                        moq: element.data()['filters_params']['moq'],
-                        partno:element.data()['filters_params']['partno'],
-                        company_name: element.data()['filters_params']['company_name'],
-                        location: element.data()['filters_params']['location'],
-                        ram: element.data()['filters_params']['ram'],
-                        processor:element.data()['filters_params']['processor'],
-                        screen: element.data()['filters_params']['screen'],
-                        brand: element.data()['filters_params']['brand'],
-                        resolution: element.data()['filters_params']['resolution'],
-                        storage: element.data()['filters_params']['storage'],
-                        screensize: element.data()['filters_params']['screensize'],
-                        partner: element.data()['filters_params']['partner'],
-                        package: element.data()['filters_params']['package'],
-                        size: element.data()['filters_params']['size']),
+                        availability:element.data()['availability'],
+                        itemname: element.data()['productname'],
+                        itemId: element.id,
+                        itemprice: element.data()['productprice'],
+                        itemdescription: element.data()['productdescription'],
+                        category: element.data()['category'],
+                        photosLinks:element.data()['photosLinks'],
+                        wholesalerid: element.data()['wholesalerid'],
+                        warrant_period: element.data()['warrantperiod'],
+                        no_of_clicks: element.data()['noofclicks'],
+                        partno: element.data()['partno'],
+                        moq: element.data()['moq'],
+                        searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                        company_name: element.data()['company_name'],
+                        location: element.data()['location'],
+                        ram: element.data()['ram'],
+                        brand:element.data()['brand'],
+                        storage: element.data()['storage'],
+                        screen: element.data()['screen'],
+                        processor: element.data()['processor'],
+                        screensize: element.data()['screensize'],
+                        resolution: element.data()['resolution'],
+                        package: element.data()['package'],
+                        partner: element.data()['partner'],
+                        filters_params: Filters_Params_Model(
+                            availability: element.data()['filters_params']['availability'],
+                            warrant_period:element.data()['filters_params']['warrant_period'],
+                            moq: element.data()['filters_params']['moq'],
+                            partno:element.data()['filters_params']['partno'],
+                            company_name: element.data()['filters_params']['company_name'],
+                            location: element.data()['filters_params']['location'],
+                            ram: element.data()['filters_params']['ram'],
+                            processor:element.data()['filters_params']['processor'],
+                            screen: element.data()['filters_params']['screen'],
+                            brand: element.data()['filters_params']['brand'],
+                            resolution: element.data()['filters_params']['resolution'],
+                            storage: element.data()['filters_params']['storage'],
+                            screensize: element.data()['filters_params']['screensize'],
+                            partner: element.data()['filters_params']['partner'],
+                            package: element.data()['filters_params']['package'],
+                            size: element.data()['filters_params']['size']),
 
-                  )
+                      )
 
-              );
-              search_results.add(
-                  Item_Model(
+                  );
+                  search_results.add(
+                      Item_Model(
 
-                    availability:element.data()['availability'],
-                    itemname: element.data()['productname'],
-                    itemId: element.id,
-                    itemprice: element.data()['productprice'],
-                    itemdescription: element.data()['productdescription'],
-                    category: element.data()['category'],
-                    photosLinks:element.data()['photosLinks'],
-                    wholesalerid: element.data()['wholesalerid'],
-                    warrant_period: element.data()['warrantperiod'],
-                    no_of_clicks: element.data()['noofclicks'],
-                    partno: element.data()['partno'],
-                    moq: element.data()['moq'],
-                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
-                    company_name: element.data()['company_name'],
-                    location: element.data()['location'],
-                    ram: element.data()['ram'],
-                    brand:element.data()['brand'],
-                    storage: element.data()['storage'],
-                    screen: element.data()['screen'],
-                    processor: element.data()['processor'],
-                    screensize: element.data()['screensize'],
-                    resolution: element.data()['resolution'],
-                    package: element.data()['package'],
-                    partner: element.data()['partner'],
-                    filters_params: Filters_Params_Model(
-                        availability: element.data()['filters_params']['availability'],
-                        warrant_period:element.data()['filters_params']['warrant_period'],
-                        moq: element.data()['filters_params']['moq'],
-                        partno:element.data()['filters_params']['partno'],
-                        company_name: element.data()['filters_params']['company_name'],
-                        location: element.data()['filters_params']['location'],
-                        ram: element.data()['filters_params']['ram'],
-                        processor:element.data()['filters_params']['processor'],
-                        screen: element.data()['filters_params']['screen'],
-                        brand: element.data()['filters_params']['brand'],
-                        resolution: element.data()['filters_params']['resolution'],
-                        storage: element.data()['filters_params']['storage'],
-                        screensize: element.data()['filters_params']['screensize'],
-                        partner: element.data()['filters_params']['partner'],
-                        package: element.data()['filters_params']['package'],
-                        size: element.data()['filters_params']['size']),
+                        availability:element.data()['availability'],
+                        itemname: element.data()['productname'],
+                        itemId: element.id,
+                        itemprice: element.data()['productprice'],
+                        itemdescription: element.data()['productdescription'],
+                        category: element.data()['category'],
+                        photosLinks:element.data()['photosLinks'],
+                        wholesalerid: element.data()['wholesalerid'],
+                        warrant_period: element.data()['warrantperiod'],
+                        no_of_clicks: element.data()['noofclicks'],
+                        partno: element.data()['partno'],
+                        moq: element.data()['moq'],
+                        searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                        company_name: element.data()['company_name'],
+                        location: element.data()['location'],
+                        ram: element.data()['ram'],
+                        brand:element.data()['brand'],
+                        storage: element.data()['storage'],
+                        screen: element.data()['screen'],
+                        processor: element.data()['processor'],
+                        screensize: element.data()['screensize'],
+                        resolution: element.data()['resolution'],
+                        package: element.data()['package'],
+                        partner: element.data()['partner'],
+                        filters_params: Filters_Params_Model(
+                            availability: element.data()['filters_params']['availability'],
+                            warrant_period:element.data()['filters_params']['warrant_period'],
+                            moq: element.data()['filters_params']['moq'],
+                            partno:element.data()['filters_params']['partno'],
+                            company_name: element.data()['filters_params']['company_name'],
+                            location: element.data()['filters_params']['location'],
+                            ram: element.data()['filters_params']['ram'],
+                            processor:element.data()['filters_params']['processor'],
+                            screen: element.data()['filters_params']['screen'],
+                            brand: element.data()['filters_params']['brand'],
+                            resolution: element.data()['filters_params']['resolution'],
+                            storage: element.data()['filters_params']['storage'],
+                            screensize: element.data()['filters_params']['screensize'],
+                            partner: element.data()['filters_params']['partner'],
+                            package: element.data()['filters_params']['package'],
+                            size: element.data()['filters_params']['size']),
 
-                  )
+                      )
 
-              );
+                  );
+                }
+
+
 
             });
 
@@ -181,7 +185,6 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
               products.add(
                   Item_Model(
-
                     availability:element.data()['availability'],
                     itemname: element.data()['productname'],
                     itemId: element.id,
@@ -254,6 +257,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                     resolution: element.data()['resolution'],
                     package: element.data()['package'],
                     partner: element.data()['partner'],
+
                     filters_params: Filters_Params_Model(
                         availability: element.data()['filters_params']['availability'],
                         warrant_period:element.data()['filters_params']['warrant_period'],
@@ -271,11 +275,8 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                         partner: element.data()['filters_params']['partner'],
                         package: element.data()['filters_params']['package'],
                         size: element.data()['filters_params']['size']),
-
                   )
-
               );
-
             });
 
             isLoading = false;
@@ -489,6 +490,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
         else
         {
 
+          whos_can_view = res.data()!['wholesaler_limit_list'];
           await get_Products();
 
           setState(
@@ -556,156 +558,163 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
         backgroundColor: Colors.white,
       ),),
     ) :Scaffold(
-
       body:  SafeArea(
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-
-            SizedBox(height:20),
-            Padding(
-              padding: const EdgeInsets.only(left:16.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height:40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-
-                            onTap:() async {
-                         Navigator.pop(context);
-
-              }, child: Icon(Icons.arrow_back, color:Colors.grey[800], size:30)),
-                        SizedBox(width: 30,),
-                        Text("${widget.subcategory}",
-                          style: TextStyle(
-                            color: Colors.grey[800],
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-
-                          ),),
-                      ],
-                    ),
-                    SizedBox(height: 6,),
-                    Container(
-                      width: 80,
-                      margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
-                      height: 0.0,
-                      color: Colors.grey[800],
-                    )
-
-
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: 5,),
-
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(left:8.0),
-                child: TextField(
-
-                  onChanged: (val){
-
-                    if(val.isEmpty)
-                      {
-
-                        setState(
-                            (){
-                              search_results = [];
-                              products.forEach((element) {
-
-                                search_results.add(element);
-
-                              });
-
-                            }
-                        );
-                      }
-                    else
-                      {
-                        setState(
-                            (){
-                              search_results = [];
-                              products.forEach((element) {
-
-                                if(element.searchalgopartnoname.contains(val))
-                                {
-                                  search_results.add(element);
-                                }
-                              });
-                            }
-                        );
-                      }
-
-
-                  },
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.search,color:Colors.grey[500]),
-                    hintText: "Search by name or PART no:",
-                    hintStyle: TextStyle(
-                      color: Colors.grey[500],
-
-                    ),
-
-                  ),
-                ),
-              ),
-              trailing: Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child:   InkWell(
-
-                    onTap:() async {
-
-
-                      if(products.length<1)
-                        {
-                          Toast.show("No Products to filter".toString(), context,duration:Toast.LENGTH_SHORT,
-                              gravity: Toast.BOTTOM);
-                        }
-                      else
-                        {
-                          filters = await Navigator.of(context).push(
-                              MaterialPageRoute
-                                (builder: (context)=>Filter_By( item_model: products, filters_params: products[0].filters_params,)));
-
-                          if(filters != null)
-                          {
-                            get_filtered_products(filters);
-                          }
-                        }
-                    },
-                    child: Icon(Icons.filter_list_rounded, color:Colors.grey[800], size:30)),
-              ),
-            ),
-
-          SizedBox(height: 20),
-
             Container(
               width: MediaQuery.of(context).size.width,
-              height:MediaQuery.of(context).size.height-247,
-              child: ListView.builder(
-                        itemCount: search_results.length,
-                        itemBuilder: (context, index){
+              height: MediaQuery.of(context).size.height,
 
-                          return InkWell(
-                              onTap:(){
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height:20),
+                  Padding(
+                    padding: const EdgeInsets.only(left:16.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height:40,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              InkWell(
 
-                                Navigator.of(context).push(
-                                    MaterialPageRoute
-                                      (builder: (context)=>Product_Information(document_id: search_results[index].itemId,)));
-                              },
-                              child: Product_Tile(item_model: search_results[index],));
+                                  onTap:() async {
+                               Navigator.pop(context);
+
+                    }, child: Icon(Icons.arrow_back, color:Colors.grey[800], size:30)),
+                              SizedBox(width: 30,),
+                              Text("${widget.subcategory}",
+                                style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+
+                                ),),
+                            ],
+                          ),
+                          SizedBox(height: 6,),
+                          Container(
+                            width: 80,
+                            margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
+                            height: 0.0,
+                            color: Colors.grey[800],
+                          )
+
+
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 5,),
+
+                  ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(left:8.0),
+                      child: TextField(
+
+                        onChanged: (val){
+
+                          if(val.isEmpty)
+                            {
+
+                              setState(
+                                  (){
+                                    search_results = [];
+                                    products.forEach((element) {
+
+                                      search_results.add(element);
+
+                                    });
+
+                                  }
+                              );
+                            }
+                          else
+                            {
+                              setState(
+                                  (){
+                                    search_results = [];
+                                    products.forEach((element) {
+
+                                      if(element.searchalgopartnoname.contains(val))
+                                      {
+                                        search_results.add(element);
+                                      }
+                                    });
+                                  }
+                              );
+                            }
+
 
                         },
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.search,color:Colors.grey[500]),
+                          hintText: "Search by name or PART no:",
+                          hintStyle: TextStyle(
+                            color: Colors.grey[500],
+
+                          ),
+
+                        ),
                       ),
+                    ),
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child:   InkWell(
+
+                          onTap:() async {
+
+
+                            if(products.length<1)
+                              {
+                                Toast.show("No Products to filter".toString(), context,duration:Toast.LENGTH_SHORT,
+                                    gravity: Toast.BOTTOM);
+                              }
+                            else
+                              {
+                                filters = await Navigator.of(context).push(
+                                    MaterialPageRoute
+                                      (builder: (context)=>Filter_By( item_model: products, filters_params: products[0].filters_params,)));
+
+                                if(filters != null)
+                                {
+                                  get_filtered_products(filters);
+                                }
+                              }
+                          },
+                          child: Icon(Icons.filter_list_rounded, color:Colors.grey[800], size:30)),
+                    ),
+                  ),
+
+                SizedBox(height: 20),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height:MediaQuery.of(context).size.height-247,
+                    child: ListView.builder(
+                              itemCount: search_results.length,
+                              itemBuilder: (context, index){
+
+                                return InkWell(
+                                    onTap:(){
+
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute
+                                            (builder: (context)=>Product_Information(document_id: search_results[index].itemId,)));
+                                    },
+                                    child: Product_Tile(item_model: search_results[index],));
+
+                              },
+                            ),
+                  ),
+                ],
+              ),
             ),
+
           ],
         ),
       ),

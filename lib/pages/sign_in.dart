@@ -8,6 +8,7 @@ import 'package:nsuqo/pages/wholesaler_home.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
 
+import '../main.dart';
 import '../widgets/retailer_wholesaler.dart';
 import 'home_page_categories.dart';
 import 'home_retailer.dart';
@@ -139,7 +140,9 @@ class _Sign_InState extends State<Sign_In> {
     // TODO: implement initState
     super.initState();
         ()async{
+
       await checkAuth();
+      newVersion?.showAlertIfNecessary(context: context);
 
     }();
   }

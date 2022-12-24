@@ -26,6 +26,8 @@ class Item_Model {
   final String screensize;
   final String partner;
   final String package;
+   String ? subcategory;
+   String ? subsubcategory;
   final Filters_Params_Model filters_params;
 
   Item_Model({required
@@ -54,6 +56,8 @@ class Item_Model {
     required this.partner,
     required this.package,
     required this.filters_params,
+    this.subcategory,
+    this.subsubcategory,
 
   });
 }

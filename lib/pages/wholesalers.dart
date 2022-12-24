@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nsuqo/pages/products_listing.dart';
 import 'package:nsuqo/pages/wholesalerinfo.dart';
 import 'package:share/share.dart';
 
@@ -31,8 +32,8 @@ class _WholeSalersState extends State<WholeSalers> {
   ];
   List<Wholesalers_Model> wholesalers_list = [];
   List<Wholesalers_Model> search_results = [];
-  List<String> wholesalers =[
 
+  List<String> wholesalers =[
     "Jane","Joy","Brian","John","RoseMary","Ian","Naomi","Kelvin","Alfred","Susan","Simon"
   ];
 
@@ -44,7 +45,8 @@ class _WholeSalersState extends State<WholeSalers> {
   Future<void> getWholesalers() async {
 
     // remember to change to required data
-    final service_listings = db.collection("userdd").where("accounttype", isEqualTo: "wholesaler");
+    final service_listings = db.collection("userdd").where("accounttype", isEqualTo: "wholesaler")
+        .where("approved", isEqualTo: "approved");
 
     await service_listings.get().then((ref) {
       print("redata 1 &****************************${ref.docs}");
@@ -281,7 +283,7 @@ class _WholeSalersState extends State<WholeSalers> {
                                     print(index);
                                     Navigator.of(context).push(
                                         MaterialPageRoute
-                                          (builder: (context)=>WholeSaler_Info(wholesalerid: search_results[index].wholesalerid)));
+                                          (builder: (context)=>Product_List(wholesaler_id: search_results[index].wholesalerid)));
                                   },
 
                                   child: Wholesaler_Tile( wholesaler_model:search_results[index] ));

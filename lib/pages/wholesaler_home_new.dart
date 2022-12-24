@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/create_account_wholesaler.dart';
 import 'package:nsuqo/pages/messangerwholesaler.dart';
+import 'package:nsuqo/pages/retialers_who_can_view_products.dart';
 import 'package:nsuqo/pages/search_page.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
@@ -444,6 +445,32 @@ class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old>
                             Icon(Icons.person, color:Colors.grey[500]),
                             Text(
                               'profile',
+                              style: TextStyle(
+                                color:Colors.grey[500],
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+
+                      onTap: () async {
+
+                        Navigator.of(context).push(
+                            MaterialPageRoute
+                              (builder: (context)=>Retailers_who_can_view(wholesaler_id: user_email,))
+
+                        );
+                      },
+
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Icon(Icons.remove_red_eye, color:Colors.grey[500]),
+                            Text(
+                              'Hide Products',
                               style: TextStyle(
                                 color:Colors.grey[500],
                                 fontSize: 12,

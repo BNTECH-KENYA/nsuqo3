@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
+import 'package:toast/toast.dart';
 
 import 'home_page_categories.dart';
 
@@ -27,6 +28,8 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
   TextEditingController _cityname = TextEditingController();
   TextEditingController _addressinput = TextEditingController();
   TextEditingController _companycontact = TextEditingController();
+  List<String> wholesalers = [];
+
 
   Future<void> post_user_data()
   async {
@@ -37,6 +40,7 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
       "firstNameinput":_fname.text,
       "lastNameinput":_lname.text,
       "phonenumberInput":_companycontact.text,
+      "wholesaler_limit_list": wholesalers
     };
 
     db.collection("userdd").doc(_email.text).update(data).then(
@@ -53,6 +57,28 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
 
 
   }
+  //who_can_view
+  Future<void> getWholesalers() async {
+    // remember to change to required data
+    final service_listings = db.collection("userdd")
+        .where("accounttype", isEqualTo: "wholesaler")
+        .where("who_can_view", isEqualTo: "all");
+
+    await service_listings.get().then((ref) {
+      setState(
+              () {
+
+            ref.docs.forEach((element) {
+
+              wholesalers.add (element.data()['email']);
+
+            });
+
+          }
+      );
+    });
+
+  }
 
   Future<void> getUserData(user_email)
   async {
@@ -62,11 +88,17 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
 
       if(res.data() != null)
       {
+        Toast.show("not null".toString(), context,duration:Toast.LENGTH_SHORT,
+            gravity: Toast.BOTTOM);
         if(res.data()!['accounttype'] =="retailer")
         {
+          Toast.show("retailer".toString(), context,duration:Toast.LENGTH_SHORT,
+              gravity: Toast.BOTTOM);
 
           if(res.data()!['firstNameinput'] != "")
             {
+              Toast.show("not empty".toString(), context,duration:Toast.LENGTH_SHORT,
+                  gravity: Toast.BOTTOM);
               Navigator.of(context).push(
                   MaterialPageRoute
                     (builder: (context)=>Home_Categories()));
@@ -76,11 +108,18 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
                   }
               );
             }
+          else
+            {
+              getWholesalers();
+            }
 
 
         }
         else
         {
+          Toast.show("wholesaler".toString(), context,duration:Toast.LENGTH_SHORT,
+              gravity: Toast.BOTTOM);
+
           Navigator.of(context).push(
               MaterialPageRoute
                 (builder: (context)=>Whole_Saler_categories()));
@@ -168,8 +207,6 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
               color:Colors.white
           ),
         ),
-
-
       ),
       body: SafeArea(
 

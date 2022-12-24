@@ -1,12 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:new_version/new_version.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 
+NewVersion ? newVersion;
 
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+   newVersion = NewVersion();
+
+
 
   runApp(const ProviderScope ( child: MyApp(),));
 }

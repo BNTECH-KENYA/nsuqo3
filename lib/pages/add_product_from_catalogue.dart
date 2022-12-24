@@ -16,18 +16,24 @@ import 'package:nsuqo/pages/subcategories.dart';
 import 'package:toast/toast.dart';
 
 import '../models/filters_params.dart';
+import '../models/products_model.dart';
 import '../models/subsubcategory_model.dart';
 import '../widgets/add_product_photos.dart';
 
-class Add_Products extends StatefulWidget {
-  const Add_Products({Key? key,required this.location, required this.user_email, required this.company_name}) : super(key: key);
+class Add_Products_Catalogue extends StatefulWidget {
+  const Add_Products_Catalogue({Key? key,
+  required this.location,
+  required this.user_email,
+  required this.company_name,
+  required this.item_Model}) : super(key: key);
   final String user_email, company_name, location;
+  final Item_Model item_Model;
 
   @override
-  State<Add_Products> createState() => _Add_ProductsState();
+  State<Add_Products_Catalogue> createState() => _Add_Products_CatalogueState();
 }
 
-class _Add_ProductsState extends State<Add_Products> {
+class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
   bool isLoading = false;
   late String document_id;
@@ -50,6 +56,8 @@ class _Add_ProductsState extends State<Add_Products> {
   TextEditingController _partner = TextEditingController();
   TextEditingController _resolution = TextEditingController();
   TextEditingController _ram = TextEditingController();
+
+
 
   List<File> ? photoFiles;
   List<String> ? fileDownloadUris= [];
@@ -163,6 +171,25 @@ class _Add_ProductsState extends State<Add_Products> {
 
     return document_id;
 
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+
+      _productname.text = widget.item_Model.itemname;
+      _productdescription.text = widget.item_Model.itemdescription;
+      _partno.text = widget.item_Model.partno;
+      _category = widget.item_Model.category;
+      _subsubcategory = widget.item_Model.subsubcategory!;
+      _subcategory = widget.item_Model.subcategory!;
+      _filters_params_model = widget.item_Model.filters_params;
+
+    });
+
+
+    super.initState();
   }
 
   @override

@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/create_account_retailer.dart';
+import 'package:nsuqo/pages/retialers_who_can_view_products.dart';
 import 'package:nsuqo/pages/search_page.dart';
+import 'package:nsuqo/pages/select_type_of_adding_product.dart';
 import 'package:nsuqo/pages/sign_in.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
 import 'package:nsuqo/pages/verify_email.dart';
 import 'package:nsuqo/pages/verify_email_wholesaler.dart';
 import 'package:nsuqo/pages/wholesalers.dart';
+import 'package:nsuqo/pages/wholesalers_product_list.dart';
 import 'package:share/share.dart';
 
 import '../helpers/exit_pop.dart';
@@ -206,8 +209,12 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                               child: InkWell(
                                   onTap: (){
 
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute
+                                          (builder: (context)=>Wholesaler_Product_List(wholesaler_id: user_email,)));
+                                   // Wholesaler_Product_List
                                   },
-                                  child: Cat_New_Ui_cc()),
+                                  child: Cat_New_Ui_cc(cat_name: 'PriceList',)),
                             ),
                             Positioned(
                               right: 50,
@@ -277,8 +284,8 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                     onTap: (){
                       Navigator.of(context).push(
                           MaterialPageRoute
-                            (builder: (context)=>Add_Products(
-                            user_email: user_email,
+                            (builder: (context)=>Type_Of_Adding_Product(
+                            email: user_email,
                             company_name:company_name,
                             location: location ,)));
                     },
@@ -417,6 +424,33 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                             Icon(Icons.person, color:Colors.grey[500]),
                             Text(
                               'profile',
+                              style: TextStyle(
+                                color:Colors.grey[500],
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    InkWell(
+
+                      onTap: () async {
+
+                        Navigator.of(context).push(
+                            MaterialPageRoute
+                              (builder: (context)=>Retailers_who_can_view(wholesaler_id: user_email,))
+
+                        );
+                      },
+
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Icon(Icons.remove_red_eye, color:Colors.grey[500]),
+                            Text(
+                              'Hide Products',
                               style: TextStyle(
                                 color:Colors.grey[500],
                                 fontSize: 12,

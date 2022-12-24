@@ -73,7 +73,7 @@ class _Sign_Up_WholesalerState extends State<Sign_Up_Wholesaler> {
       "fname":"",
       "location":"",
       "market_coverage":"",
-      "payment_detailsterms":"",
+      "payment_detailsterms":[],
       "working_hours":"",
     };
 

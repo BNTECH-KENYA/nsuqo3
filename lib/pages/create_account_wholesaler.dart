@@ -61,6 +61,7 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
       "market_coverage":_marketcoverage.text,
       "payment_detailsterms":payment_details_terms,
       "working_hours":"${start_hours}-${stop_hours}",
+      "who_can_view":"all",
     };
 
     db.collection("userdd").doc(_email.text).update(data).then(

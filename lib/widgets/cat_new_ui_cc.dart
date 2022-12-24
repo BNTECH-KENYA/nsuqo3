@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Cat_New_Ui_cc extends StatelessWidget {
-  const Cat_New_Ui_cc({Key? key}) : super(key: key);
+  const Cat_New_Ui_cc({Key? key, required this.cat_name}) : super(key: key);
+  final String cat_name;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,11 @@ class Cat_New_Ui_cc extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 10,),
-              Icon(Icons.category_outlined,size: 45, color: Colors.grey[200],),
-              Text("Categories", style: TextStyle(
+              Icon(Icons.category_outlined,size: 42, color: Colors.grey[200],),
+              Text(cat_name, style: TextStyle(
                 color: Colors.grey[200],
                 fontWeight: FontWeight.bold,
+                fontSize:12,
 
               ),)
             ],

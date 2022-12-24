@@ -73,6 +73,8 @@ class _Sign_Up_RetailerState extends State<Sign_Up_Retailer> {
       "phonenumberInput":"",
       "state":"out",
       "approved":"pending",
+      "wholesaler_limit_list": []
+
     };
 
       db.collection("userdd").doc(email).set(data).then(( documentSnapshot){

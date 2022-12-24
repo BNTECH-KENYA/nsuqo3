@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nsuqo/models/messagemodel.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:toast/toast.dart';
 
 import '../widgets/date_chat_widget.dart';
 import '../widgets/otherCard.dart';
@@ -111,6 +112,7 @@ class _Chat_PageState extends State<Chat_Page> {
     setState(
             (){
           isLoading = false;
+          _message.text = "";
         }
     );
 
@@ -469,6 +471,9 @@ class _Chat_PageState extends State<Chat_Page> {
                               }
                               else
                               {
+
+                                Toast.show("Say Something".toString(), context,duration:Toast.LENGTH_SHORT,
+                                    gravity: Toast.BOTTOM);
 
                               }
                             },
