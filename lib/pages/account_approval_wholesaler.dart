@@ -26,9 +26,7 @@ class _Account_Approval_WholeSalerState extends State<Account_Approval_WholeSale
   TextEditingController _email = TextEditingController();
   TextEditingController _message = TextEditingController();
 
-
   Timer ? timer;
-
 
   Future<void> post_user_data()
   async {
@@ -39,7 +37,6 @@ class _Account_Approval_WholeSalerState extends State<Account_Approval_WholeSale
     };
 
     db.collection("concerns").add(data).then(( documentSnapshot){
-
 
     });
 
@@ -142,7 +139,7 @@ class _Account_Approval_WholeSalerState extends State<Account_Approval_WholeSale
                     ),
                   ),
 
-                  Text("Account Approval", style: TextStyle(
+                  Text("Account Approval .", style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
@@ -240,6 +237,7 @@ class _Account_Approval_WholeSalerState extends State<Account_Approval_WholeSale
                   ),
 
                   SizedBox(height:20),
+
                   InkWell(
                     onTap: () async {
 
@@ -248,7 +246,6 @@ class _Account_Approval_WholeSalerState extends State<Account_Approval_WholeSale
                         Toast.show("Enter a valid email address".toString(), context,duration:Toast.LENGTH_SHORT,
                             gravity: Toast.BOTTOM);
                       }
-
                       else
                       {
                         //login code
@@ -256,15 +253,14 @@ class _Account_Approval_WholeSalerState extends State<Account_Approval_WholeSale
                         Toast.show("Message Sent Successfully".toString(), context,duration:Toast.LENGTH_SHORT,
                             gravity: Toast.TOP);
                       }
-
                     },
                     child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color:  Colors.grey[700]!,
                           border: Border.all(
-                              color: Colors.deepOrange
+                              color:  Colors.grey[700]!
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),

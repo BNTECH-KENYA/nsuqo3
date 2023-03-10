@@ -108,15 +108,15 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ): Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         leading: InkWell(
             onTap: (){
               Navigator.pop(context);
@@ -132,7 +132,7 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
         actions: [
 
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 16.0, top:15),
             child: InkWell(
                 onTap: () async {
                   await FirebaseAuth.instance.signOut();
@@ -142,304 +142,362 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
 
                   );
                 },
-                child: Icon(Icons.logout_sharp, color: Colors.white,)),
+                child:Text("Sign Out", style:TextStyle(
+                  color: Colors.grey[200]
+                )),),
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left:16.0, right:16.0, top: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
 
-            children: [
-              Text("First Name", style:TextStyle(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
 
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-              SizedBox(height: 10,),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
+        child: Stack(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
+                  padding: const EdgeInsets.only(left:16.0, right:16.0, top: 16),
+                  child:
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                    controller: _firstname,
-                    decoration: InputDecoration(
-                        hintText: '',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("First Name", style:TextStyle(
+
+                                  color:Colors.grey[200],
+                                  fontWeight: FontWeight.w400,
+                                  fontSize:16
+                              )),
+                              SizedBox(height: 10,),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.grey[300]!
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                                  child: TextField(
+
+                                    controller: _firstname,
+                                    decoration: InputDecoration(
+                                        hintText: '',
+                                        hintStyle: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[400],
+
+                                        ),
+                                        border: InputBorder.none
+                                    ),
+                                    cursorColor: Colors.grey[500],
+
+                                  ),
+
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            children:[
+                              Text("Last Name", style:TextStyle(
+
+                                  color:Colors.grey[200],
+                                  fontWeight: FontWeight.w400,
+                                  fontSize:16
+                              )),
+                              SizedBox(height: 10,),
+
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.grey[300]!
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                                  child: TextField(
+
+                                    controller: _lastname,
+                                    decoration: InputDecoration(
+                                        hintText: '',
+                                        hintStyle: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[400],
+
+                                        ),
+                                        border: InputBorder.none
+                                    ),
+                                    cursorColor: Colors.grey[500],
+
+                                  ),
+
+                                ),
+                              ),
+
+                            ]
+                          ),
+
+                        ],
+                      ),
+                     // SizedBox(height: 20,),
+
+
+
+                      SizedBox(height: 20,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
+
+                         Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children:[
+                             Text("Company Name", style:TextStyle(
+
+                                 color:Colors.grey[200],
+                                 fontWeight: FontWeight.w400,
+                                 fontSize:16
+                             )),
+                             SizedBox(height: 10,),
+
+                             Container(
+                               width: MediaQuery.of(context).size.width*0.4,
+                               height: 40,
+                               decoration: BoxDecoration(
+                                 color: Colors.white,
+                                 border: Border.all(
+                                     color: Colors.grey[500]!
+                                 ),
+                                 borderRadius: BorderRadius.circular(20),
+                               ),
+                               child: Padding(
+                                 padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                                 child: TextField(
+
+                                   controller: _companyname,
+                                   decoration: InputDecoration(
+                                       hintText: '',
+                                       hintStyle: TextStyle(
+                                         fontSize: 14,
+                                         color: Colors.grey[400],
+
+                                       ),
+                                       border: InputBorder.none
+                                   ),
+                                   cursorColor: Colors.grey[500],
+
+                                 ),
+
+                               ),
+                             ),
+                           ]
+                         ),
+
+                    Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children:[
+                              Text("City Name", style:TextStyle(
+
+                              color:Colors.grey[200],
+                              fontWeight: FontWeight.w400,
+                              fontSize:16
+                          )),
+                  SizedBox(height: 10,),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width *0.4,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Colors.grey[500]!
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                      child: TextField(
+
+                        controller: _city,
+                        decoration: InputDecoration(
+                            hintText: '',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+
+                            ),
+                            border: InputBorder.none
+                        ),
+                        cursorColor: Colors.grey[500],
+
+                      ),
+
+                    ),
+                  ),
+                              ]
+                          )
+                        ]
+                      ),
+                      SizedBox(height: 20,),
+
+                      Text("Your Address", style:TextStyle(
+
+                          color:Colors.grey[200],
+                          fontWeight: FontWeight.w400,
+                          fontSize:16
+                      )),
+                      SizedBox(height: 10,),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.grey[500]!
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                          child: TextField(
+
+                            controller: _address,
+                            decoration: InputDecoration(
+                                hintText: '',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[400],
+
+                                ),
+                                border: InputBorder.none
+                            ),
+                            cursorColor: Colors.grey[500],
+
+                          ),
 
                         ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
+                      ),
+                      SizedBox(height: 20,),
 
-                  ),
+                      Text("Enter your email", style:TextStyle(
 
-                ),
-              ),
-              SizedBox(height: 20,),
+                          color:Colors.grey[200],
+                          fontWeight: FontWeight.w400,
+                          fontSize:16
+                      )),
 
-              Text("Last Name", style:TextStyle(
+                      SizedBox(height: 10,),
 
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-              SizedBox(height: 10,),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.grey[500]!
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                          child: TextField(
+                            controller: _emailaddress,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                hintText: 'example@gmail.com',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[400],
 
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
+                                ),
+                                border: InputBorder.none
+                            ),
+                            cursorColor: Colors.grey[500],
 
-                    controller: _lastname,
-                    decoration: InputDecoration(
-                        hintText: '',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
+                          ),
 
                         ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
+                      ),
 
-                  ),
+                      SizedBox(height: 20,),
 
-                ),
-              ),
+                      Text("Enter your PhoneNumber", style:TextStyle(
 
-              SizedBox(height: 20,),
+                          color:Colors.grey[200],
+                          fontWeight: FontWeight.w400,
+                          fontSize:16
+                      )),
+                      SizedBox(height: 10,),
 
-              Text("Company Name", style:TextStyle(
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.grey[500]!
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                          child: TextField(
 
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-              SizedBox(height: 10,),
+                            controller: _phonenumber,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                hintText: '07xx xxx xxx',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[400],
 
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
+                                ),
+                                border: InputBorder.none
+                            ),
+                            cursorColor: Colors.grey[500],
 
-                    controller: _companyname,
-                    decoration: InputDecoration(
-                        hintText: '',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
+                          ),
 
                         ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
+                      ),
 
+                      SizedBox(height: 20,),
+                    ],
                   ),
-
                 ),
               ),
-              SizedBox(height: 20,),
+            ),
 
-              Text("City Name", style:TextStyle(
+            Positioned(
+              bottom:10,
+              left:10,
+              right:10,
 
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-              SizedBox(height: 10,),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-
-                    controller: _city,
-                    decoration: InputDecoration(
-                        hintText: '',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
-
-                  ),
-
-                ),
-              ),
-              SizedBox(height: 20,),
-
-              Text("Your Address", style:TextStyle(
-
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-              SizedBox(height: 10,),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-
-                    controller: _address,
-                    decoration: InputDecoration(
-                        hintText: '',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
-
-                  ),
-
-                ),
-              ),
-              SizedBox(height: 20,),
-
-              Text("Enter your email", style:TextStyle(
-
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-
-              SizedBox(height: 10,),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-                    controller: _emailaddress,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                        hintText: 'example@gmail.com',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
-
-                  ),
-
-                ),
-              ),
-
-              SizedBox(height: 20,),
-
-              Text("Enter your PhoneNumber", style:TextStyle(
-
-                  color:Colors.grey[800],
-                  fontWeight: FontWeight.w400,
-                  fontSize:16
-              )),
-              SizedBox(height: 10,),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-
-                    controller: _phonenumber,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        hintText: '07xx xxx xxx',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
-                    ),
-                    cursorColor: Colors.grey[500],
-
-                  ),
-
-                ),
-              ),
-
-
-              SizedBox(height: 20,),
-
-              InkWell(
+              child:              InkWell(
                 onTap:() async {
 
                   if(_firstname.text.toString().trim().isEmpty)
@@ -525,11 +583,11 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.deepOrange,
+                      color: Colors.grey[700],
                       border: Border.all(
                           color: Colors.grey[500]!
                       ),
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
                       child: Text("Save Changes", style: TextStyle(
@@ -540,9 +598,8 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                     )
                 ),
               ),
-              SizedBox(height: 20,),
-            ],
-          ),
+            ),
+          ],
         ),
       )
     );

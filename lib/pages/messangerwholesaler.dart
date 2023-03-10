@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +28,28 @@ class Messanger_WholeSaler extends StatefulWidget {
 class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
 
   int unreadmessages = 0;
+  int unreadmessagesstate = 0;
+
+  int timecount = 0;
+  Timer ? timer;
+
+  String search = "";
+
+  void _startCountDown(){
+    timer = Timer.periodic(Duration(seconds:1), (timer){
+
+      if(timecount == 5){
+
+        setState(() {
+          unreadmessages = unreadmessagesstate;
+          timecount = 0;
+        });
+      }
+      timecount ++;
+
+    });
+  }
+
   bool isLoading = true;
   String user_email = "";
   bool isWholesaler = false;
@@ -115,12 +139,23 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
       await checkAuth();
     }();
 
+        _startCountDown();
+
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer!.cancel();
+    super.dispose();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           children: [
@@ -136,11 +171,10 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                       "Messanges",style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[800]
+                      color: Colors.grey[200]
                     ),
 
                     ),
-                    Icon(Icons.feed_outlined, color: Colors.grey[800],size: 30,)
                   ],
                 ),
               ),
@@ -152,12 +186,21 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                 child: Container(
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Colors.grey[700],
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                     child: TextField(
+
+                      onChanged: (val){
+
+                        setState(
+                                (){
+                              search = val;
+                            }
+                        );
+                      },
 
                       decoration: InputDecoration(
 
@@ -168,7 +211,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
 
                           ),
                           border: InputBorder.none,
-                        prefix: Icon(Icons.search,color: Colors.black, size: 20, ),
+                        prefix: Icon(Icons.search,color: Colors.grey[200], size: 20, ),
                       ),
                       cursorColor: Colors.grey[500],
 
@@ -205,7 +248,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                     Column(
                       children: [
                         Text("All", style: TextStyle(
-                          color: Colors.grey[800],
+                          color: Colors.grey[200],
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                         ),),
@@ -214,7 +257,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                           width: 30,
                           margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
                           height: 3.0,
-                          color: Colors.grey[800],
+                          color: Colors.grey[200],
                         )
                       ],
                     ),
@@ -234,14 +277,16 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                           Row(
                             children: [
                               Text("Unread", style: TextStyle(
-                                color: Colors.grey[500],
+                                color: Colors.grey[200],
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                               ),),
+
                               SizedBox(width: 5,),
+
                               CircleAvatar(
                                 radius: 10,
-                                backgroundColor: Colors.red,
+                                backgroundColor: Colors.blue,
                                 child: Text("${unreadmessages}", style: TextStyle(
                                     color: Colors.white
                                 ),),
@@ -254,7 +299,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                             width: 30,
                             margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
                             height: 3.0,
-                            color: Colors.white,
+                            color: Colors.black,
                           )
                         ],
                       ),
@@ -271,7 +316,15 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
               child: Padding(
                 padding: const EdgeInsets.only(left:16.0, right: 16),
                 child:StreamBuilder(
-                    stream: FirebaseFirestore
+                    stream:
+                    search == ""?
+                    FirebaseFirestore
+                        .instance
+                        .collection("oneChatStream")
+                        .where("participants", arrayContains: user_email)
+                        .orderBy("msgtimestamp", descending: true)
+                        .snapshots():
+                    FirebaseFirestore
                         .instance
                         .collection("oneChatStream")
                         .where("participants", arrayContains: user_email)
@@ -299,17 +352,25 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
 
                           ),
                         );
+
                       }
                       else
                       {
 
-                        return  ListView.builder(
+                        unreadmessagesstate = 0;
+                        return search == ""?
+                        ListView.builder(
                           itemCount: snapshot.data?.size,
                           itemBuilder: (context, index){
 
                             QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
 
+
+                            course?['sender_email'] == user_email? 0: unreadmessagesstate += int.parse(course!['unrdmessage']!.toString());
+
                             return Chat_Stream_Widget(messagermodel: MessangerModel(
+
+
                               unreadmsg:course?['sender_email'] == user_email? 0 : course?['unrdmessage'],
                               sender_name: user_email == course?['retailer_id'] ? course!['opponent_name'] :course?['sendername'],
                               timstamp: (DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['msgtimestamp']).toDate().toString())))
@@ -325,9 +386,49 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                               sender_email: course?['sender_email'],
                               opponent_name: course?['opponent_name'],
                               auth_email: user_email,
-                            ), groupuid: course!.id);
+
+                            ), groupuid: course!.id, fun: (){
+                              unreadmessagesstate -1;
+                            },);
                           },
-                        );
+                        ):
+                        ListView.builder(
+                          itemCount: snapshot.data?.size,
+                          itemBuilder: (context, index){
+
+                            QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
+
+
+                            course?['sender_email'] == user_email? 0: unreadmessagesstate += int.parse(course!['unrdmessage']!.toString());
+
+                            String name_search = user_email == course?['retailer_id'] ? course!['opponent_name'] :course?['sendername'];
+
+
+                            return name_search.toLowerCase().contains(search.toLowerCase())?  Chat_Stream_Widget(messagermodel: MessangerModel(
+
+
+                              unreadmsg:course?['sender_email'] == user_email? 0 : course?['unrdmessage'],
+                              sender_name: user_email == course?['retailer_id'] ? course!['opponent_name'] :course?['sendername'],
+                              timstamp: (DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['msgtimestamp']).toDate().toString())))
+                                  ==
+                                  (DateFormat('dd/MMM/yyy').format(DateTime.now()))?
+                              (DateFormat('hh:mm a').format(DateTime.parse((course?['msgtimestamp']).toDate().toString()))):
+
+                              (DateFormat('dd/MMM/yyy hh:mm a').format(DateTime.parse((course?['msgtimestamp']).toDate().toString()))),
+                              ltsmessage: course?['ltsmessage'],
+                              wholesaler_id_mm: course?['wholesaler_id'],
+                              retailer_id_mm: course?['retailer_id'],
+                              reciever_email: course?['email_user'],
+                              sender_email: course?['sender_email'],
+                              opponent_name: course?['opponent_name'],
+                              auth_email: user_email,
+
+                            ), groupuid: course!.id, fun: (){
+                              unreadmessagesstate -1;
+                            },):Container();
+                          },
+                        )
+                        ;
                       }
 
                     }
@@ -342,7 +443,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top:8.0),
         child: BottomAppBar(
-          color: Colors.white,
+          color: Colors.black,
           child: Padding(
             padding: const EdgeInsets.only(top:8.0),
             child: Container(
@@ -387,12 +488,12 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                         children: [
                           Stack(
                             children: [
-                              Icon(Icons.chat, color:Colors.deepOrange),
+                              Icon(Icons.chat, color:Colors.grey[200]),
                               Positioned(
                                   right: 0,
                                   child: CircleAvatar(
                                     radius: 6,
-                                    backgroundColor: Colors.red,
+                                    backgroundColor: Colors.blue,
                                     child: Text("${unreadmessages}", style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 8,
@@ -404,7 +505,7 @@ class _Messanger_WholeSalerState extends State<Messanger_WholeSaler> {
                           Text(
                             'Messsanger',
                             style: TextStyle(
-                              color: Colors.deepOrange,
+                              color: Colors.grey[200],
                               fontSize: 12,
                             ),
                           )

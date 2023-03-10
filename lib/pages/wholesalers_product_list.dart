@@ -9,11 +9,13 @@ import '../models/products_model.dart';
 import '../widgets/products_tile.dart';
 
 class Wholesaler_Product_List extends StatefulWidget {
+
   const Wholesaler_Product_List({Key? key, required this.wholesaler_id}) : super(key: key);
   final String wholesaler_id;
 
   @override
   State<Wholesaler_Product_List> createState() => _Wholesaler_Product_ListState();
+
 }
 
 class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
@@ -31,6 +33,140 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
   bool computing = false;
   bool More = false;
   bool all_cat = true;
+
+  String ? exchange_rate;
+
+  Future<String> getexchangeratedata(email, element)
+  async {
+
+    final docref = db.collection("userdd").doc(email);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+        if(res.data()!['fname'] != "")
+        {
+          if(res.data()!['approved'] == "approved"){
+
+            setState(
+                    (){
+
+                  exchange_rate = res.data()!.containsKey("exchange_rate")?  res.data()!["exchange_rate"]: "0";
+
+                  products.add(
+                      Item_Model(
+                        availability:element.data()['availability'],
+                        itemname: element.data()['productname'],
+                        itemId: element.id,
+                        itemprice: element.data()['productprice'],
+                        itemdescription: element.data()['productdescription'],
+                        category: element.data()['category'],
+                        photosLinks:element.data()['photosLinks'],
+                        wholesalerid: element.data()['wholesalerid'],
+                        warrant_period: element.data()['warrantperiod'],
+                        no_of_clicks: element.data()['noofclicks'],
+                        partno: element.data()['partno'],
+                        moq: element.data()['moq'],
+                        searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                        company_name: element.data()['company_name'],
+                        location: element.data()['location'],
+                        ram: element.data()['ram'],
+                        brand:element.data()['brand'],
+                        storage: element.data()['storage'],
+                        screen: element.data()['screen'],
+                        processor: element.data()['processor'],
+                        screensize: element.data()['screensize'],
+                        resolution: element.data()['resolution'],
+                        package: element.data()['package'],
+                        partner: element.data()['partner'],
+                        filters_params: Filters_Params_Model(
+                            availability: element.data()['filters_params']['availability'],
+                            warrant_period:element.data()['filters_params']['warrant_period'],
+                            moq: element.data()['filters_params']['moq'],
+                            partno:element.data()['filters_params']['partno'],
+                            company_name: element.data()['filters_params']['company_name'],
+                            location: element.data()['filters_params']['location'],
+                            ram: element.data()['filters_params']['ram'],
+                            processor:element.data()['filters_params']['processor'],
+                            screen: element.data()['filters_params']['screen'],
+                            brand: element.data()['filters_params']['brand'],
+                            resolution: element.data()['filters_params']['resolution'],
+                            storage: element.data()['filters_params']['storage'],
+                            screensize: element.data()['filters_params']['screensize'],
+                            partner: element.data()['filters_params']['partner'],
+                            package: element.data()['filters_params']['package'],
+                            size: element.data()['filters_params']['size']),
+                        exchange_rate: exchange_rate!,
+                      )
+                  );
+
+                  search_results.add(
+                    Item_Model(
+                      availability:element.data()['availability'],
+                      itemname: element.data()['productname'],
+                      itemId: element.id,
+                      itemprice: element.data()['productprice'],
+                      itemdescription: element.data()['productdescription'],
+                      category: element.data()['category'],
+                      photosLinks:element.data()['photosLinks'],
+                      wholesalerid: element.data()['wholesalerid'],
+                      warrant_period: element.data()['warrantperiod'],
+                      no_of_clicks: element.data()['noofclicks'],
+                      partno: element.data()['partno'],
+                      moq: element.data()['moq'],
+                      searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
+                      company_name: element.data()['company_name'],
+                      location: element.data()['location'],
+                      ram: element.data()['ram'],
+                      brand:element.data()['brand'],
+                      storage: element.data()['storage'],
+                      screen: element.data()['screen'],
+                      processor: element.data()['processor'],
+                      screensize: element.data()['screensize'],
+                      resolution: element.data()['resolution'],
+                      package: element.data()['package'],
+                      partner: element.data()['partner'],
+                      filters_params: Filters_Params_Model(
+                          availability: element.data()['filters_params']['availability'],
+                          warrant_period:element.data()['filters_params']['warrant_period'],
+                          moq: element.data()['filters_params']['moq'],
+                          partno:element.data()['filters_params']['partno'],
+                          company_name: element.data()['filters_params']['company_name'],
+                          location: element.data()['filters_params']['location'],
+                          ram: element.data()['filters_params']['ram'],
+                          processor:element.data()['filters_params']['processor'],
+                          screen: element.data()['filters_params']['screen'],
+                          brand: element.data()['filters_params']['brand'],
+                          resolution: element.data()['filters_params']['resolution'],
+                          storage: element.data()['filters_params']['storage'],
+                          screensize: element.data()['filters_params']['screensize'],
+                          partner: element.data()['filters_params']['partner'],
+                          package: element.data()['filters_params']['package'],
+                          size: element.data()['filters_params']['size']),
+                      exchange_rate: exchange_rate!,
+                    ),
+
+                  );
+                  isLoading = false;
+
+                }
+            );
+            print("$exchange_rate exchange rate");
+            return exchange_rate;
+
+          }
+
+          return "0";
+        }
+
+        return "0";
+      }
+
+    });
+    return "0";
+
+  }
+
   Future<void> get_Products() async {
 
     // remember to change to required data
@@ -44,115 +180,18 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
 
             ref.docs.forEach((element) {
               print(element.data()['productname']);
-
-                products.add(
-                    Item_Model(
-
-                      availability:element.data()['availability'],
-                      itemname: element.data()['productname'],
-                      itemId: element.id,
-                      itemprice: element.data()['productprice'],
-                      itemdescription: element.data()['productdescription'],
-                      category: element.data()['category'],
-                      photosLinks:element.data()['photosLinks'],
-                      wholesalerid: element.data()['wholesalerid'],
-                      warrant_period: element.data()['warrantperiod'],
-                      no_of_clicks: element.data()['noofclicks'],
-                      partno: element.data()['partno'],
-                      moq: element.data()['moq'],
-                      searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
-                      company_name: element.data()['company_name'],
-                      location: element.data()['location'],
-                      ram: element.data()['ram'],
-                      brand:element.data()['brand'],
-                      storage: element.data()['storage'],
-                      screen: element.data()['screen'],
-                      processor: element.data()['processor'],
-                      screensize: element.data()['screensize'],
-                      resolution: element.data()['resolution'],
-                      package: element.data()['package'],
-                      partner: element.data()['partner'],
-                      filters_params: Filters_Params_Model(
-                          availability: element.data()['filters_params']['availability'],
-                          warrant_period:element.data()['filters_params']['warrant_period'],
-                          moq: element.data()['filters_params']['moq'],
-                          partno:element.data()['filters_params']['partno'],
-                          company_name: element.data()['filters_params']['company_name'],
-                          location: element.data()['filters_params']['location'],
-                          ram: element.data()['filters_params']['ram'],
-                          processor:element.data()['filters_params']['processor'],
-                          screen: element.data()['filters_params']['screen'],
-                          brand: element.data()['filters_params']['brand'],
-                          resolution: element.data()['filters_params']['resolution'],
-                          storage: element.data()['filters_params']['storage'],
-                          screensize: element.data()['filters_params']['screensize'],
-                          partner: element.data()['filters_params']['partner'],
-                          package: element.data()['filters_params']['package'],
-                          size: element.data()['filters_params']['size']),
-
-                    )
-
-                );
-                search_results.add(
-                    Item_Model(
-
-                      availability:element.data()['availability'],
-                      itemname: element.data()['productname'],
-                      itemId: element.id,
-                      itemprice: element.data()['productprice'],
-                      itemdescription: element.data()['productdescription'],
-                      category: element.data()['category'],
-                      photosLinks:element.data()['photosLinks'],
-                      wholesalerid: element.data()['wholesalerid'],
-                      warrant_period: element.data()['warrantperiod'],
-                      no_of_clicks: element.data()['noofclicks'],
-                      partno: element.data()['partno'],
-                      moq: element.data()['moq'],
-                      searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
-                      company_name: element.data()['company_name'],
-                      location: element.data()['location'],
-                      ram: element.data()['ram'],
-                      brand:element.data()['brand'],
-                      storage: element.data()['storage'],
-                      screen: element.data()['screen'],
-                      processor: element.data()['processor'],
-                      screensize: element.data()['screensize'],
-                      resolution: element.data()['resolution'],
-                      package: element.data()['package'],
-                      partner: element.data()['partner'],
-                      filters_params: Filters_Params_Model(
-                          availability: element.data()['filters_params']['availability'],
-                          warrant_period:element.data()['filters_params']['warrant_period'],
-                          moq: element.data()['filters_params']['moq'],
-                          partno:element.data()['filters_params']['partno'],
-                          company_name: element.data()['filters_params']['company_name'],
-                          location: element.data()['filters_params']['location'],
-                          ram: element.data()['filters_params']['ram'],
-                          processor:element.data()['filters_params']['processor'],
-                          screen: element.data()['filters_params']['screen'],
-                          brand: element.data()['filters_params']['brand'],
-                          resolution: element.data()['filters_params']['resolution'],
-                          storage: element.data()['filters_params']['storage'],
-                          screensize: element.data()['filters_params']['screensize'],
-                          partner: element.data()['filters_params']['partner'],
-                          package: element.data()['filters_params']['package'],
-                          size: element.data()['filters_params']['size']),
-
-                    )
-
-                );
-
-
-
+              getexchangeratedata(element.data()['wholesalerid'], element);
 
             });
 
             isLoading = false;
+
           }
       );
     });
 
   }
+
   bool isWholesaler = false;
   Future<void> getUserData(user_email)
   async {
@@ -163,9 +202,6 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
       {
         if(res.data()!['accounttype'] =="wholesaler")
         {
-
-
-
 
           setState(
                   (){
@@ -238,7 +274,7 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,18 +306,13 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
              child: Container(
                width: MediaQuery.of(context).size.width,
                height: 30,
-               child:
-
-
-               ListView(
+               child: ListView(
                  scrollDirection: Axis.horizontal,
                  children: [
-
                    InkWell(
                      onTap:(){
 
                        setState(
-
                            (){
                              search_results = [];
                              all_cat = true;
@@ -297,8 +328,6 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
 
                            }
                        );
-
-
                             },
                      child: Container(
                        height: 30,
@@ -317,7 +346,6 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                                SizedBox(width: 10,)
                              ],
                            )
-
                      ),
                    ),
 
@@ -325,7 +353,6 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
 
                    InkWell(
                      onTap:(){
-
                        setState(
                                (){
                              search_results = [];
@@ -345,7 +372,6 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                              });
                            }
                        );
-
                      },
                      child: Container(
                          decoration: BoxDecoration(
@@ -373,6 +399,7 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
 
                        setState(
                                (){
+
                              search_results = [];
                              all_cat = false;
                              phones_and_tablets = false;
@@ -380,6 +407,7 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                              computing = false;
                              More = false;
                              products.forEach((element) {
+
                                if(element.category == "Consumer Electronic")
                                {
                                  search_results.add(
@@ -411,7 +439,6 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
 
                    InkWell(
                      onTap:(){
-
                        setState(
                                (){
                              search_results = [];
@@ -476,6 +503,7 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                            }
                        );
                      },
+
                      child: Container(
                          decoration: BoxDecoration(
                            color: More? Colors.deepOrange:Colors.white,
@@ -493,13 +521,13 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                          )
                      ),
                    ),
-
                  ],
                ),
              ),
            ),
 
             SizedBox(height: 20,),
+
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height-164,
@@ -509,20 +537,19 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
 
                   return InkWell(
                       onTap:(){
+
                         Navigator.of(context).push(
                             MaterialPageRoute
                               (builder: (context)=>Product_Information(document_id: search_results[index].itemId,)));
-                      },
-                      child: Product_Tile(item_model: search_results[index],));
 
+                      },
+                      child: Product_Tile(item_model: search_results[index], exchange_rate: search_results[index].exchange_rate,));
                 },
               ),
-            )
-
+            ),
           ],
         ),
       )
-
     );
   }
 }

@@ -28,6 +28,42 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
   List<Item_Model> products = [];
   List<String> categories = [];
 
+  String ? exchange_rate;
+
+  Future<String> getexchangeratedata(email)
+  async {
+    final docref = db.collection("userdd").doc(email);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+
+        if(res.data()!['fname'] != "")
+        {
+          if(res.data()!['approved'] == "approved"){
+            setState(
+                    (){
+
+
+                  exchange_rate = res.data()!.containsKey("exchange_rate")?  res.data()!["exchange_rate"]: "0";
+                  isLoading = false;
+
+                }
+            );
+            return exchange_rate;
+          }
+
+          return "0";
+        }
+
+        return "0";
+      }
+
+    });
+    return "0";
+
+  }
+
   Future<void> get_Products() async {
     // remember to change to required data
     final service_listings = db.collection("products").where("wholesalerid", isEqualTo:user_email);
@@ -81,6 +117,7 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                         partner: e.partner,
                         package: e.package,
                         size: e.size)),
+                    exchange_rate: exchange_rate!,
                   )
               );
 

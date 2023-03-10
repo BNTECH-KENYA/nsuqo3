@@ -9,7 +9,7 @@ class Availability extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         title: Text("Product Available", style:TextStyle(
             color:Colors.white
         )),

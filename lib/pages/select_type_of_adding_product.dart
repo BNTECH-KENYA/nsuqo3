@@ -84,7 +84,7 @@ class _Type_Of_Adding_ProductState extends State<Type_Of_Adding_Product> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.deepOrange,
+                              color: Colors.black,
                               borderRadius: BorderRadius.all(Radius.circular(5)),
                             ),
                             child: Padding(
@@ -123,7 +123,7 @@ class _Type_Of_Adding_ProductState extends State<Type_Of_Adding_Product> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.deepOrange,
+                              color: Colors.black,
                               borderRadius: BorderRadius.all(Radius.circular(5)),
                             ),
                             child: Padding(

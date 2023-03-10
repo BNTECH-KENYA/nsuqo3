@@ -1,11 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/reset_password.dart';
 import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
-import 'package:nsuqo/pages/wholesaler_home.dart';
-import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
 
 import '../main.dart';
@@ -70,6 +70,7 @@ class _Sign_InState extends State<Sign_In> {
             Navigator.of(context).push(
                 MaterialPageRoute
                   (builder: (context)=>Whole_Saler_categories()));
+
             setState(
                     (){
                   isLoading = false;
@@ -142,14 +143,12 @@ class _Sign_InState extends State<Sign_In> {
         ()async{
 
       await checkAuth();
-      newVersion?.showAlertIfNecessary(context: context);
 
     }();
   }
 
   @override
   Widget build(BuildContext context) {
-
 
     return isLoading ?  Container(
       width: MediaQuery.of(context).size.width,
@@ -161,8 +160,9 @@ class _Sign_InState extends State<Sign_In> {
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
-    )  :Scaffold(
+    )  :
 
+    Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
 
@@ -195,12 +195,12 @@ class _Sign_InState extends State<Sign_In> {
 
                 SizedBox(height: 30,),
 
-
                 Padding(
                   padding: const EdgeInsets.only(left:8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Text("Enter Email", style:TextStyle(
                           color:Colors.grey[600],
                           fontWeight: FontWeight.w400,
@@ -348,7 +348,7 @@ class _Sign_InState extends State<Sign_In> {
                            //Reset_Password
                           },
                           child: Text("Forgot password?", style:TextStyle(
-                              color:Colors.deepOrange,
+                              color: Colors.grey[700]!,
                               fontWeight: FontWeight.w700,
                               fontSize:14
                           )),
@@ -384,9 +384,9 @@ class _Sign_InState extends State<Sign_In> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color:  Colors.grey[700]!,
                         border: Border.all(
-                            color: Colors.deepOrange
+                            color:  Colors.grey[700]!
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),

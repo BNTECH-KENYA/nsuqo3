@@ -21,9 +21,9 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
   List<SubSubCategoriesModel> subsubcategories = [];
   List<Color> colors_list=[
 
-    Colors.deepOrange, Colors.blue, Colors.deepPurpleAccent, Colors.lightGreen,
-    Colors.pinkAccent, Colors.yellowAccent,Colors.purple, Colors.greenAccent,
-    Colors.orange, Colors.teal, Colors.brown, Colors.limeAccent
+    Colors.grey[800]!, Colors.grey[700]!, Colors.black, Colors.grey[800]!,
+    Colors.grey[700]!, Colors.black, Colors.grey[800]!, Colors.grey[700]!,
+    Colors.grey[800]!, Colors.grey[700]!, Colors.black, Colors.grey[800]!,
 
   ];
   int color_increment = 0;
@@ -77,7 +77,7 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.black,
       
       body: SafeArea(
           child: Padding(
@@ -91,11 +91,11 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
                       Navigator.pop(context);
                     },
 
-                    child: Icon(Icons.arrow_back, color: Colors.grey[800], size: 30,)),
+                    child: Icon(Icons.arrow_back, color: Colors.grey[200], size: 30,)),
                 SizedBox(height: 20,),
                 Text("${widget.subcat}",style:TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: Colors.grey[800],
+                    color: Colors.grey[200],
                     fontSize:18
                 )),
                 SizedBox(height: 10,),
@@ -117,7 +117,7 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
                           },
 
                           child:Card(
-                            color: Colors.white,
+                            color: Colors.grey[900],
                             child: Container(
 
                               width: MediaQuery.of(context).size.width,
@@ -133,18 +133,18 @@ class _Sub_Sub_CategoriesState extends State<Sub_Sub_Categories> {
                                       child: Text("${subsubcategories[index].sub_sub_category_name[0].toUpperCase()}${subsubcategories[index].sub_sub_category_name[1].toUpperCase()}",
 
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: Colors.grey[200],
                                             fontWeight: FontWeight.bold
                                         ),
                                       ),
                                     ),
                                     title: Text("${subsubcategories[index].sub_sub_category_name}",
                                       style: TextStyle(
-                                        color: Colors.grey[600],
+                                        color: Colors.grey[200],
 
                                       ),
                                     ),
-                                    trailing: Icon(Icons.arrow_forward_ios, size: 20,),
+                                    trailing: Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[200]),
                                   ),
                                 ),
                               ),

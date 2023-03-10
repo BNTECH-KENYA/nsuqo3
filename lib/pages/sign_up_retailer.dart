@@ -489,9 +489,9 @@ class _Sign_Up_RetailerState extends State<Sign_Up_Retailer> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color:  Colors.grey[700]!,
                         border: Border.all(
-                            color: Colors.deepOrange
+                            color:  Colors.grey[700]!
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),

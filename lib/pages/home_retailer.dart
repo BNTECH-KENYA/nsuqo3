@@ -31,17 +31,58 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
   List<Item_Model> top_ranking = [];
   bool isLoading= false;
 
+
+  String ? exchange_rate;
+
+
+  Future<String> getexchangeratedata(email)
+  async {
+    final docref = db.collection("userdd").doc(email);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+
+        if(res.data()!['fname'] != "")
+        {
+          if(res.data()!['approved'] == "approved"){
+            setState(
+                    (){
+
+
+                  exchange_rate = res.data()!.containsKey("exchange_rate")?  res.data()!["exchange_rate"]: "0";
+                  isLoading = false;
+
+                }
+            );
+            return exchange_rate;
+          }
+
+          return "0";
+        }
+
+        return "0";
+      }
+
+    });
+    return "0";
+
+  }
+
   Future<void> get_Products() async {
 
     // remember to change to required data
     final service_listings = db.collection("products");
 
-    await service_listings.get().then((ref) {
+    await service_listings.get().then((ref) async {
       print("redata 1 &****************************${ref.docs}");
+
+
       setState(
               () {
 
-            ref.docs.forEach((element) {
+            ref.docs.forEach((element) async {
+              exchange_rate = await  getexchangeratedata(element.data()['wholesalerid']);
               products.add(
                   Item_Model(
 
@@ -86,6 +127,7 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                         partner: e.partner,
                         package: e.package,
                         size: e.size)),
+                    exchange_rate: exchange_rate!,
 
                   )
 
@@ -137,6 +179,7 @@ class _Home_Ui_RetailerState extends State<Home_Ui_Retailer> {
                             partner: e.partner,
                             package: e.package,
                             size: e.size)),
+                        exchange_rate:exchange_rate!,
 
                       )
 

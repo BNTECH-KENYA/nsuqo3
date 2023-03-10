@@ -9,10 +9,11 @@ import 'package:toast/toast.dart';
 import 'home_page_categories.dart';
 
 class Create_Account_Retailer extends StatefulWidget {
-  const Create_Account_Retailer({Key? key}) : super(key: key);
 
+  const Create_Account_Retailer({Key? key}) : super(key: key);
   @override
   State<Create_Account_Retailer> createState() => _Create_Account_RetailerState();
+
 }
 
 class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
@@ -30,9 +31,9 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
   TextEditingController _companycontact = TextEditingController();
   List<String> wholesalers = [];
 
-
   Future<void> post_user_data()
   async {
+
     final data = {
       "address1ControlTextarea":_addressinput.text,
       "citynameInput":_cityname.text,
@@ -40,7 +41,8 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
       "firstNameinput":_fname.text,
       "lastNameinput":_lname.text,
       "phonenumberInput":_companycontact.text,
-      "wholesaler_limit_list": wholesalers
+      "wholesaler_limit_list": wholesalers,
+      "version_changes":0,
     };
 
     db.collection("userdd").doc(_email.text).update(data).then(
@@ -53,8 +55,6 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
         },
       onError: (e)=> print("Error updating documnet $e")
     );
-
-
 
   }
   //who_can_view
@@ -141,13 +141,12 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
 
             }
         );
+
         print("out");
         FirebaseAuth.instance.signOut();
 
       }
-
     });
-
   }
 
   Future<void> checkAuth()async {
@@ -194,8 +193,9 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
   Widget build(BuildContext context) {
     return Scaffold(
 
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         leading: InkWell(
             onTap: (){
               Navigator.pop(context);
@@ -208,8 +208,8 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
           ),
         ),
       ),
-      body: SafeArea(
 
+      body: SafeArea(
         child: Form(
             key:_formKey,
             child: SingleChildScrollView(
@@ -365,7 +365,7 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
                         height: 40,
                         decoration:BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(5)),
-                              color:Colors.deepOrange
+                              color:Colors.grey[700]
                               ),
                         child: Center(
                           child: Text(
@@ -382,9 +382,6 @@ class _Create_Account_RetailerState extends State<Create_Account_Retailer> {
               ),
             )),
       ),
-
-
-
     );
   }
 }

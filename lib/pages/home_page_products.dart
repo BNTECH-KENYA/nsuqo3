@@ -37,27 +37,35 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
   List<Item_Model> search_results = [ ];
   List<dynamic> filters = [];
   String ? user_email;
+  String ? exchange_rate;
   bool isLoading= true;
   List<dynamic> whos_can_view = [];
 
-  Future<void> get_Products() async {
+  bool phones_and_tablets = false;
+  bool consumer_electronic = false;
+  bool computing = false;
+  bool More = false;
+  bool all_cat = true;
 
-    // remember to change to required data
-    final service_listings = db.collection("products")
-        .where("category", isEqualTo: widget.category)
-        .where("subcategory", isEqualTo: widget.subcategory)
-        .where("subsubcategory", isEqualTo: widget.subsubcategory);
+  Future<String> getexchangeratedata(email, element)
+  async {
+    final docref = db.collection("userdd").doc(email);
+    await docref.get().then((res) {
 
-    await service_listings.get().then((ref) {
-      print("redata 1 &****************************${ref.docs}");
-      setState(
-              () {
+      if(res.data() != null)
+      {
 
-            ref.docs.forEach((element) {
-              print(element.data()['productname']);
+        if(res.data()!['fname'] != "")
+        {
+          if(res.data()!['approved'] == "approved"){
+            setState(
+                    (){
 
-              if(whos_can_view.contains(element.data()['wholesalerid']))
-                {
+
+
+                  exchange_rate = res.data()!.containsKey("exchange_rate")?  res.data()!["exchange_rate"]: "0";
+
+
                   products.add(
                       Item_Model(
 
@@ -102,6 +110,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                             partner: element.data()['filters_params']['partner'],
                             package: element.data()['filters_params']['package'],
                             size: element.data()['filters_params']['size']),
+                        exchange_rate: exchange_rate!,
 
                       )
 
@@ -150,10 +159,58 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                             partner: element.data()['filters_params']['partner'],
                             package: element.data()['filters_params']['package'],
                             size: element.data()['filters_params']['size']),
+                        exchange_rate: exchange_rate!,
 
                       )
 
                   );
+                  isLoading = false;
+
+
+                }
+            );
+
+
+
+
+
+            return exchange_rate;
+          }
+
+          return "0";
+        }
+
+        return "0";
+      }
+
+    });
+    return "0";
+
+  }
+
+  Future<void> get_Products() async {
+
+    // remember to change to required data
+    final service_listings = db.collection("products")
+        .where("category", isEqualTo: widget.category)
+        .where("subcategory", isEqualTo: widget.subcategory)
+        .where("subsubcategory", isEqualTo: widget.subsubcategory);
+
+    await service_listings.get().then((ref) async {
+      print("redata 1 &****************************${ref.docs}");
+
+
+      setState(
+              () {
+
+            ref.docs.forEach((element) async {
+              print(element.data()['productname']);
+
+              if(whos_can_view.contains(element.data()['wholesalerid']))
+                {
+                 // exchange_rate = await getexchangeratedata(user_email);
+
+                await  getexchangeratedata(element.data()['wholesalerid'], element);
                 }
 
 
@@ -166,6 +223,8 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
     });
 
   }
+
+
   Future<void> get_Products2(useremail) async {
 
     // remember to change to required data
@@ -175,110 +234,22 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
         .where("subcategory", isEqualTo: widget.subcategory)
         .where("subsubcategory", isEqualTo: widget.subsubcategory);
 
-    await service_listings.get().then((ref) {
+    await service_listings.get().then((ref) async {
       print("redata 1 &****************************${ref.docs}");
-      setState(
-              () {
 
-            ref.docs.forEach((element) {
+
+
+
+            ref.docs.forEach((element) async {
               print(element.data()['productname']);
 
-              products.add(
-                  Item_Model(
-                    availability:element.data()['availability'],
-                    itemname: element.data()['productname'],
-                    itemId: element.id,
-                    itemprice: element.data()['productprice'],
-                    itemdescription: element.data()['productdescription'],
-                    category: element.data()['category'],
-                    photosLinks:element.data()['photosLinks'],
-                    wholesalerid: element.data()['wholesalerid'],
-                    warrant_period: element.data()['warrantperiod'],
-                    no_of_clicks: element.data()['noofclicks'],
-                    partno: element.data()['partno'],
-                    moq: element.data()['moq'],
-                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
-                    company_name: element.data()['company_name'],
-                    location: element.data()['location'],
-                    ram: element.data()['ram'],
-                    brand:element.data()['brand'],
-                    storage: element.data()['storage'],
-                    screen: element.data()['screen'],
-                    processor: element.data()['processor'],
-                    screensize: element.data()['screensize'],
-                    resolution: element.data()['resolution'],
-                    package: element.data()['package'],
-                    partner: element.data()['partner'],
-                    filters_params: Filters_Params_Model(
-                        availability: element.data()['filters_params']['availability'],
-                        warrant_period:element.data()['filters_params']['warrant_period'],
-                        moq: element.data()['filters_params']['moq'],
-                        partno:element.data()['filters_params']['partno'],
-                        company_name: element.data()['filters_params']['company_name'],
-                        location: element.data()['filters_params']['location'],
-                        ram: element.data()['filters_params']['ram'],
-                        processor:element.data()['filters_params']['processor'],
-                        screen: element.data()['filters_params']['screen'],
-                        brand: element.data()['filters_params']['brand'],
-                        resolution: element.data()['filters_params']['resolution'],
-                        storage: element.data()['filters_params']['storage'],
-                        screensize: element.data()['filters_params']['screensize'],
-                        partner: element.data()['filters_params']['partner'],
-                        package: element.data()['filters_params']['package'],
-                        size: element.data()['filters_params']['size']),
+              await  getexchangeratedata(element.data()['wholesalerid'], element);
 
-                  )
 
-              );
-              search_results.add(
-                  Item_Model(
-
-                    availability:element.data()['availability'],
-                    itemname: element.data()['productname'],
-                    itemId: element.id,
-                    itemprice: element.data()['productprice'],
-                    itemdescription: element.data()['productdescription'],
-                    category: element.data()['category'],
-                    photosLinks:element.data()['photosLinks'],
-                    wholesalerid: element.data()['wholesalerid'],
-                    warrant_period: element.data()['warrantperiod'],
-                    no_of_clicks: element.data()['noofclicks'],
-                    partno: element.data()['partno'],
-                    moq: element.data()['moq'],
-                    searchalgopartnoname: "${ element.data()['partno']}${element.data()['productname']}",
-                    company_name: element.data()['company_name'],
-                    location: element.data()['location'],
-                    ram: element.data()['ram'],
-                    brand:element.data()['brand'],
-                    storage: element.data()['storage'],
-                    screen: element.data()['screen'],
-                    processor: element.data()['processor'],
-                    screensize: element.data()['screensize'],
-                    resolution: element.data()['resolution'],
-                    package: element.data()['package'],
-                    partner: element.data()['partner'],
-
-                    filters_params: Filters_Params_Model(
-                        availability: element.data()['filters_params']['availability'],
-                        warrant_period:element.data()['filters_params']['warrant_period'],
-                        moq: element.data()['filters_params']['moq'],
-                        partno:element.data()['filters_params']['partno'],
-                        company_name: element.data()['filters_params']['company_name'],
-                        location: element.data()['filters_params']['location'],
-                        ram: element.data()['filters_params']['ram'],
-                        processor:element.data()['filters_params']['processor'],
-                        screen: element.data()['filters_params']['screen'],
-                        brand: element.data()['filters_params']['brand'],
-                        resolution: element.data()['filters_params']['resolution'],
-                        storage: element.data()['filters_params']['storage'],
-                        screensize: element.data()['filters_params']['screensize'],
-                        partner: element.data()['filters_params']['partner'],
-                        package: element.data()['filters_params']['package'],
-                        size: element.data()['filters_params']['size']),
-                  )
-              );
             });
 
+      setState(
+              () {
             isLoading = false;
           }
       );
@@ -290,8 +261,11 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
   Future <void> get_filtered_products(filters) async {
 
+
    setState(
        (){
+         filtered = [];
+
          products.forEach((element) {
            search_results.add(element);
          });
@@ -308,9 +282,19 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
           if(param[0] == "price" )
             {
 
-              if(int.parse(element.itemprice) >= int.parse(param[1].split("-")[0]) && int.parse(element.itemprice) <= int.parse(param[1].split("-")[1]))
+              if(int.parse(
+                  element.itemprice.split("_")[0]
+              ) >= int.parse(param[1].split("-")[0]) && int.parse(element.itemprice) <= int.parse(param[1].split("-")[1]))
               {
-                filtered.add(element);
+                if(filtered.contains(element))
+                  {
+
+                  }
+                else
+                  {
+                    filtered.add(element);
+                  }
+
               }
             }
 
@@ -318,21 +302,31 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(int.parse(element.moq) >= int.parse(param[1].split["-"][0]) && int.parse(element.moq) <= int.parse(param[1].split["-"][1]))
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
+
               }
             }
           else if(  param[0] == "warrant" )
             {
               if(int.parse(element.warrant_period) >= int.parse(param[1].split["-"][0]) && int.parse(element.warrant_period)  <= int.parse(param[1].split["-"][1]))
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
           else if(  param[0] == "distributor" )
             {
               if(element.company_name == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -340,14 +334,20 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.partno == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
           else if(  param[0] == "ram" )
             {
               if(element.ram == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -355,15 +355,20 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.processor == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
           else if(  param[0] == "screensize" )
             {
               if(element.screensize == param[1])
+              {  if(!filtered.contains(element))
               {
                 filtered.add(element);
+              }
               }
             }
 
@@ -371,7 +376,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.resolution == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -379,7 +387,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.storage == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -387,7 +398,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.brand == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -395,7 +409,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.screen == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -403,7 +420,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.partner == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -411,7 +431,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.package == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
 
@@ -419,23 +442,36 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
             {
               if(element.location == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  filtered.add(element);
+                }
               }
             }
           else if(  param[0] == "available" )
             {
               if(element.availability == param[1])
               {
-                filtered.add(element);
+                if(!filtered.contains(element))
+                {
+                  print(filtered.contains(element));
+                  print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                  filtered.add(element);
+                }
               }
             }
 
+/*
           else if(  param[0] == "available" )
             {
               if( param[1]) {
 
                 if (element.availability == "available") {
-                  filtered.add(element);
+
+                  if(!filtered.contains(element))
+                  {
+                    filtered.add(element);
+                  }
 
                 }
 
@@ -443,17 +479,23 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
               else{
 
                 if (element.availability != "available") {
-                  filtered.add(element);
+
+                  if(!filtered.contains(element))
+                  {
+                    filtered.add(element);
+                  }
 
                 }
 
               }
             }
+ */
 
         });
 
         setState(
             (){
+              search_results = [];
               search_results = filtered;
               filtered = [];
             }
@@ -461,11 +503,11 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
 
       }
-
-
   }
 
+
   bool isWholesaler = false;
+
   Future<void> getUserData(user_email)
   async {
     final docref = db.collection("userdd").doc(user_email);
@@ -485,7 +527,6 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                 isWholesaler = true;
               }
           );
-
         }
         else
         {
@@ -536,6 +577,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
       }
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -552,12 +594,13 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ) :Scaffold(
+      backgroundColor: Colors.black,
       body:  SafeArea(
         child: Stack(
           children: [
@@ -584,11 +627,11 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                                   onTap:() async {
                                Navigator.pop(context);
 
-                    }, child: Icon(Icons.arrow_back, color:Colors.grey[800], size:30)),
+                    }, child: Icon(Icons.arrow_back, color:Colors.grey[200], size:30)),
                               SizedBox(width: 30,),
                               Text("${widget.subcategory}",
                                 style: TextStyle(
-                                  color: Colors.grey[800],
+                                  color: Colors.grey[200],
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
 
@@ -600,7 +643,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                             width: 80,
                             margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
                             height: 0.0,
-                            color: Colors.grey[800],
+                            color: Colors.grey[200],
                           )
 
 
@@ -611,90 +654,340 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
 
                   SizedBox(height: 5,),
 
-                  ListTile(
-                    title: Padding(
-                      padding: const EdgeInsets.only(left:8.0),
-                      child: TextField(
+                  Container(
+                    decoration: BoxDecoration(
+                      color:Colors.grey[900],
 
-                        onChanged: (val){
-
-                          if(val.isEmpty)
-                            {
-
-                              setState(
-                                  (){
-                                    search_results = [];
-                                    products.forEach((element) {
-
-                                      search_results.add(element);
-
-                                    });
-
-                                  }
-                              );
-                            }
-                          else
-                            {
-                              setState(
-                                  (){
-                                    search_results = [];
-                                    products.forEach((element) {
-
-                                      if(element.searchalgopartnoname.contains(val))
-                                      {
-                                        search_results.add(element);
-                                      }
-                                    });
-                                  }
-                              );
-                            }
-
-
-                        },
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.search,color:Colors.grey[500]),
-                          hintText: "Search by name or PART no:",
-                          hintStyle: TextStyle(
-                            color: Colors.grey[500],
-
-                          ),
-
-                        ),
-                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child:   InkWell(
 
-                          onTap:() async {
+                    child: ListTile(
+                      title: Padding(
+                        padding: const EdgeInsets.only(left:8.0),
+                        child: TextField(
 
+                          onChanged: (val){
 
-                            if(products.length<1)
+                            if(val.isEmpty)
                               {
-                                Toast.show("No Products to filter".toString(), context,duration:Toast.LENGTH_SHORT,
-                                    gravity: Toast.BOTTOM);
+
+                                setState(
+                                    (){
+                                      search_results = [];
+                                      products.forEach((element) {
+
+                                        search_results.add(element);
+
+                                      });
+
+                                    }
+                                );
                               }
                             else
                               {
-                                filters = await Navigator.of(context).push(
-                                    MaterialPageRoute
-                                      (builder: (context)=>Filter_By( item_model: products, filters_params: products[0].filters_params,)));
-
-                                if(filters != null)
-                                {
-                                  get_filtered_products(filters);
-                                }
+                                setState(
+                                    (){
+                                      search_results = [];
+                                      products.forEach((element) {
+                                        if(element.searchalgopartnoname.toLowerCase().contains(val.toLowerCase()))
+                                        {
+                                          search_results.add(element);
+                                        }
+                                      });
+                                    }
+                                );
                               }
+
+
                           },
-                          child: Icon(Icons.filter_list_rounded, color:Colors.grey[800], size:30)),
+                          decoration: InputDecoration(
+                            suffixIcon: Icon(Icons.search,color:Colors.grey[300]),
+                            hintText: "Search by name or PART no:",
+                            hintStyle: TextStyle(
+                              color: Colors.grey[300],
+
+                            ),
+
+                          ),
+                        ),
+                      ),
+                      trailing: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child:   InkWell(
+
+                            onTap:() async {
+
+
+                              if(products.length<1)
+                                {
+                                  Toast.show("No Products to filter".toString(), context,duration:Toast.LENGTH_SHORT,
+                                      gravity: Toast.BOTTOM);
+                                }
+                              else
+                                {
+                                  filters = await Navigator.of(context).push(
+                                      MaterialPageRoute
+                                        (builder: (context)=>Filter_By( item_model: products, filters_params: products[0].filters_params,)));
+
+                                  if(filters != null)
+                                  {
+                                    get_filtered_products(filters);
+                                  }
+                                }
+                            },
+                            child: Icon(Icons.filter_list_rounded, color:Colors.grey[300], size:30)),
+                      ),
                     ),
                   ),
 
                 SizedBox(height: 20),
+                  SizedBox(
+                    height: 30,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left:8.0, right:8.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 30,
+                      child:
+
+
+                      ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+
+                          InkWell(
+                            onTap:(){
+
+                              setState(
+
+                                      (){
+                                    search_results = [];
+                                    all_cat = true;
+                                    phones_and_tablets = false;
+                                    consumer_electronic = false;
+                                    computing = false;
+                                    More = false;
+                                    products.forEach((element) {
+                                      search_results.add(
+                                          element
+                                      );
+                                    });
+
+                                  }
+                              );
+
+
+                            },
+                            child: Container(
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: all_cat?  Colors.grey[800] :Colors.white,
+                                  borderRadius:BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color:all_cat?Colors.grey[700]!: Colors.grey[500]! ),
+                                ),
+                                child:
+                                Row(
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    all_cat ?
+                                    Text("All",style: TextStyle( color: Colors.white), ):
+                                    Text("All",style: TextStyle( color: Colors.black), ),
+                                    SizedBox(width: 10,)
+                                  ],
+                                )
+
+                            ),
+                          ),
+
+                          SizedBox(width: 10,),
+
+                          InkWell(
+                            onTap:(){
+
+                              setState(
+                                      (){
+                                    search_results = [];
+                                    all_cat = false;
+                                    phones_and_tablets = true;
+                                    consumer_electronic = false;
+                                    computing = false;
+                                    More = false;
+                                    products.forEach((element) {
+                                      if(element.category == "Phones and Tablets")
+                                      {
+                                        search_results.add(
+                                            element
+                                        );
+                                      }
+
+                                    });
+                                  }
+                              );
+
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: phones_and_tablets? Colors.grey[800]!:Colors.white,
+                                  borderRadius:BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color:phones_and_tablets?Colors.grey[700]!: Colors.grey[500]! ),
+
+                                ),
+                                child:
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10.0, right:10.0, top:4.5),
+                                  child:phones_and_tablets?
+                                  Text("Phones and Tablets",style: TextStyle( color: Colors.white) )
+
+                                      :
+                                  Text("Phones and Tablets",style: TextStyle( color: Colors.black), ),
+                                )
+                            ),
+                          ),
+
+                          SizedBox( width: 10,),
+
+                          InkWell(
+                            onTap:(){
+
+                              setState(
+                                      (){
+                                    search_results = [];
+                                    all_cat = false;
+                                    phones_and_tablets = false;
+                                    consumer_electronic = true;
+                                    computing = false;
+                                    More = false;
+                                    products.forEach((element) {
+                                      if(element.category == "Consumer Electronic")
+                                      {
+                                        search_results.add(
+                                            element
+                                        );
+                                      }
+
+                                    });
+                                  }
+                              );
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: consumer_electronic? Colors.grey[800]!:Colors.white,
+                                  borderRadius:BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color:consumer_electronic?Colors.grey[700]!: Colors.grey[500]! ),
+                                ),
+                                child:
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10.0, right:10.0, top:4.5),                           child:consumer_electronic?
+                                Text("Consumer Electronic",style: TextStyle( color: Colors.white) )
+                                    :
+                                Text("Consumer Electronic",style: TextStyle( color: Colors.black), ),
+                                )
+                            ),
+                          ),
+
+                          SizedBox( width: 10,),
+
+                          InkWell(
+                            onTap:(){
+
+                              setState(
+                                      (){
+                                    search_results = [];
+                                    all_cat = false;
+                                    phones_and_tablets = false;
+                                    consumer_electronic = false;
+                                    computing = true;
+                                    More = false;
+                                    products.forEach((element) {
+                                      if(element.category == "Computing")
+                                      {
+                                        search_results.add(
+                                            element
+                                        );
+                                      }
+
+                                    });
+                                  }
+                              );
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: computing? Colors.grey[800]!:Colors.white,
+                                  borderRadius:BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color:computing?Colors.grey[700]!: Colors.grey[500]! ),
+
+
+                                ),
+                                child:
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10.0, right:10.0, top:4.5),
+
+                                  child:computing?
+                                  Text("Computing",style: TextStyle( color: Colors.white) )
+                                      :
+                                  Text("Computing",style: TextStyle( color: Colors.black), ),
+                                )
+                            ),
+                          ),
+
+                          SizedBox( width: 10,),
+
+                          InkWell(
+                            onTap:(){
+
+                              setState(
+                                      (){
+                                    search_results = [];
+                                    all_cat = false;
+                                    phones_and_tablets = false;
+                                    consumer_electronic = false;
+                                    computing = false;
+                                    More = true;
+                                    products.forEach((element) {
+                                      if(element.category == "More")
+                                      {
+                                        search_results.add(
+                                            element
+                                        );
+                                      }
+
+                                    });
+                                  }
+                              );
+                            },
+                            child: Container(
+
+                                decoration: BoxDecoration(
+                                  color: More? Colors.grey[800]!:Colors.white,
+                                  borderRadius:BorderRadius.all(Radius.circular(10)),
+                                  border: Border.all(color:More?Colors.grey[700]!: Colors.grey[500]! ),
+
+                                ),
+                                child:
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10.0, right:10.0, top:4.5),
+                                  child:More?
+                                  Text("More",style: TextStyle( color: Colors.white) )
+                                      :
+                                  Text("More",style: TextStyle( color: Colors.black), ),
+                                )
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height:20,
+                  ),
+
 
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height:MediaQuery.of(context).size.height-247,
+                    height:MediaQuery.of(context).size.height-327,
                     child: ListView.builder(
                               itemCount: search_results.length,
                               itemBuilder: (context, index){
@@ -706,7 +999,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                                           MaterialPageRoute
                                             (builder: (context)=>Product_Information(document_id: search_results[index].itemId,)));
                                     },
-                                    child: Product_Tile(item_model: search_results[index],));
+                                    child: Product_Tile(item_model: search_results[index], exchange_rate: search_results[index].exchange_rate,));
 
                               },
                             ),
@@ -722,7 +1015,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top:8.0),
         child: BottomAppBar(
-          color: Colors.white,
+          color: Colors.black,
           child: Padding(
             padding: const EdgeInsets.only(top:8.0),
             child: Container(

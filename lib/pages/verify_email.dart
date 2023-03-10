@@ -69,9 +69,7 @@ class _Verify_EmailState extends State<Verify_Email> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-
                   SizedBox(height: 20,),
-
                   Container(
                     width:MediaQuery.of(context).size.width,
                     height:MediaQuery.of(context).size.height*0.25,
@@ -165,9 +163,9 @@ class _Verify_EmailState extends State<Verify_Email> {
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color: Colors.grey[700],
                           border: Border.all(
-                              color: Colors.deepOrange
+                              color: Colors.grey[700]!
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),

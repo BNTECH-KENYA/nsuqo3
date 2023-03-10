@@ -60,7 +60,7 @@ class _Select_CategoryState extends State<Select_Category> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         leading: InkWell(
             onTap:(){
               Navigator.pop(context);

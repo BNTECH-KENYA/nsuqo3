@@ -47,6 +47,7 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
   TextEditingController _distributioncategory = TextEditingController();
   TextEditingController _marketcoverage = TextEditingController();
   TextEditingController _contactdetails = TextEditingController();
+  TextEditingController _exchange_rate = TextEditingController();
 
   Future<void> post_user_data()
   async {
@@ -62,21 +63,18 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
       "payment_detailsterms":payment_details_terms,
       "working_hours":"${start_hours}-${stop_hours}",
       "who_can_view":"all",
+      "exchange_rate":_exchange_rate.text.toString(),
+      "version_changes":0,
     };
 
     db.collection("userdd").doc(_email.text).update(data).then(
             (value){
-
           Navigator.of(context).push(
               MaterialPageRoute
                 (builder: (context)=>Whole_Saler_categories()));
-
         },
         onError: (e)=> print("Error updating documnet $e")
     );
-
-
-
   }
 
     Future <void> payment_details_and_terms_bt () async{
@@ -289,9 +287,9 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
     final minutes = dateTime.hour.toString().padLeft(2,'0');
 
     return Scaffold(
-
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         leading: InkWell(
             onTap: (){
               Navigator.pop(context);
@@ -337,7 +335,6 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
 
                     TextFormField(
                       controller: _lname,
-
                       decoration: InputDecoration(
                         icon: Icon(Icons.person),
                         hintText: "Enter Last Name",
@@ -364,7 +361,6 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                       ),
                       validator: (value){
                         if(value!.isEmpty){
-
                           return ' Please Enter your Email';
                         }
                         return null;
@@ -672,25 +668,19 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children:[
-
                                         Text("Stop"),
                                         SizedBox(height: 5,),
                                         Text("${stop_hours}")
-
                                       ]
-
                                     ),
                                   ),
                                 ),
                               )
-
                             ],
                           ),
-
                         ],
                       )
                     ),
-
 
                     SizedBox(height: 20,),
 
@@ -714,7 +704,6 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
 
                     InkWell(
                       onTap:() async {
-
                         location_data = await Navigator.push(context,
                             MaterialPageRoute(builder:
                                 (context) => Places_Search()));
@@ -730,7 +719,6 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Your Location", style:TextStyle(
-
                               color:Colors.grey[800],
                               fontWeight: FontWeight.w400,
                               fontSize:16
@@ -764,9 +752,7 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
 
                       ),
                     ),
-
                     SizedBox(height: 20,),
-
                     SizedBox(width:10),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -787,12 +773,32 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                       ),
                     ),
                     SizedBox(height: 20,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 80,
+                      child: TextFormField(
+                        controller: _exchange_rate,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+
+                          hintText: "exchage rate",
+                          labelText: "Exchange Rate",
+                        ),
+                        validator: (value){
+                          if(value!.isEmpty){
+
+                            return "Enter Exchange Rate";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20,),
 
                     InkWell(
                       onTap:(){
                         if(_formKey.currentState!.validate())
                           {
-
                             if(location_data == "")
                               {
                                 Toast.show("Pick Your Business Location".toString(), context,duration:Toast.LENGTH_SHORT,
@@ -811,8 +817,12 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                                 Toast.show("Select Distribution category".toString(), context,duration:Toast.LENGTH_SHORT,
                                     gravity: Toast.TOP);
                               }
+                            else if(_exchange_rate.text.toString() == "")
+                              {
+                                Toast.show("Enter Exchange Rate".toString(), context,duration:Toast.LENGTH_SHORT,
+                                    gravity: Toast.TOP);
+                              }
                             else{
-
                               post_user_data();
                             }
                           }
@@ -821,8 +831,8 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
                         width: MediaQuery.of(context).size.width,
                         height: 40,
                         decoration:BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                              color:Colors.deepOrange
+                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              color:Colors.grey[700]
                               ),
                         child: Center(
                           child: Text(

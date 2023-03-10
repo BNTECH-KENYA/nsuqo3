@@ -137,7 +137,7 @@ class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old>
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
@@ -434,11 +434,9 @@ class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old>
 
                         Navigator.of(context).push(
                             MaterialPageRoute
-                              (builder: (context)=>Edit_Profile())
+                              (builder: (context)=>Edit_Profile()));
 
-                        );
                       },
-
                       child: Container(
                         child: Column(
                           children: [
@@ -460,9 +458,9 @@ class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old>
 
                         Navigator.of(context).push(
                             MaterialPageRoute
-                              (builder: (context)=>Retailers_who_can_view(wholesaler_id: user_email,))
+                              (builder: (context)=>Retailers_who_can_view(wholesaler_id: user_email,)));
 
-                        );
+
                       },
 
                       child: Container(

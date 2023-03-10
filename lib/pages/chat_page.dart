@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nsuqo/models/messagemodel.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:toast/toast.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../widgets/date_chat_widget.dart';
 import '../widgets/otherCard.dart';
@@ -21,9 +24,17 @@ class Chat_Page extends StatefulWidget {
     required this.sender_name,
     required this.opponent_name,
     required this.auth_email,
+    required this.product_id,
+    required this.product_name,
+    required this.product_photo,
+    required this.product_description,
+    required this.product_price,
 
   }) : super(key: key);
-  final String wholesaler_id,email_reciever,email_user, retailer_id, sender_name, opponent_name,auth_email;
+
+  final product_id,wholesaler_id,email_reciever,email_user, retailer_id, sender_name, opponent_name,auth_email
+  ,product_name,product_photo,product_description,product_price;
+
 
   @override
   State<Chat_Page> createState() => _Chat_PageState();
@@ -34,6 +45,7 @@ class _Chat_PageState extends State<Chat_Page> {
   final itemController = ItemScrollController();
   final itemPositionsListener  = ItemPositionsListener.create();
 
+  ScrollController _scrollController = ScrollController();
    dot_notation_remover () {
 
     String chatStreamId = "";
@@ -53,12 +65,13 @@ class _Chat_PageState extends State<Chat_Page> {
      return chatStreamId;
   }
 
+
   bool isLoading = true;
   TextEditingController _message = TextEditingController();
-
   FirebaseFirestore db = FirebaseFirestore.instance;
-
   Future<String> add_Chat_Data( enquiry)
+
+
 
   async {
     setState(
@@ -68,6 +81,7 @@ class _Chat_PageState extends State<Chat_Page> {
     );
 
     String documentid = "";
+
     final chatdetails = <String, dynamic>{
 
       "timestamp":FieldValue.serverTimestamp(),
@@ -78,6 +92,10 @@ class _Chat_PageState extends State<Chat_Page> {
       "retailer_name": "Jane",
       "company_name":"BNTECH",
       "message":enquiry,
+      "product_id":widget.product_id,
+      "product_photo":widget.product_photo,
+      "product_description":widget.product_description,
+      "product_price":widget.product_price,
 
     };
 
@@ -88,7 +106,9 @@ class _Chat_PageState extends State<Chat_Page> {
 
         }
     );
+
     return documentid;
+
   }
 
 
@@ -169,6 +189,39 @@ class _Chat_PageState extends State<Chat_Page> {
   
   Future <void> check_chat_stream_id()async {
 
+    bool document_found = false;
+
+    await db.collection("oneChatStream").get().then((value) async => {
+
+      value.docs.forEach((element)=>{
+
+        if(element.id == "dot_notation_remover()")
+          {
+            document_found = true,
+          }
+
+
+      }),
+
+      if(!document_found )
+        {
+
+        await db.collection("oneChatStream").doc( dot_notation_remover()).set({
+      "ltsmessage":"",
+      "unrdmessage":0,
+      "msgtimestamp":FieldValue.serverTimestamp(),
+      "sendername":widget.sender_name,
+      "email_user":widget.email_reciever,
+      "sender_email":widget.email_user,
+      "wholesaler_id":widget.wholesaler_id,
+      "retailer_id":widget.retailer_id,
+      "participants":[widget.email_reciever,widget.email_user],
+      "opponent_name":widget.opponent_name,
+    }),
+        }
+
+
+    });
     await db.collection("stream_ids").doc("${dot_notation_remover()}").get().then((res) {
 
       if(res.data() != null)
@@ -200,17 +253,39 @@ class _Chat_PageState extends State<Chat_Page> {
     bool onScroll = false;
 
   List<MesssageModel> messagemodels = [];
-  
+
+
+  Timer ? timer;
+  int count_on_new_text = 0;
+
+
+  void _start_count(){
+
+
+    if(count_on_new_text == 3)
+      {
+        timer!.cancel();
+        count_on_new_text = 0;
+      }
+    else
+      {
+        timer = Timer.periodic(Duration(seconds: 1), (timer) {
+
+        });
+        count_on_new_text ++;
+      }
+
+
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
         ()async{
       await check_chat_stream_id();
 
     }();
+
 
         itemPositionsListener.itemPositions.addListener(() {
 
@@ -236,6 +311,12 @@ class _Chat_PageState extends State<Chat_Page> {
     
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer!.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +327,7 @@ class _Chat_PageState extends State<Chat_Page> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
@@ -261,12 +342,12 @@ class _Chat_PageState extends State<Chat_Page> {
             fit:BoxFit.cover),
 
         Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.black,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
             child: AppBar(
-              backgroundColor:Colors.deepOrange,
-              leadingWidth: 70,
+              backgroundColor:Colors.black,
+              leadingWidth: 40,
               titleSpacing: 0,
               leading: InkWell(
                 onTap: (){
@@ -277,10 +358,7 @@ class _Chat_PageState extends State<Chat_Page> {
                   children: [
                     Icon(Icons.arrow_back,color:Colors.white,
                       size: 24,),
-                 CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.white,
-                    )
+
                   ],
                 ),
               ),
@@ -312,17 +390,27 @@ class _Chat_PageState extends State<Chat_Page> {
                 ),
               ),
 
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right:16.0),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.person, color:Colors.grey[700]),
+                  ),
+                )
+              ],
             ),
           ),
 
           body: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Stack(
+            child: Column(
               children: [
 
-                Container(
-                  height: MediaQuery.of(context).size.height-159,
+                Expanded(
+                 // height: MediaQuery.of(context).size.height-159,
                   child:StreamBuilder(
                     stream: FirebaseFirestore
                         .instance
@@ -342,19 +430,28 @@ class _Chat_PageState extends State<Chat_Page> {
 
                       return NotificationListener(
 
-                        child: ScrollablePositionedList.builder(
+                        child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: snapshot.data!.size,
+                          controller: _scrollController,
                           itemBuilder: (context, index){
 
                             QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
 
-                            if(course?['message'] !="" )
+                            if(course?['message'] !="" &&
+                            course?['timestamp'] != null )
                             {
 
                               if(course?['sender_email'] == widget.auth_email)
                               {
                                 messagemodels.add(MesssageModel(
+
+                                  product_id: course?['product_id'],
+                                  product_name: course?['product_name'],
+                                  product_photo: course?['product_photo'],
+                                  product_description: course?['product_description'],
+                                  product_price: course?['product_price'],
+
                                     timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
 
                                     name: course?['retailer_name'].split('-')[0],
@@ -362,6 +459,12 @@ class _Chat_PageState extends State<Chat_Page> {
                                     time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
                                 ));
                                 return OwnMessageCard(messageModel:  MesssageModel(
+                                product_id: course?['product_id'],
+                                product_name: course?['product_name'],
+                                product_photo: course?['product_photo'],
+                                product_description: course?['product_description'],
+                                product_price: course?['product_price'],
+
                                   timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
 
                                   name: course?['retailer_name'].split('-')[0],
@@ -374,54 +477,41 @@ class _Chat_PageState extends State<Chat_Page> {
                               {
                                 messagemodels.add(MesssageModel(
                                   timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
+                                  name: course?['retailer_name'].split('-')[0],
+                                  message:course?['message'],
 
+                                    time_ui: (DateFormat('hh:mm a').format(DateTime.parse( (course?['timestamp']).toDate().toString())))
+
+                                  ,product_id: course?['product_id'],
+                                  product_name: course?['product_name'],
+                                  product_photo: course?['product_photo'],
+                                  product_description: course?['product_description'],
+                                  product_price: course?['product_price'],
+                                ));
+
+
+                                return ReplCard(messageModel:  MesssageModel(
+                                  timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
                                   name: course?['retailer_name'].split('-')[0],
                                   message:course?['message'],
                                   time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),
-                                ));
-                                return ReplCard(messageModel:  MesssageModel(
-                                  timestamp: DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['timestamp']).toDate().toString())),
+                                  product_id: course?['product_id'],
+                                   product_name: course?['product_name'],
+                                    product_photo: course?['product_photo'],
+                                    product_description: course?['product_description'],
+                                  product_price: course?['product_price'],
+                                ),);
 
-                                  name: course?['retailer_name'].split('-')[0],
-                                  message:course?['message'],
-                                  time_ui: (DateFormat('hh:mm a').format(DateTime.parse((course?['timestamp']).toDate().toString()))),),);
+
                               }
                             }
                             else
                             {
                               return Container();
                             }
-
-
-
                           },
-                          itemPositionsListener: itemPositionsListener,
-                          itemScrollController: itemController,
-
                         ),
-                        onNotification: (t){
-                          if(t is ScrollUpdateNotification)
-                            {
-                              setState(
-                                  (){
 
-                                    onScroll = true;
-                                  }
-                              );
-                              return true;
-                            }
-                          else
-                            {
-                              setState(
-                                      (){
-
-                                    onScroll = false;
-                                  }
-                              );
-                              return false;
-                            }
-
-                        },
                       );
                     },
 
@@ -429,60 +519,101 @@ class _Chat_PageState extends State<Chat_Page> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width-60,
-                        child: Card(
-                          margin: EdgeInsets.only(left: 2, right: 2, bottom: 8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)
-                          ),
-                          child: TextFormField(
-                            controller: _message,
-                            textAlignVertical:TextAlignVertical.center ,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText:"message...",
-                                prefixIcon: IconButton(
-                                  icon: Icon(
-                                      Icons.keyboard
-                                  ),
-                                  onPressed: (){
+                  child: Container(
+                    height:70,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width-60,
+                          child: Card(
+                            margin: EdgeInsets.only(left: 2, right: 2, bottom: 8),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)
+                            ),
+                            child: TextFormField(
+                              controller: _message,
+                              textAlignVertical:TextAlignVertical.center ,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:"message...",
+                                  prefixIcon: IconButton(
+                                    icon: Icon(
+                                        Icons.keyboard, color: Colors.grey[700],
+                                    ),
+                                    onPressed: (){
 
-                                  },
-                                ),
-                                contentPadding: EdgeInsets.all(5)
+                                    },
+                                  ),
+                                  contentPadding: EdgeInsets.all(5)
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only( bottom: 8, right: 5, left:2),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.deepOrange,
-                          child: IconButton(
-                            onPressed: () async {
-                              if(_message.text .length >0)
-                              {
-                                await add_Chat_Data(_message.text);
-                              }
-                              else
-                              {
+                        Padding(
+                          padding: const EdgeInsets.only( bottom: 8, right: 5, left:2),
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.grey[700],
+                            child: IconButton(
+                              onPressed: () async {
+                                if(_message.text .length >0)
+                                {
+                                 // await add_Chat_Data(_message.text);
 
-                                Toast.show("Say Something".toString(), context,duration:Toast.LENGTH_SHORT,
-                                    gravity: Toast.BOTTOM);
+                                  Workmanager().registerOneOffTask("posting", "chat",
+                                    inputData: {
+                                      "wholesaler_id": widget.wholesaler_id,
+                                      "groupuid":dot_notation_remover(),
+                                      "sender_email":widget.auth_email,
+                                      "wholesaler_name":"Brian",
+                                      "retailer_name": "Jane",
+                                      "company_name":"BNTECH",
+                                      "message":_message.text,
+                                      "product_id": widget.product_id,
+                                      "ltsmessage": _message.text,
+                                      "retailer_id":widget.retailer_id,
+                                      "product_id":widget.product_id,
+                                      "product_photo":widget.product_photo,
+                                      "product_name":widget.product_photo,
+                                      "product_description":widget.product_description,
+                                      "product_price":widget.product_price,
 
-                              }
-                            },
-                            icon: Icon(Icons.send,size:36, color:Colors.white),
+                                    },);
 
+                                  Future.delayed(Duration(seconds:5)).then((value) => {
+
+                                  _scrollController.animateTo(
+                                  _scrollController.position.maxScrollExtent,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut),
+                                      //_start_count();
+                                  });
+
+                                  setState(
+                                          (){
+                                        isLoading = false;
+                                        _message.text = "";
+                                      }
+                                  );
+
+
+                                }
+                                else
+                                {
+
+                                  Toast.show("Say Something".toString(), context,duration:Toast.LENGTH_SHORT,
+                                      gravity: Toast.BOTTOM);
+
+                                }
+                              },
+                              icon: Icon(Icons.send,size:36, color:Colors.white),
+
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 

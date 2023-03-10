@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,18 +17,22 @@ import 'edit_profile_retailer.dart';
 import 'home_page_categories.dart';
 
 class Messanger extends StatefulWidget {
-  const Messanger({Key? key}) : super(key: key);
 
+  const Messanger({Key? key}) : super(key: key);
   @override
   State<Messanger> createState() => _MessangerState();
+
 }
 
 class _MessangerState extends State<Messanger> {
 
+  int unreadmessagesstate = 0;
   int unreadmessages = 0;
   bool isLoading = true;
   String user_email = "";
   bool isWholesaler = false;
+
+  String search = "";
 
   List<MessangerModel> chat_streams = [];
 
@@ -34,6 +40,7 @@ class _MessangerState extends State<Messanger> {
 
   Future<void> getUserData(user_email)
   async {
+
     final docref = db.collection("userdd").doc(user_email);
     await docref.get().then((res) {
 
@@ -41,7 +48,6 @@ class _MessangerState extends State<Messanger> {
       {
         if(res.data()!['accounttype'] =="wholesaler")
         {
-
           setState(
                   (){
                     isWholesaler = true;
@@ -60,9 +66,8 @@ class _MessangerState extends State<Messanger> {
 
         }
 
-
-
       }
+
       else
       {
         setState(
@@ -78,6 +83,7 @@ class _MessangerState extends State<Messanger> {
     });
 
   }
+
 
 
   Future<void> checkAuth()async {
@@ -103,6 +109,24 @@ class _MessangerState extends State<Messanger> {
 
   }
 
+  int timecount = 0;
+  Timer ? timer;
+
+ void _startCountDown(){
+   timer = Timer.periodic(Duration(seconds:1), (timer){
+
+      if(timecount == 5){
+
+        setState(() {
+          unreadmessages = unreadmessagesstate;
+          timecount = 0;
+        });
+      }
+      timecount ++;
+
+    });
+ }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -111,13 +135,25 @@ class _MessangerState extends State<Messanger> {
         () async {
       await checkAuth();
     }();
+    _startCountDown();
 
   }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer!.cancel();
+    super.dispose();
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           children: [
@@ -133,7 +169,7 @@ class _MessangerState extends State<Messanger> {
                       "Messanges",style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[800]
+                      color: Colors.grey[200]
                     ),
 
                     ),
@@ -148,23 +184,31 @@ class _MessangerState extends State<Messanger> {
                 child: Container(
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Colors.grey[800],
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                     child: TextField(
+                      //controller: search_controller,
+                      onChanged: (val){
 
+                        setState(
+                            (){
+                                search = val;
+                            }
+                        );
+                      },
                       decoration: InputDecoration(
 
                           hintText: 'Search',
                           hintStyle: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[400],
+                            color: Colors.grey[200],
 
                           ),
                           border: InputBorder.none,
-                        prefix: Icon(Icons.search,color: Colors.black, size: 20, ),
+                        prefix: Icon(Icons.search,color: Colors.grey[300], size: 20, ),
                       ),
                       cursorColor: Colors.grey[500],
 
@@ -206,7 +250,7 @@ class _MessangerState extends State<Messanger> {
                       child: Column(
                         children: [
                           Text("All", style: TextStyle(
-                            color: Colors.grey[800],
+                            color: Colors.grey[200],
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),),
@@ -215,7 +259,7 @@ class _MessangerState extends State<Messanger> {
                             width: 30,
                             margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
                             height: 3.0,
-                            color: Colors.grey[800],
+                            color: Colors.grey[200],
                           )
                         ],
                       ),
@@ -236,14 +280,14 @@ class _MessangerState extends State<Messanger> {
                           Row(
                             children: [
                               Text("Unread", style: TextStyle(
-                                color: Colors.grey[500],
+                                color: Colors.grey[400],
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                               ),),
                               SizedBox(width: 5,),
                               CircleAvatar(
                                 radius: 10,
-                                backgroundColor: Colors.red,
+                                backgroundColor: Colors.blue,
                                 child: Text("${unreadmessages}", style: TextStyle(
                                     color: Colors.white
                                 ),),
@@ -256,7 +300,7 @@ class _MessangerState extends State<Messanger> {
                             width: 30,
                             margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
                             height: 3.0,
-                            color: Colors.white,
+                            color: Colors.black,
                           )
                         ],
                       ),
@@ -272,13 +316,24 @@ class _MessangerState extends State<Messanger> {
               height: MediaQuery.of(context).size.height-392,
               child: Padding(
                 padding: const EdgeInsets.only(left:16.0, right: 16),
-                child:StreamBuilder(
-                    stream: FirebaseFirestore
+                child:
+
+                StreamBuilder(
+                    stream:
+                    search == ""?
+                    FirebaseFirestore
                         .instance
                         .collection("oneChatStream")
                         .where("participants", arrayContains: user_email)
                         .orderBy("msgtimestamp", descending: true)
-                        .snapshots(),
+                        .snapshots():
+                    FirebaseFirestore
+                        .instance
+                        .collection("oneChatStream")
+                        .where("participants", arrayContains: user_email)
+                        .orderBy("msgtimestamp", descending: true)
+                        .snapshots()
+                    ,
                     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot)  {
                       if(!snapshot.hasData)
                       {
@@ -304,14 +359,21 @@ class _MessangerState extends State<Messanger> {
                       }
                       else
                       {
+                        unreadmessagesstate = 0;
+                        return
 
-                        return  ListView.builder(
+                          search == ""?
+                          ListView.builder(
                           itemCount: snapshot.data?.size,
                           itemBuilder: (context, index){
 
                             QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
 
+
+                            course?['sender_email'] == user_email? 0: unreadmessagesstate += int.parse(course!['unrdmessage']!.toString());
+
                             return Chat_Stream_Widget(messagermodel: MessangerModel(
+
                               unreadmsg:course?['sender_email'] == user_email? 0 : course?['unrdmessage'],
                               sender_name: user_email == course?['retailer_id'] ? course!['opponent_name'] :course?['sendername'],
                               timstamp: (DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['msgtimestamp']).toDate().toString())))
@@ -327,9 +389,45 @@ class _MessangerState extends State<Messanger> {
                               sender_email: course?['sender_email'],
                               opponent_name: course?['opponent_name'],
                               auth_email: user_email,
-                            ), groupuid: course!.id);
+
+                            ),
+                              groupuid: course!.id, fun: (){
+                              unreadmessagesstate -1;
+
+                            },);
                           },
-                        );
+                        ):
+                          ListView.builder(
+                            itemCount: snapshot.data?.size,
+                            itemBuilder: (context, index){
+
+                              QueryDocumentSnapshot<Object?>? course = snapshot.data?.docs[index];
+                              course?['sender_email'] == user_email? 0: unreadmessagesstate += int.parse(course!['unrdmessage']!.toString());
+
+                              String name_search = user_email == course?['retailer_id'] ? course!['opponent_name'] :course?['sendername'];
+                              return name_search.toLowerCase().contains(search.toLowerCase())?  Chat_Stream_Widget(messagermodel: MessangerModel(
+                                unreadmsg:course?['sender_email'] == user_email? 0 : course?['unrdmessage'],
+                                sender_name: user_email == course?['retailer_id'] ? course!['opponent_name'] :course?['sendername'],
+                                timstamp: (DateFormat('dd/MMM/yyy').format(DateTime.parse((course?['msgtimestamp']).toDate().toString())))
+                                    ==
+                                    (DateFormat('dd/MMM/yyy').format(DateTime.now()))?
+                                (DateFormat('hh:mm a').format(DateTime.parse((course?['msgtimestamp']).toDate().toString()))):
+
+                                (DateFormat('dd/MMM/yyy hh:mm a').format(DateTime.parse((course?['msgtimestamp']).toDate().toString()))),
+                                ltsmessage: course?['ltsmessage'],
+                                wholesaler_id_mm: course?['wholesaler_id'],
+                                retailer_id_mm: course?['retailer_id'],
+                                reciever_email: course?['email_user'],
+                                sender_email: course?['sender_email'],
+                                opponent_name: course?['opponent_name'],
+                                auth_email: user_email,
+
+                              ), groupuid: course!.id, fun: (){
+                                unreadmessagesstate -1;
+                              },):Container();
+                            },
+                          )
+                        ;
                       }
 
                     }
@@ -344,7 +442,7 @@ class _MessangerState extends State<Messanger> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top:8.0),
         child: BottomAppBar(
-          color: Colors.white,
+          color: Colors.black,
           child: Padding(
             padding: const EdgeInsets.only(top:8.0),
             child: Container(
@@ -360,6 +458,7 @@ class _MessangerState extends State<Messanger> {
                       Navigator.of(context).push(
                           MaterialPageRoute
                             (builder: (context)=>Home_Categories()));
+
                     },
 
                     child: Container(
@@ -378,47 +477,72 @@ class _MessangerState extends State<Messanger> {
                     ),
                   ),
 
-                  InkWell(
+unreadmessages == 0?  InkWell(
 
-                    onTap: (){
+  onTap: (){
 
-                    },
+  },
 
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              Icon(Icons.chat, color:Colors.deepOrange),
-                              Positioned(
-                                  right: 0,
-                                  child: CircleAvatar(
-                                    radius: 6,
-                                    backgroundColor: Colors.red,
-                                    child: Text("3", style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 8,
-                                    ),),
-                                  )
-                              )
-                            ],
-                          ),
-                          Text(
-                            'Messsanger',
-                            style: TextStyle(
-                              color: Colors.deepOrange,
-                              fontSize: 12,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+  child: Container(
+    child: Column(
+      children: [
+        Stack(
+          children: [
+            Icon(Icons.chat, color:Colors.white),
+
+          ],
+        ),
+        Text(
+          'Messsanger',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        )
+      ],
+    ),
+  ),
+):                  InkWell(
+
+  onTap: (){
+
+  },
+
+  child: Container(
+    child: Column(
+      children: [
+        Stack(
+          children: [
+            Icon(Icons.chat, color:Colors.white),
+            Positioned(
+                right: 0,
+                child: CircleAvatar(
+                  radius: 6,
+                  backgroundColor: Colors.blue,
+                  child: Text("$unreadmessages", style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 8,
+                  ),),
+                )
+            )
+          ],
+        ),
+        Text(
+          'Messsanger',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+          ),
+        )
+      ],
+    ),
+  ),
+),
 
                   InkWell(
 
                     onTap: () async {
-                      await Share.share("link to download app");
+                      await Share.share("https://play.google.com/store/apps/details?id=com.nsuqo.opassoLink to download app");
                     },
 
                     child: Container(

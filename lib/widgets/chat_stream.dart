@@ -6,9 +6,15 @@ import 'package:nsuqo/models/messanger.dart';
 import '../pages/chat_page.dart';
 
 class Chat_Stream_Widget extends StatelessWidget {
-  const Chat_Stream_Widget({Key? key, required this.messagermodel,required this.groupuid}) : super(key: key);
+  const Chat_Stream_Widget({Key? key,
+    required this.messagermodel,
+    required this.groupuid,
+    required this.fun,
+  }) : super(key: key);
+
   final MessangerModel messagermodel;
   final String groupuid;
+  final Function fun;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class Chat_Stream_Widget extends StatelessWidget {
 
       await db.collection("oneChatStream").doc(groupuid).update(stream);
 
-
+      fun();
 
     }
 
@@ -45,16 +51,20 @@ class Chat_Stream_Widget extends StatelessWidget {
           Navigator.of(context).push(
               MaterialPageRoute
                 (builder: (context)=>Chat_Page(
-
+                product_name: "not",
+                product_photo: "",
+                product_description: "not",
+                product_price: "not",
                 wholesaler_id: messagermodel.wholesaler_id_mm,
                 retailer_id:messagermodel.retailer_id_mm ,
-                email_reciever:messagermodel.reciever_email ,
+                email_reciever:messagermodel.reciever_email,
                 email_user: messagermodel.sender_email,
                 sender_name:messagermodel.sender_name,
                 opponent_name:messagermodel.opponent_name,
-                auth_email: messagermodel.auth_email,
+                auth_email: messagermodel.auth_email, product_id: "not",
 
               )));
+
         },
         child: Container(
             width: MediaQuery.of(context).size.width,
@@ -67,8 +77,8 @@ class Chat_Stream_Widget extends StatelessWidget {
                     children: [
 
                       CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.deepPurpleAccent,
+                        radius: 30,
+                        backgroundColor: Colors.grey[800],
                         child: Text("${messagermodel.sender_name[0].toUpperCase()}", style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -80,7 +90,7 @@ class Chat_Stream_Widget extends StatelessWidget {
                           right: 10,
                           child: CircleAvatar(
                             radius: 10,
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.blue,
                             child: Text("${messagermodel.unreadmsg}", style: TextStyle(
                                 color: Colors.white
                             ),),
@@ -93,19 +103,22 @@ class Chat_Stream_Widget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      SizedBox(height:10),
+
                       Container(
                         width:MediaQuery.of(context).size.width-102,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("${messagermodel.sender_name}", style: TextStyle(
-                              color: Colors.grey[800],
+                              color: Colors.grey[200],
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),),
                             Text("${messagermodel.timstamp}", style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 14,
+                              color: Colors.grey[400],
+                              fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),),
 
@@ -113,19 +126,22 @@ class Chat_Stream_Widget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 5,),
-                      Text("", style: TextStyle(
-                        color: Colors.grey[500],
+                      Text(messagermodel.sender_email, style: TextStyle(
+                        color: Colors.grey[200],
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),),
 
-                      SizedBox(height: 10,),
+                      SizedBox(height: 15,),
 
-                      Text("${messagermodel.ltsmessage}", style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),),
+                      Container(
+                        width: MediaQuery.of(context).size.width-102,
+                        child: Text("${messagermodel.ltsmessage}", style: TextStyle(
+                          color: Colors.grey[300],
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),),
+                      ),
 
                     ],
                   ),

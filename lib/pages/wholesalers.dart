@@ -25,11 +25,12 @@ class _WholeSalersState extends State<WholeSalers> {
 
   List<Color> colors_list=[
 
-    Colors.deepOrange, Colors.blue, Colors.deepPurpleAccent, Colors.lightGreen,
-    Colors.pinkAccent, Colors.yellowAccent,Colors.purple, Colors.greenAccent,
-    Colors.orange, Colors.teal, Colors.brown, Colors.limeAccent
+    Colors.grey[800]!, Colors.grey[700]!, Colors.grey[900]!, Colors.grey[800]!,
+    Colors.grey[700]!, Colors.grey[900]!, Colors.grey[800]!, Colors.grey[700]!,
+    Colors.grey[800]!, Colors.grey[700]!, Colors.grey[900]!, Colors.grey[800]!,
 
   ];
+
   List<Wholesalers_Model> wholesalers_list = [];
   List<Wholesalers_Model> search_results = [];
 
@@ -123,7 +124,7 @@ class _WholeSalersState extends State<WholeSalers> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
@@ -131,8 +132,7 @@ class _WholeSalersState extends State<WholeSalers> {
     ): WillPopScope(
       onWillPop: ()=>showExitPopup(context),
       child: Scaffold(
-
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         body: SafeArea(
           child: Container(
             height: MediaQuery.of(context).size.height,
@@ -162,7 +162,7 @@ class _WholeSalersState extends State<WholeSalers> {
                                 children: [
                                   Text("Products",
                                     style: TextStyle(
-                                      color: Colors.grey[700],
+                                      color: Colors.grey[200],
                                       fontSize: 18,
                                     ),),
                                   SizedBox(height: 6,),
@@ -176,7 +176,7 @@ class _WholeSalersState extends State<WholeSalers> {
                                 Text("WholeSalers",
                                   style: TextStyle(
 
-                                    color: Colors.grey[800],
+                                    color: Colors.grey[400],
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                   ),),
@@ -187,7 +187,7 @@ class _WholeSalersState extends State<WholeSalers> {
                                   width: 100,
                                   margin: EdgeInsetsDirectional.only(start: 1.0,end:1.0),
                                   height: 3.0,
-                                  color: Colors.grey[800],
+                                  color: Colors.grey[400],
                                 )
                               ],
                             ),
@@ -240,7 +240,7 @@ class _WholeSalersState extends State<WholeSalers> {
                           suffixIcon: Icon(Icons.search,color:Colors.grey[500]),
                           hintText: "Search by name",
                           hintStyle: TextStyle(
-                            color: Colors.grey[500],
+                            color: Colors.grey[200],
 
                           ),
 
@@ -263,7 +263,7 @@ class _WholeSalersState extends State<WholeSalers> {
                         Text(
                           "wholesalers",
                           style: TextStyle(
-                              color: Colors.grey[850],
+                              color: Colors.grey[200],
                               fontSize: 18,
                               fontWeight: FontWeight.bold
                           ),
@@ -277,16 +277,7 @@ class _WholeSalersState extends State<WholeSalers> {
                           child: ListView.builder(
                             itemCount: search_results.length,
                             itemBuilder: (context, index){
-                              return InkWell(
-                                  onTap: (){
-
-                                    print(index);
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute
-                                          (builder: (context)=>Product_List(wholesaler_id: search_results[index].wholesalerid)));
-                                  },
-
-                                  child: Wholesaler_Tile( wholesaler_model:search_results[index] ));
+                              return Wholesaler_Tile( wholesaler_model:search_results[index] );
 
                             },
                           ),
@@ -305,7 +296,7 @@ class _WholeSalersState extends State<WholeSalers> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(top:8.0),
           child: BottomAppBar(
-            color: Colors.white,
+            color: Colors.black,
             child: Padding(
               padding: const EdgeInsets.only(top:8.0),
               child: Container(
@@ -327,13 +318,13 @@ class _WholeSalersState extends State<WholeSalers> {
                         child: Column(
                           children: [
                             CircleAvatar(
-                                backgroundColor: Colors.deepOrange,
+                                backgroundColor: Colors.grey[700],
                                 radius: 16,
                                 child: Icon(Icons.home_filled, color:Colors.white)),
                             Text(
                               'Home',
                               style: TextStyle(
-                                color: Colors.deepOrange,
+                                color: Colors.grey[200],
                                 fontSize: 12,
                               ),
                             )

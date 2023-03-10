@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
 import '../helpers/exit_pop.dart';
 import 'home_page_categories.dart';
 
@@ -24,7 +23,6 @@ class _Account_ApprovalState extends State<Account_Approval> {
   TextEditingController _message = TextEditingController();
 
   Timer ? timer;
-
 
   Future<void> post_user_data()
   async {
@@ -61,9 +59,6 @@ class _Account_ApprovalState extends State<Account_Approval> {
           );
 
         }
-
-
-
 
       }
       else
@@ -136,7 +131,7 @@ class _Account_ApprovalState extends State<Account_Approval> {
                     ),
                   ),
 
-                  Text("Account Approval", style: TextStyle(
+                  Text("Account Approval ..", style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 28,
@@ -256,9 +251,9 @@ class _Account_ApprovalState extends State<Account_Approval> {
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color: Colors.grey[700]!,
                           border: Border.all(
-                              color: Colors.deepOrange
+                              color:  Colors.grey[700]!
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),

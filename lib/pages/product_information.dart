@@ -26,7 +26,6 @@ class _Product_InformationState extends State<Product_Information> {
  bool isWholesaler = false;
  bool isLoading = true;
 
-
   String product_name ="";
   String product_description ="";
   String product_price = "";
@@ -46,7 +45,7 @@ class _Product_InformationState extends State<Product_Information> {
  Future<void> getProductDeatil()
  async {
    final docref = db.collection("products").doc(widget.document_id);
-   await docref.get().then((res) {
+   await docref.get().then((res) async {
 
      if(res.data() != null)
      {
@@ -61,7 +60,6 @@ class _Product_InformationState extends State<Product_Information> {
              location=  res.data()!['location'];
              doc_id=  res.id;
              product_id=  res.id;
-             isLoading = false;
              if(!isWholesaler)
                {
                  opponent_name = company_name;
@@ -69,13 +67,11 @@ class _Product_InformationState extends State<Product_Information> {
                }
            }
        );
-
-
+       await getexchangeratedata(wholesaler_id);
      }
-
    });
-
  }
+
 
  Future<void> getUserData(user_email)
  async {
@@ -107,8 +103,6 @@ class _Product_InformationState extends State<Product_Information> {
                    sender_name = "${res.data()!['firstNameinput']} ${res.data()!['lastNameinput']}";
              }
          );
-
-
 
          getProductDeatil();
        }
@@ -148,6 +142,33 @@ class _Product_InformationState extends State<Product_Information> {
 
   }
 
+String ? exchange_rate;
+
+ Future<void> getexchangeratedata(email)
+ async {
+
+   final docref = db.collection("userdd").doc(email);
+   await docref.get().then((res) {
+     if (res.data() != null) {
+       if (res.data()!['fname'] != "") {
+         if (res.data()!['approved'] == "approved") {
+           setState(
+                   () {
+
+                 exchange_rate = res.data()!.containsKey("exchange_rate") ? res
+                     .data()!["exchange_rate"] : "0";
+                 isLoading = false;
+
+                   }
+           );
+
+         }
+       }
+     }
+   });
+
+       }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -166,14 +187,14 @@ class _Product_InformationState extends State<Product_Information> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-         color: Colors.deepOrange
+         color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ) :Scaffold(
 
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body:SafeArea(
 
         child:Container(
@@ -185,7 +206,8 @@ class _Product_InformationState extends State<Product_Information> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  photosLinks.length == 0 ?  Container(
+                  photosLinks.length == 0 ?
+                  Container(
                       height: 280,
                       width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
@@ -256,8 +278,30 @@ class _Product_InformationState extends State<Product_Information> {
                       ),
                     ),
 
-                    SizedBox(height: 20,),
+                    SizedBox(height: 10,),
 
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0),
+                      child: Text("${product_name}", style:TextStyle(
+
+                          fontWeight: FontWeight.w600,
+                          color:Colors.grey[300],
+                        fontSize:18
+
+                      )),
+                    ),
+
+                    SizedBox(height: 10,),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0),
+                      child: Text("About :", style:TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color:Colors.grey[300],
+                          fontSize:18
+                      )),
+                    ),
+                    SizedBox(height: 10,),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       child: Row(
@@ -266,7 +310,7 @@ class _Product_InformationState extends State<Product_Information> {
                             width: MediaQuery.of(context).size.width-10 ,
                             child: Padding(
                               padding: const EdgeInsets.only(left:16.0),
-                              child: Text("Best selling ${product_name} with ${product_description}",
+                              child: Text("${product_description}",
 
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -280,18 +324,110 @@ class _Product_InformationState extends State<Product_Information> {
                         ],
                       ),
                     ),
+
+                    SizedBox(height: 10,),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0),
+                      child: Text("Purchase a Maximum of 10 products at a Go",   style: TextStyle(
+
+                        fontWeight: FontWeight.w600,
+                        color:Colors.grey[600],
+
+                      ),),
+                    ),
+
                     SizedBox(height: 30,),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0),
+                      child: Text("Wholesale Price",   style: TextStyle(
+
+                        fontWeight: FontWeight.w600,
+                        color:Colors.grey[600],
+
+                      ),),
+                    ),
+
+                    SizedBox(height:10),
+
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left:16.0),
+                          child:product_price.contains("_")?
+                          Text("${product_price.split("_")[1]} ${  product_price.split("_")[0]}",
+
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color:Colors.grey[600],
+                              fontSize: 18
+                            ),
+                          ):  Text("NOT SET ${product_price}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color:Colors.grey[600],
+                                fontSize: 18
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(width:10),
+
+                        Text("Equal To",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color:Colors.grey[600],
+                              fontSize: 18
+                          ),
+                        ),
+
+                        SizedBox(width:10),
+                        Padding(
+                          padding: const EdgeInsets.only(left:16.0),
+                          child:product_price.contains("_")?
+                          product_price.split("_")[1] == "USD"?
+                          Text("kES ${
+                              (double.parse( product_price.split("_")[0])*double.parse(exchange_rate!)).toStringAsFixed(3)
+                                  }",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color:Colors.grey[600],
+                              fontSize: 18
+                            ),
+                          ):Text("KES ${
+                                      (double.parse( product_price.split("_")[0])*double.parse(exchange_rate!)).toStringAsFixed(3)
+                                  }",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color:Colors.grey[600],
+                                        fontSize: 18
+                                    ),
+                                  ) : Text("NOT SET ${product_price}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color:Colors.grey[600],
+                                fontSize: 18
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height:50),
+
                     Padding(
                       padding: const EdgeInsets.only(left:16.0),
-                      child: Text("USD ${product_price}",
-
+                      child:
+                      Text("Exchange Rate ${exchange_rate}",
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color:Colors.grey[600],
-                          fontSize: 18
+                            fontWeight: FontWeight.w600,
+                            color:Colors.grey[600],
+                            fontSize: 18
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -303,7 +439,7 @@ class _Product_InformationState extends State<Product_Information> {
                   width: MediaQuery.of(context).size.width,
                   height: 60,
                   decoration: BoxDecoration(
-                      color: Colors.white
+                      color: Colors.black
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left:16.0, right:16.0, bottom: 16.0),
@@ -340,13 +476,10 @@ class _Product_InformationState extends State<Product_Information> {
                                 ),
                               ),
                             ),
-
                           ),
                         ),
-
                         InkWell(
                           onTap: (){
-
                             Navigator.of(context).push(
                                 MaterialPageRoute
                                   (builder: (context)=>Edit_Item(
@@ -362,7 +495,7 @@ class _Product_InformationState extends State<Product_Information> {
                             height: 55,
                             decoration: BoxDecoration(
                                 borderRadius:BorderRadius.all( Radius.circular(30), ),
-                                color: Colors.deepOrange
+                                color: Colors.grey[700]
                             ),
                             child: Center(
                               child: Text("Edit Product",
@@ -386,7 +519,7 @@ class _Product_InformationState extends State<Product_Information> {
                   width: MediaQuery.of(context).size.width,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white
+                    color: Colors.black
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left:16.0, right:16.0, bottom: 16.0),
@@ -405,14 +538,20 @@ class _Product_InformationState extends State<Product_Information> {
                                   email_user: user_email,
                                   sender_name:sender_name,
                                   opponent_name: opponent_name,
-                                  auth_email:user_email,)));
+                                  auth_email:user_email,
+                                  product_id: product_id,
+                                  product_name: product_name,
+                                  product_photo: photosLinks.length >0 ?photosLinks[0]:"",
+                                  product_description: product_description,
+                                  product_price: product_price,
+                                )));
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width *0.45,
                             height: 55,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Colors.grey[800]!,
+                                  color: Colors.grey[700]!,
 
                               ),
                                 borderRadius:BorderRadius.all( Radius.circular(30), ),
@@ -443,7 +582,7 @@ class _Product_InformationState extends State<Product_Information> {
                             height: 55,
                             decoration: BoxDecoration(
                                 borderRadius:BorderRadius.all( Radius.circular(30), ),
-                                color: Colors.deepOrange
+                                color: Colors.grey[800]
                             ),
                             child: Center(
                               child: Text("View Wholesaler",

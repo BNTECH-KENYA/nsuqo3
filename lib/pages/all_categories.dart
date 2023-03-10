@@ -16,7 +16,7 @@ class _All_CategoriesState extends State<All_Categories> {
     return Scaffold(
 
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         leading: Icon(Icons.arrow_back, color:Colors.white),
        title:Text(
           'All categories',

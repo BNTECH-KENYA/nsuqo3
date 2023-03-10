@@ -21,6 +21,7 @@ import '../models/subsubcategory_model.dart';
 import '../widgets/add_product_photos.dart';
 
 class Add_Products_Catalogue extends StatefulWidget {
+
   const Add_Products_Catalogue({Key? key,
   required this.location,
   required this.user_email,
@@ -31,9 +32,23 @@ class Add_Products_Catalogue extends StatefulWidget {
 
   @override
   State<Add_Products_Catalogue> createState() => _Add_Products_CatalogueState();
+
 }
 
 class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
+
+
+  _Add_Products_CatalogueState(){
+    _selectedVal = _warrant_length[0];
+    _selectedVal2 = _curr_length[0];
+
+  }
+
+  final  _curr_length = ["KES", "USD"];
+  String  _selectedVal2 = "KES";
+
+  final  _warrant_length = ["days", "months", "years"];
+  String ? _selectedVal = "days";
 
   bool isLoading = false;
   late String document_id;
@@ -123,9 +138,9 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
       "subcategory": _subcategory,
       "subsubcategory": _subsubcategory,
       "productdescription": _productdescription.text.toString(),
-      "productprice": _productprice.text.toString(),
+      "productprice": _productprice.text.toString()+"_"+_selectedVal2,
       "availability": _availablility,
-      "warrantperiod": _warrantperiod.text.toString(),
+      "warrantperiod": _warrantperiod.text.toString() +"_"+ _selectedVal!,
       "noofclicks": "0",
       "moq": _moq.text.toString(),
       "partno": _partno.text.toString(),
@@ -201,15 +216,15 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ) : Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.black,
           leading: InkWell(
               onTap:(){
 
@@ -232,26 +247,28 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
               Text("Enter  Product Name", style:TextStyle(
 
-                color:Colors.grey[800],
+                color:Colors.grey[200],
                 fontWeight: FontWeight.w400,
                 fontSize:16
               )),
+
               SizedBox(height: 10,),
 
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 40,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
                     color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 4, bottom: 4),
                   child: TextField(
 
+                    keyboardType: TextInputType.multiline,
                     controller: _productname,
                     decoration: InputDecoration(
                         hintText: 'Desktop',
@@ -269,13 +286,15 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               ),
 
               SizedBox(height: 20,),
-              Text("Enter  Product part number", style:TextStyle(
 
-                color:Colors.grey[800],
+              Text("Enter Product part number", style:TextStyle(
+
+                color:Colors.grey[200],
                 fontWeight: FontWeight.w400,
                 fontSize:16
 
               )),
+
               SizedBox(height: 10,),
 
               Container(
@@ -286,10 +305,10 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                     color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 4, bottom: 4),
                   child: TextField(
 
                     controller: _partno,
@@ -327,19 +346,23 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   }
                 },
                 child: Row(
+
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
-                    Text("Select Product Category", style:TextStyle(
 
-                        color:Colors.grey[800],
+                    Text("Select Product Category", style:TextStyle(
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
+
                     Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+
                   ],
                 ),
               ),
+
               SizedBox(height: 10,),
 
               Container(
@@ -350,7 +373,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -392,22 +415,24 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                         });
                       }
                     }
-
                 },
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
                     Text("Select Product Subcategory", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
                     Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
                   ],
                 ),
+
               ),
+
               SizedBox(height: 10,),
 
               Container(
@@ -418,7 +443,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -460,13 +485,14 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                     }
 
                 },
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
                     Text("Select Product Subcategory", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -474,6 +500,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   ],
                 ),
               ),
+
               SizedBox(height: 10,),
 
               Container(
@@ -484,7 +511,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -503,7 +530,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
               Text("Enter Product Description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -518,7 +545,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 2.0, bottom: 2),
@@ -545,87 +572,129 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               ),
 
               SizedBox(height: 20,),
-              Text("Enter  Product Price(USD)", style:TextStyle(
+              Text("Enter  Product Price", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
 
               SizedBox(height: 10,),
 
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    controller: _productprice,
-                    decoration: InputDecoration(
-                        hintText: '2000',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width-120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Colors.grey[500]!
+                      ),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    cursorColor: Colors.grey[500],
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _productprice,
+                        decoration: InputDecoration(
+                            hintText: '2000',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
 
+                            ),
+                            border: InputBorder.none
+                        ),
+                        cursorColor: Colors.grey[500],
+
+                      ),
+
+                    ),
                   ),
+                  SizedBox(width:5),
 
-                ),
+                  DropdownButton(
+                      value:_selectedVal2,
+                      items: _curr_length.map(
+                              (e) => DropdownMenuItem(child: Text(e, style: TextStyle(
+                                  color: Colors.grey[200]
+                              )), value: e,)
+                      ).toList(),
+                      onChanged: (val){
+
+                        setState((){
+                          _selectedVal2 = val as String;
+                        });
+
+                      }),
+                ],
               ),
 
               SizedBox(height: 20,),
 
               Text("Enter  Warrant Period", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
 
               SizedBox(height: 10,),
 
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-
-                    keyboardType: TextInputType.number,
-                    controller: _warrantperiod,
-                    decoration: InputDecoration(
-                        hintText: 'warrant period',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width-125,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Colors.grey[500]!
+                      ),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    cursorColor: Colors.grey[500],
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                      child: TextField(
 
+                        keyboardType: TextInputType.number,
+                        controller: _warrantperiod,
+                        decoration: InputDecoration(
+                            hintText: 'warrant period',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+
+                            ),
+                            border: InputBorder.none
+                        ),
+                        cursorColor: Colors.grey[500],
+
+                      ),
+
+                    ),
                   ),
+                  SizedBox(width:10),
 
-                ),
+                  DropdownButton(
+                      value:_selectedVal,
+                      items: _warrant_length.map(
+                              (e) => DropdownMenuItem(child: Text(e, style: TextStyle(
+                                color: Colors.grey[200]
+                              ),), value: e,)
+                      ).toList(),
+                      onChanged: (val){
+
+                        setState((){
+                          _selectedVal = val as String;
+                        });
+
+                      }),
+
+
+                ],
               ),
 
               SizedBox(height: 20,),
@@ -656,7 +725,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   children: [
                     Text("Select  Availability", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -676,7 +745,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[400]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -696,7 +765,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               SizedBox(height: 20,),
               Text("(MOQ) Minimum Order Quantity", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -711,7 +780,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
 
                 child: Padding(
@@ -740,7 +809,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
             _filters_params_model.brand? Text("Enter Brand Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -754,7 +823,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -780,7 +849,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
               _filters_params_model.package? Text("Enter package Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -820,7 +889,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
               _filters_params_model.partner? Text("Enter partner Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -834,7 +903,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -859,7 +928,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               _filters_params_model.partner? SizedBox( height: 20,): Container(),
               _filters_params_model.processor? Text("Enter processor description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -873,7 +942,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -898,7 +967,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               _filters_params_model.processor? SizedBox( height: 20,): Container(),
               _filters_params_model.ram? Text("Enter ram description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -912,7 +981,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -937,7 +1006,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               _filters_params_model.ram? SizedBox( height: 20,): Container(),
               _filters_params_model.resolution? Text("Enter resolution description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -951,7 +1020,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -976,7 +1045,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               _filters_params_model.resolution? SizedBox( height: 20,): Container(),
               _filters_params_model.screen? Text("Enter screen description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -990,7 +1059,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1012,12 +1081,11 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                 ),
               ):Container(),
 
-
               _filters_params_model.screen? SizedBox( height: 20,): Container(),
 
               _filters_params_model.screensize? Text("Enter screensize description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1031,7 +1099,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1056,7 +1124,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               _filters_params_model.screensize? SizedBox( height: 20,): Container(),
               _filters_params_model.size?Text("Enter size description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1070,7 +1138,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1095,7 +1163,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
               _filters_params_model.screensize? SizedBox( height: 20,): Container(),
               _filters_params_model.storage? Text("Enter storage description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1163,8 +1231,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Add Product Photo\n (optional max 2)", style:TextStyle(
-
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -1185,6 +1252,15 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
                   return Product_Photos(
                        path: photoFiles![index].path,
+                    fun: (){
+
+                        setState(
+                            (){
+                              photoFiles!.remove(photoFiles![index].path);
+                            }
+                        );
+                    },
+
                   );
 
                 }
@@ -1227,6 +1303,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
                     Toast.show("Enter Availability".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
+
                   }
 
                   else if(_moq.text.toString().trim().isEmpty)
@@ -1234,6 +1311,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
                     Toast.show("Enter Minimum Availability Quantity".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
+
                   }
 
                   else if(_partno.text.toString().trim().isEmpty)
@@ -1248,6 +1326,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
                     Toast.show("Select SubCategory".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
+
                   }
 
                   else if(photoFiles == null)
@@ -1255,6 +1334,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                       setState(() {
                         isLoading = true;
                       });
+
                       String groupServiceId = await uploadingItemData();
 
                       setState(
@@ -1277,6 +1357,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                     setState(() {
                       isLoading = true;
                     });
+
                     String groupServiceId = await uploadingItemData();
                     for (var image in photoFiles!)
                     {
@@ -1310,13 +1391,13 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 50,
+                  height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.deepOrange,
+                    color: Colors.grey[700],
                     border: Border.all(
                         color: Colors.grey[500]!
                     ),
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Center(
                       child: Text("Save Product", style: TextStyle(
@@ -1325,8 +1406,6 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                         fontSize: 16
                       ),),
                     )
-
-
                 ),
               ),
 

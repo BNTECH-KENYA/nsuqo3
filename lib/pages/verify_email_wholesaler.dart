@@ -164,9 +164,9 @@ class _Verify_Email_WholeSalerState extends State<Verify_Email_WholeSaler> {
                         width: MediaQuery.of(context).size.width,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.deepOrange,
+                          color:  Colors.grey[700]!,
                           border: Border.all(
-                              color: Colors.deepOrange
+                              color:  Colors.grey[700]!
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),

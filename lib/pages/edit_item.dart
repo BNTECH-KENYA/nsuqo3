@@ -25,14 +25,20 @@ class Edit_Item extends StatefulWidget {
 
   @override
   State<Edit_Item> createState() => _Edit_ItemState();
+
 }
 
 class _Edit_ItemState extends State<Edit_Item> {
 
+  _Edit_ItemState(){
+    _selectedVal = _warrant_length[0];
+  }
+
   bool isLoading = true;
-   String document_id = "";
+  String document_id = "";
 
   final storage _storage = storage();
+
 
   TextEditingController _productname = TextEditingController();
   TextEditingController _productdescription = TextEditingController();
@@ -50,6 +56,7 @@ class _Edit_ItemState extends State<Edit_Item> {
   TextEditingController _partner = TextEditingController();
   TextEditingController _resolution = TextEditingController();
   TextEditingController _ram = TextEditingController();
+
 
   List<File> ? photoFiles;
   List<String> ? fileDownloadUris= [];
@@ -97,6 +104,8 @@ class _Edit_ItemState extends State<Edit_Item> {
   String package = "";
   String size ="";
 
+  final  _warrant_length = ["days", "months", "years"];
+  String ? _selectedVal = "days";
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -119,7 +128,7 @@ class _Edit_ItemState extends State<Edit_Item> {
       "productdescription": _productdescription.text.toString(),
       "productprice": _productprice.text.toString(),
       "availability": _availablility,
-      "warrantperiod": _warrantperiod.text.toString(),
+      "warrantperiod": _warrantperiod.text.toString() +"_"+ _selectedVal!,
       "noofclicks": "0",
       "moq": _moq.text.toString(),
       "partno": _partno.text.toString(),
@@ -135,8 +144,8 @@ class _Edit_ItemState extends State<Edit_Item> {
       "partner":_partner.text.toString(),
       "package":_package.text.toString(),
       "size":_size.text.toString(),
-      "filters_params":{
 
+      "filters_params":{
         "availability":_filters_params_model.availability,
         "warrant_period":_filters_params_model.warrant_period,
         "moq": _filters_params_model.moq,
@@ -196,7 +205,8 @@ class _Edit_ItemState extends State<Edit_Item> {
 
                     _productname.text = res.data()!['productname'];
                    _productdescription.text =res.data()!['productdescription'];
-                   _warrantperiod.text= res.data()!['warrantperiod'];
+                   _warrantperiod.text=res.data()!['warrantperiod'].contains("_")? res.data()!['warrantperiod'].split("_")[0]:res.data()!['warrantperiod'];
+                   _selectedVal =res.data()!['warrantperiod'].contains("_")? res.data()!['warrantperiod'].split("_")[1]: "days";
                    _productprice.text = res.data()!['productprice'];
                    _moq.text =res.data()!['moq'];
                    _partno.text =res.data()!['partno'];
@@ -258,15 +268,15 @@ class _Edit_ItemState extends State<Edit_Item> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ) : Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.black,
           leading: InkWell(
               onTap:(){
 
@@ -276,7 +286,7 @@ class _Edit_ItemState extends State<Edit_Item> {
           title:Text(
             'Edit Product',
             style: TextStyle(
-                color:Colors.white
+                color:Colors.grey[200]
             ),
           )
       ),
@@ -289,7 +299,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               Text("Enter  Product Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -303,7 +313,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -328,7 +338,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               SizedBox(height: 20,),
               Text("Enter  Product part number", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
 
@@ -343,7 +353,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -389,7 +399,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   children: [
                     Text("Select Product Category", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -407,7 +417,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -457,7 +467,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   children: [
                     Text("Select Product Subcategory", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -475,7 +485,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -523,7 +533,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   children: [
                     Text("Select Product Subcategory", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -541,7 +551,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -560,7 +570,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               Text("Enter Product Description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -575,7 +585,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 2.0, bottom: 2),
@@ -602,7 +612,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               SizedBox(height: 20,),
               Text("Enter  Product Price(USD)", style:TextStyle(
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -617,7 +627,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -644,43 +654,63 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               Text("Enter  Warrant Period", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
 
               SizedBox(height: 10,),
 
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: TextField(
-
-                    keyboardType: TextInputType.number,
-                    controller: _warrantperiod,
-                    decoration: InputDecoration(
-                        hintText: 'warrant period',
-                        hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-
-                        ),
-                        border: InputBorder.none
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width-125,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: Colors.grey[500]!
+                      ),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    cursorColor: Colors.grey[500],
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                      child: TextField(
 
+                        keyboardType: TextInputType.number,
+                        controller: _warrantperiod,
+                        decoration: InputDecoration(
+                            hintText: 'warrant period',
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+
+                            ),
+                            border: InputBorder.none
+                        ),
+                        cursorColor: Colors.grey[500],
+
+                      ),
+
+                    ),
                   ),
+                  SizedBox(width:10),
 
-                ),
+                  DropdownButton(
+                      value:_selectedVal,
+                      items: _warrant_length.map(
+                      (e) => DropdownMenuItem(child: Text(e), value: e,)
+                  ).toList(),
+                      onChanged: (val){
+
+                    setState((){
+                      _selectedVal = val as String;
+                    });
+
+                      }),
+
+
+                ],
               ),
 
               SizedBox(height: 20,),
@@ -709,9 +739,9 @@ class _Edit_ItemState extends State<Edit_Item> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
-                    Text("Select  Availability", style:TextStyle(
+                    Text("Select Availability", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
@@ -731,7 +761,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -751,7 +781,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               SizedBox(height: 20,),
               Text("(MOQ) Minimum Order Quantity", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -766,7 +796,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
 
                 child: Padding(
@@ -795,7 +825,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               _filters_params_model.brand? Text("Enter Brand Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -809,7 +839,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -875,7 +905,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               _filters_params_model.partner? Text("Enter partner Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -889,7 +919,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -914,7 +944,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               _filters_params_model.partner? SizedBox( height: 20,): Container(),
               _filters_params_model.processor? Text("Enter processor description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -928,7 +958,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -953,7 +983,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               _filters_params_model.processor? SizedBox( height: 20,): Container(),
               _filters_params_model.ram? Text("Enter ram description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -967,7 +997,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -992,7 +1022,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               _filters_params_model.ram? SizedBox( height: 20,): Container(),
               _filters_params_model.resolution? Text("Enter resolution description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1006,7 +1036,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1031,7 +1061,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               _filters_params_model.resolution? SizedBox( height: 20,): Container(),
               _filters_params_model.screen? Text("Enter screen description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1045,7 +1075,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1072,7 +1102,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               _filters_params_model.screensize? Text("Enter screensize description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1086,7 +1116,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1111,7 +1141,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               _filters_params_model.screensize? SizedBox( height: 20,): Container(),
               _filters_params_model.size?Text("Enter size description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1125,7 +1155,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1150,7 +1180,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               _filters_params_model.screensize? SizedBox( height: 20,): Container(),
               _filters_params_model.storage? Text("Enter storage description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1164,7 +1194,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1192,7 +1222,7 @@ class _Edit_ItemState extends State<Edit_Item> {
 
               Text("Prevously Uploaded photos", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )
@@ -1218,7 +1248,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                                 color: Colors.grey[500]!
                             ),
 
-                            borderRadius:BorderRadius.all( Radius.circular(2), ),
+                            borderRadius:BorderRadius.all( Radius.circular(20), ),
                             image: DecorationImage(
                               image: NetworkImage(photoLinksin![index]),
                               fit:BoxFit.contain,
@@ -1251,7 +1281,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                                       });
                                       
                                     },
-                                    child: Icon(Icons.delete, color: Colors.red,))),
+                                    child: Icon(Icons.delete, color: Colors.grey[700],))),
                           ],
                         ),
                       );
@@ -1299,15 +1329,14 @@ class _Edit_ItemState extends State<Edit_Item> {
                   children: [
                     Text("Add new photos\n (optional max ${max_photos})", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.edit_sharp, size: 30, color:Colors.grey[600]),
+                    Icon(Icons.edit_sharp, size: 30, color:Colors.grey[200]),
                   ],
                 ),
               ),
-
 
               SizedBox(height: 10,),
 
@@ -1319,12 +1348,21 @@ class _Edit_ItemState extends State<Edit_Item> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (BuildContext context, int index) {
 
+
                       return Product_Photos(
                         path: photoFiles![index].path,
+                        fun: (){
+
+                          setState(
+                                  (){
+                                photoFiles!.remove(photoFiles![index].path);
+                              }
+                          );
+
+                        },
                       );
 
                     }
-
                 ),
               ),
 
@@ -1371,19 +1409,24 @@ class _Edit_ItemState extends State<Edit_Item> {
                     Toast.show("Enter Minimum Availability Quantity".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
                   }
-
                   else if(_partno.text.toString().trim().isEmpty)
                   {
 
                     Toast.show("Enter Product Part Number".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
                   }
-
                   else if(_subcategory.isEmpty)
                   {
 
                     Toast.show("Select SubCategory".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
+                  }
+                  else if(_selectedVal == null)
+                  {
+
+                    Toast.show("Select value".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+
                   }
 
                   else if(photoFiles == null)
@@ -1407,7 +1450,6 @@ class _Edit_ItemState extends State<Edit_Item> {
                     );
 
                   }
-
                   else{
 
                     setState(() {
@@ -1462,12 +1504,11 @@ class _Edit_ItemState extends State<Edit_Item> {
                           ),
                         };
 
-                        await db.collection("products").doc(groupServiceId).update(dataupdate)
+                        await db.collection("products").doc(widget.doc_ic).update(dataupdate)
                             .then((value) {
                           setState(
                                   (){
                                 isLoading = false;
-
                               }
                           );
 
@@ -1504,7 +1545,9 @@ class _Edit_ItemState extends State<Edit_Item> {
                 ),
               ),
 
+
               SizedBox(height: 20,),
+
 
             ],
           ),

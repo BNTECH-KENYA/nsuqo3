@@ -20,7 +20,7 @@ class _Screen_SizeState extends State<Screen_Size> {
 
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.black,
         leading: Icon(Icons.arrow_back, color:Colors.white),
         title: Text("Screen Size:"),
       ),

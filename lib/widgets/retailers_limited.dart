@@ -14,7 +14,10 @@ class Retailers_view_products extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 150,
+
         child: Card(
+          color: Colors.grey[900],
+          shadowColor: Colors.white,
           child: Stack(
 
             children: [
@@ -40,20 +43,31 @@ class Retailers_view_products extends StatelessWidget {
 
                         CircleAvatar(
 
-                            backgroundColor: Colors.deepOrange,
-                            child:Text(retailer_model.retailer_name[0], style: TextStyle(color: Colors.white),)
+                          radius: 30,
+                            backgroundColor: Colors.grey[700],
+                            child:Text(retailer_model.retailer_name[0],
+                              style: TextStyle(color: Colors.white),)
                         ),
                         SizedBox(width: 10,),
                         Container(
-                          width: MediaQuery.of(context).size.width-90,
+                          width: MediaQuery.of(context).size.width-110,
                           height: 150,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(retailer_model.retailer_name),
-                              Text(retailer_model.retailer_email),
-                              Text(retailer_model.company_name),
-                              Text(retailer_model.retailer_phonenumber),
+                              SizedBox(height:20),
+                              Text(retailer_model.retailer_name, style: TextStyle(
+                                color:Colors.grey[200]
+                              ),),
+                              Text(retailer_model.retailer_email, style: TextStyle(
+                                  color:Colors.grey[200]
+                              ),),
+                              Text(retailer_model.company_name,  style: TextStyle(
+                                  color:Colors.grey[200]
+                              )),
+                              Text(retailer_model.retailer_phonenumber, style: TextStyle(
+                                  color:Colors.grey[200]
+                              )),
                             ],
                           ),
                         )

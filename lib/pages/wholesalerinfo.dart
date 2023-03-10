@@ -131,6 +131,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                   wholesalerid = res.id;
                   contact_details = res.data()!['contact_details'];
                   company_name = res.data()!['company_name'];
+                  opponent_name = res.data()!['company_name'];
                   location = res.data()!['location'];
                   payment_details_terms = res.data()!['payment_detailsterms'];
                   market_coverage = res.data()!['market_coverage'];
@@ -165,14 +166,13 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ): Scaffold(
-
-
+      backgroundColor: Colors.black,
       body:SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left:16.0, right:16.0),
@@ -189,9 +189,9 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             Navigator.pop(context);
                           },
 
-                          child: Icon(Icons.arrow_back,  color:Colors.deepOrange, size:30)),
+                          child: Icon(Icons.arrow_back,  color:Colors.grey[200], size:30)),
                       Text("${company_name}", style:TextStyle(
-                        color: Colors.deepOrange,
+                        color:Colors.grey[200],
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
@@ -211,7 +211,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             children: [
                               Container(
                                 width: 40,
-                                child: Icon(Icons.book, size: 25, color: Colors.deepOrange,),
+                                child: Icon(Icons.book, size: 25, color:Colors.grey[200],),
 
                               ),
 
@@ -225,7 +225,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                   children: [
 
                                     Text("About Us", style:TextStyle(
-                                      color: Colors.deepOrange,
+                                      color: Colors.grey[200],
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                     )),
@@ -235,7 +235,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     Container(
                                       width: MediaQuery.of(context).size.width-122,
                                       child: Text("${business_description}", style:TextStyle(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[300],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
@@ -256,7 +256,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             children: [
                               Container(
                                 width: 40,
-                                child: Icon(Icons.payment, size: 25, color: Colors.deepOrange,),
+                                child: Icon(Icons.payment, size: 25, color: Colors.grey[200],),
 
                               ),
 
@@ -270,7 +270,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                   children: [
 
                                     Text("Payment Details And Terms", style:TextStyle(
-                                      color: Colors.deepOrange,
+                                      color: Colors.grey[200],
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                     )),
@@ -280,7 +280,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     payment_details_terms.length == 1?   Container(
                                       width: MediaQuery.of(context).size.width-122,
                                       child: Text("${payment_details_terms[0]}", style:TextStyle(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[300],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
@@ -288,7 +288,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     payment_details_terms.length == 2?   Container(
                                       width: MediaQuery.of(context).size.width-122,
                                       child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]}", style:TextStyle(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[300],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
@@ -296,7 +296,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     payment_details_terms.length == 3?   Container(
                                       width: MediaQuery.of(context).size.width-122,
                                       child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]} \n  ${payment_details_terms[2]}", style:TextStyle(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[300],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
@@ -317,7 +317,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             children: [
                               Container(
                                 width: 40,
-                                child: Icon(Icons.bubble_chart_outlined, size: 25, color: Colors.deepOrange,),
+                                child: Icon(Icons.bubble_chart_outlined, size: 25, color: Colors.grey[200],),
 
                               ),
 
@@ -339,7 +339,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text("View Our Products", style:TextStyle(
-                                        color: Colors.deepOrange,
+                                          color: Colors.grey[200],
                                         fontSize: 15,
                                         fontWeight: FontWeight.w700,
                                       )),
@@ -349,7 +349,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                       Container(
                                         width: MediaQuery.of(context).size.width-122,
                                         child: Text("${distribution_category}", style:TextStyle(
-                                          color: Colors.grey[500],
+                                          color: Colors.grey[300],
                                           fontSize: 13,
                                           fontWeight: FontWeight.w500,
                                         )),
@@ -372,7 +372,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             children: [
                               Container(
                                 width: 40,
-                                child: Icon(Icons.access_time_filled_sharp, size: 25, color: Colors.deepOrange,),
+                                child: Icon(Icons.access_time_filled_sharp, size: 25, color: Colors.grey[200],),
 
                               ),
 
@@ -385,7 +385,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text("Working Hours", style:TextStyle(
-                                      color: Colors.deepOrange,
+                                      color: Colors.grey[200],
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                     )),
@@ -395,7 +395,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     Container(
                                       width: MediaQuery.of(context).size.width-122,
                                       child: Text("open: ${working_hours.split("-")[0]} \n close: ${working_hours.split("-")[1]}", style:TextStyle(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[300],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
@@ -417,7 +417,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             children: [
                               Container(
                                 width: 40,
-                                child: Icon(Icons.location_on, size: 25, color: Colors.deepOrange,),
+                                child: Icon(Icons.location_on, size: 25, color: Colors.grey[200],),
 
                               ),
 
@@ -430,7 +430,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text("Location", style:TextStyle(
-                                      color: Colors.deepOrange,
+                                      color: Colors.grey[200],
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                     )),
@@ -440,7 +440,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                     Container(
                                       width: MediaQuery.of(context).size.width-122,
                                       child: Text("located in:${location}", style:TextStyle(
-                                        color: Colors.grey[500],
+                                        color: Colors.grey[300],
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                       )),
@@ -463,7 +463,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                             children: [
                               Container(
                                 width: 40,
-                                child: Icon(Icons.call, size: 25, color: Colors.deepOrange,),
+                                child: Icon(Icons.call, size: 25, color: Colors.grey[200],),
 
                               ),
 
@@ -476,7 +476,7 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text("Contact us", style:TextStyle(
-                                      color: Colors.deepOrange,
+                                      color: Colors.grey[200],
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                     )),
@@ -501,9 +501,9 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                             },
                                             child: Row(
                                               children: [
-                                                Icon(Icons.email,color: Colors.grey[500], ),
+                                                Icon(Icons.email,color: Colors.grey[200], ),
                                                 Text(" : ${email}", style:TextStyle(
-                                                  color: Colors.grey[500],
+                                                  color: Colors.grey[300],
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
                                                 )),
@@ -520,9 +520,9 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                             },
                                             child: Row(
                                               children: [
-                                                Icon(Icons.call,color: Colors.grey[500], ),
+                                                Icon(Icons.call,color: Colors.grey[200], ),
                                                 Text(" : ${contact_details}", style:TextStyle(
-                                                  color: Colors.grey[500],
+                                                  color: Colors.grey[300],
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
                                                 )),
@@ -547,22 +547,26 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute
                                                       (builder: (context)=>Chat_Page(
+                                                      product_name: product_name,
+                                                      product_photo: photosLinks[0],
+                                                      product_description: product_description,
+                                                      product_price: product_price,
                                                       wholesaler_id: widget.wholesalerid,
                                                       retailer_id:retailer_id ,
                                                       email_reciever:email_reciever ,
                                                       email_user: user_email,
                                                       sender_name:sender_name,
                                                       opponent_name: opponent_name,
-                                                      auth_email:user_email,)));
+                                                      auth_email:user_email, product_id: "not",)));
 
                                               }
 
                                             },
                                             child: Row(
                                               children: [
-                                                Icon(Icons.message,color: Colors.grey[500], ),
+                                                Icon(Icons.message,color: Colors.grey[200], ),
                                                 Text(" : Leave a message", style:TextStyle(
-                                                  color: Colors.grey[500],
+                                                  color: Colors.grey[300],
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
                                                 )),

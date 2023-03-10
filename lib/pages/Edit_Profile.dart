@@ -15,10 +15,8 @@ import '../models/categories_model.dart';
 
 class Edit_Profile extends StatefulWidget {
   const Edit_Profile({Key? key}) : super(key: key);
-
   @override
   State<Edit_Profile> createState() => _Edit_ProfileState();
-
 }
 
 class _Edit_ProfileState extends State<Edit_Profile> {
@@ -28,6 +26,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
   TextEditingController _marketcoverage = TextEditingController();
   TextEditingController _wholesalerPhoneNumber = TextEditingController();
   TextEditingController _wholesaleremail = TextEditingController();
+  TextEditingController exchange_rate = TextEditingController();
 
   bool credit_card = false;
   bool mobilemoney = false;
@@ -76,14 +75,13 @@ class _Edit_ProfileState extends State<Edit_Profile> {
               payment_details_terms = res.data()!['payment_detailsterms'];
               _marketcoverage.text = res.data()!['market_coverage'];
               distributioncat = res.data()!['distribution_category'];
-
+              res.data()!.containsKey("exchange_rate")?  exchange_rate.text = res.data()!['exchange_rate'].toString(): exchange_rate.text = "0";
               start_hours = "${working_hours.split("-")[0]}";
               stop_hours = "${working_hours.split("-")[1]}";
 
               if(payment_details_terms.contains("Cash")) cash = true;
               if(payment_details_terms.contains("Mobile Money")) mobilemoney = true;
               if(payment_details_terms.contains("Credit Card")) credit_card = true;
-
 
               isLoading = false;
 
@@ -152,17 +150,17 @@ class _Edit_ProfileState extends State<Edit_Profile> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
     ):
     Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
 
       appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.black,
           leading: InkWell(
               onTap: (){
                 Navigator.pop(context);
@@ -188,7 +186,12 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
                 );
               },
-                child: Icon(Icons.logout_sharp, color: Colors.white,)),
+                child: Padding(
+                  padding: const EdgeInsets.only(right:10.0, top:10),
+                  child: Text("Sign Out" , style:TextStyle(
+                      color: Colors.white
+                  ),),
+                )),
           )
         ],
       ),
@@ -202,7 +205,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Company Name", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -216,7 +219,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -243,7 +246,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Business Description", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -258,7 +261,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 2.0, bottom: 2),
@@ -305,11 +308,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   children: [
                     Text("Your Location", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.location_on_outlined, size: 20, color: Colors.grey[500],)
+                    Icon(Icons.location_on_outlined, size: 20, color: Colors.grey[300],)
                   ],
                 ),
               ),
@@ -323,7 +326,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -345,7 +348,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Market Coverage", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -360,7 +363,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -386,7 +389,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Payment Details and Terms", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -400,87 +403,105 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   children: [
                     SizedBox(height: 10,),
                     Text("Select Payment Terms", style: TextStyle(
-                        color: Colors.black
+                      color:Colors.grey[200],
                     ),),
                     ListTile(
-                      leading: Checkbox(
-                          value: cash,
-                          onChanged: (val){
+                      leading: Card(
+                        child: Checkbox(
+                            value: cash,
+                            onChanged: (val){
 
-                            setState(() {
-                              cash = !cash;
-                              if(cash == true)
-                              {
-                                if(!payment_details_terms.contains("Cash"))
+                              setState(() {
+                                cash = !cash;
+                                if(cash == true)
                                 {
-                                  payment_details_terms.add("Cash");
+                                  if(!payment_details_terms.contains("Cash"))
+                                  {
+                                    payment_details_terms.add("Cash");
+                                  }
                                 }
-                              }
-                              else
-                              {
-                                if(payment_details_terms.contains("Cash"))
+                                else
                                 {
-                                  payment_details_terms.remove("Cash");
+                                  if(payment_details_terms.contains("Cash"))
+                                  {
+                                    payment_details_terms.remove("Cash");
+                                  }
                                 }
-                              }
 
-                            });
-                          }),
-                      title: Text("Cash"),
+                              });
+                            }),
+                      ),
+                      title: Text("Cash", style:TextStyle(
+
+                            color:Colors.grey[200],
+
+                      )),
                     ),
                     SizedBox(height:5),
                     ListTile(
-                      leading: Checkbox(
-                          value: mobilemoney,
-                          onChanged: (val){
+                      leading:
+                      Card(
+                        child: Checkbox(
+                            value: mobilemoney,
+                            onChanged: (val){
 
-                            setState(() {
-                              mobilemoney = !mobilemoney;
-                              if(mobilemoney == true)
-                              {
-                                if(!payment_details_terms.contains("Mobile Money"))
+                              setState(() {
+                                mobilemoney = !mobilemoney;
+                                if(mobilemoney == true)
                                 {
-                                  payment_details_terms.add("Mobile Money");
+                                  if(!payment_details_terms.contains("Mobile Money"))
+                                  {
+                                    payment_details_terms.add("Mobile Money");
+                                  }
                                 }
-                              }
-                              else
-                              {
-                                if(payment_details_terms.contains("Mobile Money"))
+                                else
                                 {
-                                  payment_details_terms.remove("Mobile Money");
+                                  if(payment_details_terms.contains("Mobile Money"))
+                                  {
+                                    payment_details_terms.remove("Mobile Money");
+                                  }
                                 }
-                              }
 
-                            });
-                          }),
-                      title: Text("Mobile Money"),
+                              });
+                            }),
+                      ),
+                      title: Text("Mobile Money", style:TextStyle(
+                        color:Colors.grey[200],
+
+                      )),
 
                     ),
                     SizedBox(height:5),
                     ListTile(
-                      leading: Checkbox(
-                          value: credit_card,
-                          onChanged: (val){
-                            setState(() {
-                              credit_card = !credit_card;
-                              if(credit_card == true)
-                              {
-                                if(!payment_details_terms.contains("Credit Card"))
+                      leading:
+                      Card(
+                        child: Checkbox(
+                            value: credit_card,
+                            onChanged: (val){
+                              setState(() {
+                                credit_card = !credit_card;
+                                if(credit_card == true)
                                 {
-                                  payment_details_terms.add("Credit Card");
+                                  if(!payment_details_terms.contains("Credit Card"))
+                                  {
+                                    payment_details_terms.add("Credit Card");
+                                  }
                                 }
-                              }
-                              else
-                              {
-                                if(payment_details_terms.contains("Credit Card"))
+                                else
                                 {
-                                  payment_details_terms.remove("Credit Card");
+                                  if(payment_details_terms.contains("Credit Card"))
+                                  {
+                                    payment_details_terms.remove("Credit Card");
+                                  }
                                 }
-                              }
 
-                            });
-                          }),
-                      title: Text("Credit Card"),
+                              });
+                            }),
+                      ),
+                      title: Text("Credit Card", style:TextStyle(
+                        color:Colors.grey[200],
+
+                      )),
 
                     ),
                   ],
@@ -492,7 +513,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Working Hours", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -503,18 +524,18 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.black,
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                     "Select Opening Time below", style: TextStyle(
-                      color: Colors.grey[700]
+                      color: Colors.grey[200]
                   ),
 
                   ),
@@ -550,7 +571,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     border: Border.all(
                         color: Colors.grey[500]!
                     ),
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -577,18 +598,18 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.black,
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                     "Select Closing Time below", style: TextStyle(
-                      color: Colors.grey[700]
+                      color: Colors.grey[200]
                   ),
 
                   ),
@@ -625,7 +646,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     border: Border.all(
                         color: Colors.grey[500]!
                     ),
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -667,11 +688,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   children: [
                     Text("Distribution Category", style:TextStyle(
 
-                        color:Colors.grey[800],
+                        color:Colors.grey[200],
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[300],)
                   ],
                 ),
               ),
@@ -685,13 +706,13 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                    "Computing,  ${distributioncat}", style: TextStyle(
+                    " ${distributioncat}", style: TextStyle(
                       color: Colors.grey[700]
                   ),
 
@@ -705,7 +726,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Enter your PhoneNumber", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -719,7 +740,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -746,7 +767,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Enter your email", style:TextStyle(
 
-                  color:Colors.grey[800],
+                  color:Colors.grey[200],
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -760,7 +781,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -785,6 +806,44 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               SizedBox(height: 20,),
 
+              Text("Exchange Rate", style:TextStyle(
+
+                  color:Colors.grey[200],
+                  fontWeight: FontWeight.w400,
+                  fontSize:16
+              )),
+
+              SizedBox(height: 10,),
+
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      color: Colors.grey[500]!
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                  child: TextField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    controller: exchange_rate,
+                    decoration: InputDecoration(
+                        hintText: '120.00',
+                        hintStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[400],
+                        ),
+                        border: InputBorder.none
+                    ),
+                    cursorColor: Colors.grey[500],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 20,),
 
               InkWell(
                 onTap: () async {
@@ -836,6 +895,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     Toast.show("Pick A location".toString(), context,duration:Toast.LENGTH_SHORT,
                         gravity: Toast.BOTTOM);
                   }
+                  else if(exchange_rate.text == "")
+                  {
+                    Toast.show("Enter Your Exchange Rates USD".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+                  }
 
                   else{
 
@@ -857,6 +921,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                       "market_coverage":_marketcoverage.text,
                       "working_hours":"$start_hours-$stop_hours",
                       "payment_detailsterms":payment_details_terms,
+                      "exchange_rate":exchange_rate.text,
 
                     };
 
@@ -879,13 +944,13 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
                 child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 50,
+                    height:40,
                     decoration: BoxDecoration(
-                      color: Colors.deepOrange,
+                      color: Colors.grey[700],
                       border: Border.all(
                           color: Colors.grey[500]!
                       ),
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Center(
                       child: Text("Save Changes", style: TextStyle(

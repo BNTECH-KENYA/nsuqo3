@@ -200,7 +200,10 @@ class _Sign_Up_WholesalerState extends State<Sign_Up_Wholesaler> {
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
       ),),
-    )  :Scaffold(
+    )
+        :
+
+    Scaffold(
 
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -477,9 +480,9 @@ class _Sign_Up_WholesalerState extends State<Sign_Up_Wholesaler> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color:  Colors.grey[700]!,
                         border: Border.all(
-                            color: Colors.deepOrange
+                            color:  Colors.grey[700]!
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),

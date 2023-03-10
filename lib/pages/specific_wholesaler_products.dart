@@ -36,6 +36,43 @@ class _Wholesaler_ProductsState extends State<Wholesaler_Products> {
 
   bool isLoading= true;
 
+  String ? exchange_rate;
+
+
+  Future<String> getexchangeratedata(email)
+  async {
+    final docref = db.collection("userdd").doc(email);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+
+        if(res.data()!['fname'] != "")
+        {
+          if(res.data()!['approved'] == "approved"){
+            setState(
+                    (){
+
+
+                  exchange_rate = res.data()!.containsKey("exchange_rate")?  res.data()!["exchange_rate"]: "0";
+                  isLoading = false;
+
+                }
+            );
+            return exchange_rate;
+          }
+
+          return "0";
+        }
+
+        return "0";
+      }
+
+    });
+    return "0";
+
+  }
+
 
   Future<void> get_Products() async {
 
@@ -43,8 +80,9 @@ class _Wholesaler_ProductsState extends State<Wholesaler_Products> {
     final service_listings = db.collection("products")
         .where("wholesalerid", isEqualTo: widget.wholesaler_id);
 
-    await service_listings.get().then((ref) {
+    await service_listings.get().then((ref) async {
       print("redata 1 &****************************${ref.docs}");
+      exchange_rate = await getexchangeratedata(widget.wholesaler_id);
       setState(
               () {
 
@@ -94,7 +132,7 @@ class _Wholesaler_ProductsState extends State<Wholesaler_Products> {
                         screensize: element.data()['filters_params']['screensize'],
                         partner: element.data()['filters_params']['partner'],
                         package: element.data()['filters_params']['package'],
-                        size: element.data()['filters_params']['size']),
+                        size: element.data()['filters_params']['size']), exchange_rate: exchange_rate!,
 
                   )
 
@@ -142,7 +180,7 @@ class _Wholesaler_ProductsState extends State<Wholesaler_Products> {
                         screensize: element.data()['filters_params']['screensize'],
                         partner: element.data()['filters_params']['partner'],
                         package: element.data()['filters_params']['package'],
-                        size: element.data()['filters_params']['size']),
+                        size: element.data()['filters_params']['size']), exchange_rate: exchange_rate!,
 
                   )
 
@@ -354,7 +392,7 @@ class _Wholesaler_ProductsState extends State<Wholesaler_Products> {
       height:MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
           borderRadius:BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15), ),
-          color: Colors.deepOrange
+          color: Colors.black
       ),
       child: Center(child: CircularProgressIndicator(
         backgroundColor: Colors.white,
@@ -505,7 +543,7 @@ class _Wholesaler_ProductsState extends State<Wholesaler_Products> {
                                     MaterialPageRoute
                                       (builder: (context)=>Product_Information(document_id: search_results[index].itemId,)));
                               },
-                              child: Product_Tile(item_model: search_results[index],));
+                              child: Product_Tile(item_model: search_results[index], exchange_rate: search_results[index].exchange_rate,));
 
                         },
                       ),

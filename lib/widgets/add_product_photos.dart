@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Product_Photos extends StatelessWidget {
-  const Product_Photos({Key? key, required this.path}) : super(key: key);
+  const Product_Photos({Key? key, required this.path,required this.fun }) : super(key: key);
   final String path;
+  final Function fun;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,14 @@ class Product_Photos extends StatelessWidget {
           Positioned(
             bottom: 10,
             right: 10,
-            child:  Icon(Icons.remove_circle, size: 30, color:Colors.red),)
+            child:
+            InkWell(
+                onTap:(){
+
+                  fun();
+
+                },
+                child: Icon(Icons.remove_circle, size: 30, color:Colors.white)),)
         ],
       ),
     );

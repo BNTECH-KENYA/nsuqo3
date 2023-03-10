@@ -2,19 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Cat_New_Ui extends StatelessWidget {
+
   const Cat_New_Ui({Key? key, required this.category, required this.imagepath}) : super(key: key);
   final String category,imagepath;
-
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-
       radius: 55,
       backgroundColor: Colors.white,
-
-      child:
-      Center(
+      child: Center(
         child:
         SizedBox(
           height: 80,
@@ -38,14 +35,11 @@ class Cat_New_Ui extends StatelessWidget {
           ),
         ),
       ),
-
     );
   }
 }
 
-
 /*
-
 border design
 
   decoration: BoxDecoration(
