@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/Login/sign_in.dart';
 
 import '../categories_grids.dart';
 import '../models/filters_params.dart';
 import '../models/products_model.dart';
 import 'add_product.dart';
-import 'messanger.dart';
+import 'messanger/messanger_retailer/messanger.dart';
 
 class WholeSaler_Home_Page extends StatefulWidget {
 

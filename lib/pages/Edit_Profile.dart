@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nsuqo/pages/places_picker_ai.dart';
 import 'package:nsuqo/pages/product_category.dart';
-import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/Login/sign_in.dart';
 import 'package:nsuqo/pages/subcategories.dart';
-import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
+import 'package:nsuqo/pages/home/homepagecategories/wholesaler/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
@@ -157,10 +158,10 @@ class _Edit_ProfileState extends State<Edit_Profile> {
       ),),
     ):
     Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
 
       appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: HexColor("#1A434E"),
           leading: InkWell(
               onTap: (){
                 Navigator.pop(context);
@@ -205,7 +206,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Company Name", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -217,9 +218,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -246,7 +247,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Business Description", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -259,9 +260,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 2.0, bottom: 2),
@@ -308,11 +309,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   children: [
                     Text("Your Location", style:TextStyle(
 
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.location_on_outlined, size: 20, color: Colors.grey[300],)
+                    Icon(Icons.location_on_outlined, size: 20, color: HexColor("#1A434E"),)
                   ],
                 ),
               ),
@@ -324,16 +325,16 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                     "${location_data}", style: TextStyle(
-                      color: Colors.grey[700]
+                      color:HexColor("#1A434E"),
                   ),
 
                   ),
@@ -348,7 +349,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Market Coverage", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -361,9 +362,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -389,7 +390,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Payment Details and Terms", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -403,7 +404,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   children: [
                     SizedBox(height: 10,),
                     Text("Select Payment Terms", style: TextStyle(
-                      color:Colors.grey[200],
+                      color:HexColor("#1A434E"),
                     ),),
                     ListTile(
                       leading: Card(
@@ -433,7 +434,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                       ),
                       title: Text("Cash", style:TextStyle(
 
-                            color:Colors.grey[200],
+                            color:HexColor("#1A434E"),
 
                       )),
                     ),
@@ -466,7 +467,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                             }),
                       ),
                       title: Text("Mobile Money", style:TextStyle(
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
 
                       )),
 
@@ -499,7 +500,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                             }),
                       ),
                       title: Text("Credit Card", style:TextStyle(
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
 
                       )),
 
@@ -513,7 +514,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Working Hours", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -524,18 +525,18 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                     "Select Opening Time below", style: TextStyle(
-                      color: Colors.grey[200]
+                      color: HexColor("#1A434E"),
                   ),
 
                   ),
@@ -569,9 +570,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(
-                        color: Colors.grey[500]!
+                        color: HexColor("#1A434E"),
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -580,11 +581,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                       children: [
                         Text(
                           start_hours, style: TextStyle(
-                            color: Colors.grey[700]
+                            color: HexColor("#1A434E"),
                         ),
 
                         ),
-                        Icon(Icons.access_time_rounded,color: Colors.grey[700],size:20),
+                        Icon(Icons.access_time_rounded,color:HexColor("#1A434E"),size:20),
                       ],
                     ),
 
@@ -598,18 +599,18 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: HexColor("#FFFFFF"),
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color:HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                     "Select Closing Time below", style: TextStyle(
-                      color: Colors.grey[200]
+                      color: HexColor("#1A434E"),
                   ),
 
                   ),
@@ -644,9 +645,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(
-                        color: Colors.grey[500]!
+                        color: HexColor("#1A434E"),
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -655,11 +656,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                       children: [
                         Text(
                           stop_hours, style: TextStyle(
-                            color: Colors.grey[700]
+                            color: HexColor("#1A434E"),
                         ),
 
                         ),
-                        Icon(Icons.access_time_rounded,color: Colors.grey[700],size:20),
+                        Icon(Icons.access_time_rounded,color: HexColor("#1A434E"),size:20),
                       ],
                     ),
 
@@ -688,11 +689,11 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                   children: [
                     Text("Distribution Category", style:TextStyle(
 
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[300],)
+                    Icon(Icons.arrow_forward_ios, size: 20, color: HexColor("#1A434E"),)
                   ],
                 ),
               ),
@@ -704,16 +705,16 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                     " ${distributioncat}", style: TextStyle(
-                      color: Colors.grey[700]
+                      color: HexColor("#1A434E"),
                   ),
 
                   ),
@@ -726,7 +727,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Enter your PhoneNumber", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -738,9 +739,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -752,7 +753,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                         hintText: '07xx xxx xxx',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -767,7 +768,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Enter your email", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -779,9 +780,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -808,7 +809,7 @@ class _Edit_ProfileState extends State<Edit_Profile> {
 
               Text("Exchange Rate", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -821,9 +822,9 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E"),
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -946,15 +947,15 @@ class _Edit_ProfileState extends State<Edit_Profile> {
                     width: MediaQuery.of(context).size.width,
                     height:40,
                     decoration: BoxDecoration(
-                      color: Colors.grey[700],
+                      color: HexColor("#1A434E"),
                       border: Border.all(
-                          color: Colors.grey[500]!
+                          color: HexColor("#1A434E"),
                       ),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Center(
                       child: Text("Save Changes", style: TextStyle(
-                          color: Colors.white,
+                          color:HexColor("#FFFFFF"),
                           fontWeight: FontWeight.w700,
                           fontSize: 16
                       ),),

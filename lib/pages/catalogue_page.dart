@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nsuqo/pages/product_information.dart';
+import 'package:nsuqo/pages/product_information/product_information.dart';
 import 'package:toast/toast.dart';
 
 import '../models/filters_params.dart';
 import '../models/products_model.dart';
-import '../widgets/products_tile.dart';
+import 'home/homepageproducts/widgets/products_tile.dart';
 import 'account_approval_wholesaler.dart';
 import 'add_product_from_catalogue.dart';
 import 'create_account_wholesaler.dart';

@@ -4,11 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nsuqo/helpers/storage.dart';
 import 'package:nsuqo/models/categories_model.dart';
 import 'package:nsuqo/models/subcategory_model.dart';
 import 'package:nsuqo/pages/product_category.dart';
-import 'package:nsuqo/pages/product_information.dart';
+import 'package:nsuqo/pages/product_information/product_information.dart';
 import 'package:nsuqo/pages/product_subcategories.dart';
 import 'package:nsuqo/pages/product_subsubcategories.dart';
 import 'package:nsuqo/pages/select_availability.dart';
@@ -169,14 +170,31 @@ class _Add_ProductsState extends State<Add_Products> {
     };
 
     await db.collection("products").add(data).then(
-            (DocumentReference doc) {
+            (DocumentReference doc) async {
               document_id = doc.id;
+
+              final updateproductretailerfilters = {
+                "listcategories":FieldValue.arrayUnion([
+                  _category
+
+                ]),
+                "listsubcategories":FieldValue.arrayUnion([
+
+                  _subcategory
+                ]),
+                "listsubsubcategories":FieldValue.arrayUnion([
+                  _subsubcategory
+                ]),
+              };
+              await db.collection("userdd").doc(widget.user_email).update(updateproductretailerfilters);
         }
     );
 
     return document_id;
 
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -193,9 +211,9 @@ class _Add_ProductsState extends State<Add_Products> {
         backgroundColor: Colors.white,
       ),),
     ) : Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: HexColor("#1A434E"),
           leading: InkWell(
               onTap:(){
 
@@ -218,7 +236,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
               Text("Enter  Product Name", style:TextStyle(
 
-                color:Colors.grey[200],
+                color:HexColor("#1A434E"),
                 fontWeight: FontWeight.w400,
                 fontSize:16
               )),
@@ -230,9 +248,9 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                    color: Colors.grey[500]!
+                    color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -243,7 +261,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: 'Desktop',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -257,7 +275,7 @@ class _Add_ProductsState extends State<Add_Products> {
               SizedBox(height: 20,),
               Text("Enter  Product part number", style:TextStyle(
 
-                color:Colors.grey[200],
+                color:HexColor("#1A434E"),
                 fontWeight: FontWeight.w400,
                 fontSize:16
 
@@ -270,9 +288,9 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                    color: Colors.grey[500]!
+                    color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -283,7 +301,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '1234',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -318,11 +336,11 @@ class _Add_ProductsState extends State<Add_Products> {
                   children: [
                     Text("Select Product Category", style:TextStyle(
 
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+                    Icon(Icons.arrow_forward_ios, size: 20, color: HexColor("#1A434E"),)
                   ],
                 ),
               ),
@@ -334,9 +352,9 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -387,11 +405,11 @@ class _Add_ProductsState extends State<Add_Products> {
 
                     Text("Select Product Subcategory", style:TextStyle(
 
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+                    Icon(Icons.arrow_forward_ios, size: 20, color:HexColor("#1A434E"),)
                   ],
                 ),
               ),
@@ -403,16 +421,16 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
                  "${_subcategory}", style: TextStyle(
-                    color: Colors.grey[700]
+                    color: HexColor("#1A434E")
                   ),
 
                   ),
@@ -453,11 +471,11 @@ class _Add_ProductsState extends State<Add_Products> {
                   children: [
                     Text("Select Product Subcategory", style:TextStyle(
 
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+                    Icon(Icons.arrow_forward_ios, size: 20, color:HexColor("#1A434E"),)
                   ],
                 ),
               ),
@@ -478,7 +496,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   child: Text(
 
                  "${_subsubcategory}", style: TextStyle(
-                    color: Colors.grey[700]
+                    color:HexColor("#1A434E")
                   ),
 
                   ),
@@ -490,7 +508,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
               Text("Enter Product Description", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -518,7 +536,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: 'product description',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
 
@@ -534,7 +552,7 @@ class _Add_ProductsState extends State<Add_Products> {
               SizedBox(height: 20,),
               Text("Enter  Product Price", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -549,9 +567,9 @@ class _Add_ProductsState extends State<Add_Products> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
-                          color: Colors.grey[500]!
+                          color: HexColor("#1A434E")
                       ),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -562,7 +580,7 @@ class _Add_ProductsState extends State<Add_Products> {
                             hintText: '2000',
                             hintStyle: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey[400],
+                              color: Colors.grey[600],
 
                             ),
                             border: InputBorder.none
@@ -594,7 +612,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
               Text("Enter  Warrant Period", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -609,9 +627,9 @@ class _Add_ProductsState extends State<Add_Products> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
-                          color: Colors.grey[500]!
+                          color: HexColor("#1A434E")
                       ),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -623,7 +641,7 @@ class _Add_ProductsState extends State<Add_Products> {
                             hintText: 'warrant period',
                             hintStyle: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey[400],
+                              color: Colors.grey[600],
 
                             ),
                             border: InputBorder.none
@@ -682,11 +700,11 @@ class _Add_ProductsState extends State<Add_Products> {
                   children: [
                     Text("Select  Availability", style:TextStyle(
 
-                        color:Colors.grey[200],
-                        fontWeight: FontWeight.w400,
+                        color:HexColor("#1A434E"),
+                        fontWeight: FontWeight.w600,
                         fontSize:16
                     )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+                    Icon(Icons.arrow_forward_ios, size: 20, color: HexColor("#1A434E"))
 
                   ],
                 ),
@@ -722,7 +740,7 @@ class _Add_ProductsState extends State<Add_Products> {
               SizedBox(height: 20,),
               Text("(MOQ) Minimum Order Quantity", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )),
@@ -735,7 +753,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -748,7 +766,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '10 cartons',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -766,7 +784,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
             _filters_params_model.brand? Text("Enter Brand Name", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -778,9 +796,9 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: Colors.grey[600]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -791,7 +809,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -806,7 +824,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
               _filters_params_model.package? Text("Enter package Name", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -820,7 +838,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -831,7 +849,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -846,7 +864,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
               _filters_params_model.partner? Text("Enter partner Name", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -858,7 +876,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -871,7 +889,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -885,7 +903,7 @@ class _Add_ProductsState extends State<Add_Products> {
               _filters_params_model.partner? SizedBox( height: 20,): Container(),
               _filters_params_model.processor? Text("Enter processor description", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -897,9 +915,9 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -910,7 +928,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -938,7 +956,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -963,7 +981,7 @@ class _Add_ProductsState extends State<Add_Products> {
               _filters_params_model.ram? SizedBox( height: 20,): Container(),
               _filters_params_model.resolution? Text("Enter resolution description", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -977,7 +995,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -988,7 +1006,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -1002,7 +1020,7 @@ class _Add_ProductsState extends State<Add_Products> {
               _filters_params_model.resolution? SizedBox( height: 20,): Container(),
               _filters_params_model.screen? Text("Enter screen description", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1014,9 +1032,9 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -1027,7 +1045,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[500],
 
                         ),
                         border: InputBorder.none
@@ -1055,7 +1073,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -1068,7 +1086,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -1082,7 +1100,7 @@ class _Add_ProductsState extends State<Add_Products> {
               _filters_params_model.screensize? SizedBox( height: 20,): Container(),
               _filters_params_model.size?Text("Enter size description", style:TextStyle(
 
-                  color:Colors.grey[200],
+                  color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
@@ -1133,7 +1151,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
-                      color: Colors.grey[500]!
+                      color: HexColor("#1A434E")
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -1146,7 +1164,7 @@ class _Add_ProductsState extends State<Add_Products> {
                         hintText: '',
                         hintStyle: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[400],
+                          color: Colors.grey[600],
 
                         ),
                         border: InputBorder.none
@@ -1190,7 +1208,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   children: [
                     Text("Add Product Photo\n (optional max 2)", style:TextStyle(
 
-                        color:Colors.grey[200],
+                        color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
                         fontSize:16
                     )),

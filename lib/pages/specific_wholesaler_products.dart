@@ -4,18 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/models/filters_params.dart';
 import 'package:nsuqo/pages/filter_by.dart';
-import 'package:nsuqo/pages/product_information.dart';
+import 'package:nsuqo/pages/product_information/product_information.dart';
 import 'package:nsuqo/pages/search_page.dart';
-import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/Login/sign_in.dart';
 import 'package:share/share.dart';
 import 'package:toast/toast.dart';
 
 import '../models/filters.dart';
 import '../models/products_model.dart';
-import '../widgets/products_tile.dart';
+import 'home/homepageproducts/widgets/products_tile.dart';
 import 'edit_profile_retailer.dart';
-import 'home_page_categories.dart';
-import 'messanger.dart';
+import 'home/homepagecategories/home_page_categories.dart';
+import 'messanger/messanger_retailer/messanger.dart';
 
 class Wholesaler_Products extends StatefulWidget {
   const Wholesaler_Products({Key? key, required this.wholesaler_id, required this.wholesaler_name}) : super(key: key);

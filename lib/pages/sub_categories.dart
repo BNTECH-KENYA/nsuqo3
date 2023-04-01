@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nsuqo/pages/sub_sub_categories.dart';
 
 import '../models/filters_params.dart';
 import '../models/subcategory_model.dart';
-import 'home_page_products.dart';
+import 'home/homepageproducts/home_page_products.dart';
 
 class Sub_Categories extends StatefulWidget {
   const Sub_Categories({Key? key, required this.subcat}) : super(key: key);
@@ -103,7 +104,7 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       
       body: SafeArea(
           child: Padding(
@@ -117,11 +118,11 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                       Navigator.pop(context);
                     },
 
-                    child: Icon(Icons.arrow_back, color: Colors.grey[200], size: 30,)),
+                    child: Icon(Icons.arrow_back, color: HexColor("#1A434E"), size: 30,)),
                 SizedBox(height: 20,),
                 Text("${widget.subcat}",style:TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: Colors.grey[200],
+                    color: HexColor("#1A434E"),
                     fontSize:18
                 )),
                 SizedBox(height: 10,),
@@ -140,7 +141,7 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                           },
 
                           child: Card(
-                            color: Colors.grey[900],
+                            color: Colors.grey[200],
                             child: Container(
 
                               width: MediaQuery.of(context).size.width,
@@ -156,18 +157,18 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                                       child: Text("${subcategories[index].sub_category_name[0].toUpperCase()}${subcategories[index].sub_category_name[1].toUpperCase()}",
 
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: HexColor("#FFFFFF"),
                                           fontWeight: FontWeight.bold
                                         ),
                                       ),
                                     ),
                                     title: Text("${subcategories[index].sub_category_name}",
                                       style: TextStyle(
-                                        color: Colors.grey[200],
+                                        color: HexColor("#1A434E"),
 
                                       ),
                                     ),
-                                    trailing: Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[200],),
+                                    trailing: Icon(Icons.arrow_forward_ios, size: 20, color: HexColor("#1A434E"),),
                                   ),
                                 ),
                               ),

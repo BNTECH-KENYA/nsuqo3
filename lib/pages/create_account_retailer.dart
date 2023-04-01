@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
+import 'package:nsuqo/pages/home/homepagecategories/wholesaler/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
 
-import 'home_page_categories.dart';
+import 'home/homepagecategories/home_page_categories.dart';
 
 class Create_Account_Retailer extends StatefulWidget {
 

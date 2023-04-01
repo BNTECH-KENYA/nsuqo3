@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:nsuqo/models/messanger.dart';
 
-import '../pages/chat_page.dart';
+import '../pages/chat_page/chat_page.dart';
 
 class Chat_Stream_Widget extends StatelessWidget {
   const Chat_Stream_Widget({Key? key,
@@ -38,7 +39,7 @@ class Chat_Stream_Widget extends StatelessWidget {
 
     }
 
-    return     Padding(
+    return  Padding(
       padding: const EdgeInsets.only(bottom:16.0),
       child: InkWell(
         onTap: () async {
@@ -77,12 +78,12 @@ class Chat_Stream_Widget extends StatelessWidget {
                     children: [
 
                       CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.grey[800],
+                        radius: 24,
+                        backgroundColor: HexColor("#1A434E"),
                         child: Text("${messagermodel.sender_name[0].toUpperCase()}", style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold
+                            color: HexColor("#FFFFFF"),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500
                         ),),
                       ),
 
@@ -92,7 +93,7 @@ class Chat_Stream_Widget extends StatelessWidget {
                             radius: 10,
                             backgroundColor: Colors.blue,
                             child: Text("${messagermodel.unreadmsg}", style: TextStyle(
-                                color: Colors.white
+                             color:HexColor("#1A434E"),
                             ),),
                           )),
                     ],
@@ -112,12 +113,12 @@ class Chat_Stream_Widget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("${messagermodel.sender_name}", style: TextStyle(
-                              color: Colors.grey[200],
+                              color: HexColor("#1A434E"),
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),),
                             Text("${messagermodel.timstamp}", style: TextStyle(
-                              color: Colors.grey[400],
+                              color: HexColor("#7C7C7C"),
                               fontSize: 11,
                               fontWeight: FontWeight.w400,
                             ),),
@@ -127,7 +128,7 @@ class Chat_Stream_Widget extends StatelessWidget {
                       ),
                       SizedBox(height: 5,),
                       Text(messagermodel.sender_email, style: TextStyle(
-                        color: Colors.grey[200],
+                        color: HexColor("#7C7C7C"),
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),),
@@ -137,7 +138,7 @@ class Chat_Stream_Widget extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width-102,
                         child: Text("${messagermodel.ltsmessage}", style: TextStyle(
-                          color: Colors.grey[300],
+                          color: HexColor("#7C7C7C"),
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),),

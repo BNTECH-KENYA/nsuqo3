@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nsuqo/pages/sign_in.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:nsuqo/pages/Login/sign_in.dart';
 import 'package:nsuqo/pages/subcategories.dart';
 import 'package:toast/toast.dart';
 
-import 'home_page_categories.dart';
+import 'home/homepagecategories/home_page_categories.dart';
 
 class Edit_Retailer_Profile extends StatefulWidget {
   const Edit_Retailer_Profile({Key? key}) : super(key: key);
@@ -114,40 +115,8 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
         backgroundColor: Colors.white,
       ),),
     ): Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back, color:Colors.white)),
-        title:Text(
-          'My Profile',
-          style: TextStyle(
-              color:Colors.white
-          ),
-        ),
+      backgroundColor: Colors.white,
 
-        actions: [
-
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0, top:15),
-            child: InkWell(
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).push(
-                      MaterialPageRoute
-                        (builder: (context)=>Sign_In())
-
-                  );
-                },
-                child:Text("Sign Out", style:TextStyle(
-                  color: Colors.grey[200]
-                )),),
-          )
-        ],
-      ),
       body: Container(
 
         width: MediaQuery.of(context).size.width,
@@ -155,84 +124,136 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
 
         child: Stack(
           children: [
+
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(left:16.0, right:16.0, top: 16),
-                  child:
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              width:MediaQuery.of(context).size.width,
+              height:200,
+              decoration: BoxDecoration(
+                color: HexColor("#1A434E")
+              ),
 
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left:16.0),
+                    child: Text("Profile", style: TextStyle(
+                      color: HexColor("#FFFFFF"),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),),
+                  ),
+                  PopupMenuButton<String>(
+                      icon: Icon(Icons.more_vert, color:Colors.white),
+                      color:Colors.white,
+                      onSelected: (value)
+                      async {
+                        if(value == "SignOut")
+                        {
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.of(context).push(
+                              MaterialPageRoute
+                                (builder: (context)=>Sign_In()));
+                        }
+                      },
+                      itemBuilder: (BuildContext context){
 
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("First Name", style:TextStyle(
-
-                                  color:Colors.grey[200],
-                                  fontWeight: FontWeight.w400,
-                                  fontSize:16
-                              )),
-                              SizedBox(height: 10,),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.grey[300]!
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                                  child: TextField(
-
-                                    controller: _firstname,
-                                    decoration: InputDecoration(
-                                        hintText: '',
-                                        hintStyle: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[400],
-
-                                        ),
-                                        border: InputBorder.none
-                                    ),
-                                    cursorColor: Colors.grey[500],
-
-                                  ),
-
-                                ),
-                              ),
-                            ],
+                        return[
+                          PopupMenuItem(
+                            child: Text("Sign Out"),
+                            value:"SignOut",
                           ),
+                        ];
 
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      }
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned(
+              top: 250,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height-300,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left:16.0, right:16.0, top: 16),
+                    child:
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+
+                      children: [
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("First Name", style:TextStyle(
+
+                                color:HexColor("#1A434E"),
+                                fontWeight: FontWeight.w400,
+                                fontSize:16
+
+                            )),
+
+                            SizedBox(height: 10,),
+
+                            Container(
+                              width: MediaQuery.of(context).size.width ,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: HexColor("#1A434E")
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                                child: TextField(
+
+                                  controller: _firstname,
+                                  decoration: InputDecoration(
+                                      hintText: '',
+                                      hintStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[400],
+
+                                      ),
+                                      border: InputBorder.none
+                                  ),
+                                  cursorColor: Colors.grey[500],
+
+                                ),
+
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children:[
                               Text("Last Name", style:TextStyle(
 
-                                  color:Colors.grey[200],
+                                  color:HexColor("#1A434E"),
                                   fontWeight: FontWeight.w400,
                                   fontSize:16
                               )),
                               SizedBox(height: 10,),
 
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.4,
+                                width: MediaQuery.of(context).size.width ,
                                 height: 40,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(
-                                      color: Colors.grey[300]!
+                                      color: HexColor("#1A434E")
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -243,7 +264,7 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                                         hintText: '',
                                         hintStyle: TextStyle(
                                           fontSize: 14,
-                                          color: Colors.grey[400],
+                                          color: HexColor("#1A434E"),
 
                                         ),
                                         border: InputBorder.none
@@ -256,238 +277,248 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                               ),
 
                             ]
-                          ),
-
-                        ],
-                      ),
-                     // SizedBox(height: 20,),
+                        ),
 
 
 
-                      SizedBox(height: 20,),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:[
+                        SizedBox(height: 20,),
 
-                         Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children:[
-                             Text("Company Name", style:TextStyle(
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:[
+                              Text("Company Name", style:TextStyle(
 
-                                 color:Colors.grey[200],
-                                 fontWeight: FontWeight.w400,
-                                 fontSize:16
-                             )),
-                             SizedBox(height: 10,),
+                                  color:HexColor("#1A434E"),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize:16
+                              )),
+                              SizedBox(height: 10,),
 
-                             Container(
-                               width: MediaQuery.of(context).size.width*0.4,
-                               height: 40,
-                               decoration: BoxDecoration(
-                                 color: Colors.white,
-                                 border: Border.all(
-                                     color: Colors.grey[500]!
-                                 ),
-                                 borderRadius: BorderRadius.circular(20),
-                               ),
-                               child: Padding(
-                                 padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                                 child: TextField(
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: HexColor("#1A434E"),
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                                  child: TextField(
 
-                                   controller: _companyname,
-                                   decoration: InputDecoration(
-                                       hintText: '',
-                                       hintStyle: TextStyle(
-                                         fontSize: 14,
-                                         color: Colors.grey[400],
+                                    controller: _companyname,
+                                    decoration: InputDecoration(
+                                        hintText: '',
+                                        hintStyle: TextStyle(
+                                          fontSize: 14,
+                                          color: HexColor("#1A434E"),
 
-                                       ),
-                                       border: InputBorder.none
-                                   ),
-                                   cursorColor: Colors.grey[500],
+                                        ),
+                                        border: InputBorder.none
+                                    ),
+                                    cursorColor: Colors.grey[500],
 
-                                 ),
+                                  ),
 
-                               ),
-                             ),
-                           ]
-                         ),
+                                ),
+                              ),
+                            ]
+                        ),
 
-                    Column(
+                        SizedBox(height: 20,),
 
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        Column(
 
-                          children:[
+                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                            children:[
                               Text("City Name", style:TextStyle(
 
-                              color:Colors.grey[200],
-                              fontWeight: FontWeight.w400,
-                              fontSize:16
-                          )),
-                  SizedBox(height: 10,),
+                                  color:HexColor("#1A434E"),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize:16
+                              )),
+                              SizedBox(height: 10,),
 
-                  Container(
-                    width: MediaQuery.of(context).size.width *0.4,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                          color: Colors.grey[500]!
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                      child: TextField(
+                              Container(
+                                width: MediaQuery.of(context).size.width ,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: HexColor("#1A434E"),
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                                  child: TextField(
 
-                        controller: _city,
-                        decoration: InputDecoration(
-                            hintText: '',
-                            hintStyle: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[400],
+                                    controller: _city,
+                                    decoration: InputDecoration(
+                                        hintText: '',
+                                        hintStyle: TextStyle(
+                                          fontSize: 14,
+                                          color: HexColor("#1A434E"),
+
+                                        ),
+                                        border: InputBorder.none
+                                    ),
+                                    cursorColor: Colors.grey[500],
+
+                                  ),
+
+                                ),
+                              ),
+                            ]
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Text("Your Address", style:TextStyle(
+
+                            color:HexColor("#1A434E"),
+                            fontWeight: FontWeight.w400,
+                            fontSize:16
+                        )),
+                        SizedBox(height: 10,),
+
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: HexColor("#1A434E"),
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                            child: TextField(
+
+                              controller: _address,
+                              decoration: InputDecoration(
+                                  hintText: '',
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: HexColor("#1A434E"),
+
+                                  ),
+                                  border: InputBorder.none
+                              ),
+                              cursorColor: Colors.grey[500],
 
                             ),
-                            border: InputBorder.none
+
+                          ),
                         ),
-                        cursorColor: Colors.grey[500],
+                        SizedBox(height: 20,),
 
-                      ),
+                        Text("Enter your email", style:TextStyle(
 
+                            color:HexColor("#1A434E"),
+                            fontWeight: FontWeight.w400,
+                            fontSize:16
+                        )),
+
+                        SizedBox(height: 10,),
+
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: HexColor("#1A434E"),
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                            child: TextField(
+                              controller: _emailaddress,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  hintText: 'example@gmail.com',
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[400],
+
+                                  ),
+                                  border: InputBorder.none
+                              ),
+                              cursorColor: Colors.grey[500],
+
+                            ),
+
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Text("Enter your PhoneNumber", style:TextStyle(
+
+                            color:HexColor("#1A434E"),
+                            fontWeight: FontWeight.w400,
+                            fontSize:16
+                        )),
+                        SizedBox(height: 10,),
+
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: HexColor("#1A434E"),
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                            child: TextField(
+
+                              controller: _phonenumber,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  hintText: '07xx xxx xxx',
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: HexColor("#1A434E"),
+
+                                  ),
+                                  border: InputBorder.none
+                              ),
+                              cursorColor: Colors.grey[500],
+
+                            ),
+
+                          ),
+                        ),
+
+                        SizedBox(height: 20,),
+                      ],
                     ),
                   ),
-                              ]
-                          )
-                        ]
-                      ),
-                      SizedBox(height: 20,),
+                ),
+              ),
+            ),
 
-                      Text("Your Address", style:TextStyle(
-
-                          color:Colors.grey[200],
-                          fontWeight: FontWeight.w400,
-                          fontSize:16
-                      )),
-                      SizedBox(height: 10,),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                              color: Colors.grey[500]!
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                          child: TextField(
-
-                            controller: _address,
-                            decoration: InputDecoration(
-                                hintText: '',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[400],
-
-                                ),
-                                border: InputBorder.none
-                            ),
-                            cursorColor: Colors.grey[500],
-
-                          ),
-
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-
-                      Text("Enter your email", style:TextStyle(
-
-                          color:Colors.grey[200],
-                          fontWeight: FontWeight.w400,
-                          fontSize:16
-                      )),
-
-                      SizedBox(height: 10,),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                              color: Colors.grey[500]!
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                          child: TextField(
-                            controller: _emailaddress,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                hintText: 'example@gmail.com',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[400],
-
-                                ),
-                                border: InputBorder.none
-                            ),
-                            cursorColor: Colors.grey[500],
-
-                          ),
-
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-
-                      Text("Enter your PhoneNumber", style:TextStyle(
-
-                          color:Colors.grey[200],
-                          fontWeight: FontWeight.w400,
-                          fontSize:16
-                      )),
-                      SizedBox(height: 10,),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                              color: Colors.grey[500]!
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                          child: TextField(
-
-                            controller: _phonenumber,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                hintText: '07xx xxx xxx',
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[400],
-
-                                ),
-                                border: InputBorder.none
-                            ),
-                            cursorColor: Colors.grey[500],
-
-                          ),
-
-                        ),
-                      ),
-
-                      SizedBox(height: 20,),
-                    ],
-                  ),
+            Positioned(
+              left:0,
+              right:0,
+              top:140,
+              child: CircleAvatar(
+                radius: 62,
+                backgroundColor:HexColor("#FFFFFF"),
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey[200],
+                  child: Icon(Icons.person,size:50, color: HexColor("#1A434E"),),
                 ),
               ),
             ),
@@ -532,8 +563,6 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                         gravity: Toast.BOTTOM);
                   }
 
-
-
                   else if(_phonenumber.text.length < 10)
                   {
 
@@ -541,14 +570,11 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                         gravity: Toast.BOTTOM);
                   }
 
-
                   else{
 
                     setState(() {
                       isLoading = true;
                     });
-
-
 
                     final dataupdate = <String, dynamic>
                     {
@@ -583,11 +609,11 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.grey[700],
+                      color: HexColor("#1A434E"),
                       border: Border.all(
                           color: Colors.grey[500]!
                       ),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Center(
                       child: Text("Save Changes", style: TextStyle(

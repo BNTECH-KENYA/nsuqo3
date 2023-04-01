@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:nsuqo/pages/chat_page.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:nsuqo/pages/chat_page/chat_page.dart';
 import 'package:nsuqo/pages/specific_wholesaler_products.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -172,428 +173,441 @@ class _WholeSaler_InfoState extends State<WholeSaler_Info> {
         backgroundColor: Colors.white,
       ),),
     ): Scaffold(
-      backgroundColor: Colors.black,
-      body:SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left:16.0, right:16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height:20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                          onTap: ()
-                          {
-                            Navigator.pop(context);
-                          },
+      backgroundColor: Colors.white,
+      body:
+      Padding(
+        padding: const EdgeInsets.only(left:0, right:0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+             Container(
 
-                          child: Icon(Icons.arrow_back,  color:Colors.grey[200], size:30)),
-                      Text("${company_name}", style:TextStyle(
-                        color:Colors.grey[200],
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                      Icon(Icons.cancel,  color:Colors.grey[100], size:30),
-                    ],
-                  ),
-                  SizedBox(height: 20,),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
+                      decoration:BoxDecoration(
+                        color: HexColor("#1A434E"),
+
+                      ),
+             child: Padding(
+               padding: const EdgeInsets.only(left:8.0, right:8.0),
+               child: Column(
+                     children:[
+                       SizedBox(height:90),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
+                           InkWell(
+                               onTap: ()
+                               {
+                                 Navigator.pop(context);
+                               },
+
+                               child: Icon(Icons.arrow_back,  color:Colors.grey[200], size:30)),
+                           Text("${company_name}", style:TextStyle(
+                             color:Colors.grey[200],
+                             fontSize: 20,
+                             fontWeight: FontWeight.bold,
+                           )),
+                           //Icon(Icons.cancel,  color:Colors.grey[100], size:30),
+                         ],
+                       ),
+                       SizedBox(height: 10,),
+                     ]
+                 ),
+             ),
+             ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
 
 
-                        SizedBox(height: 20,),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                child: Icon(Icons.book, size: 25, color:Colors.grey[200],),
+                    SizedBox(height: 20,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Icon(Icons.book, size: 25, color:HexColor("#1A434E"),),
 
-                              ),
-
-                              SizedBox(
-                                width: 30,
-                              ),
-
-                              Container(
-                                child:Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-
-                                    Text("About Us", style:TextStyle(
-                                      color: Colors.grey[200],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-
-                                    SizedBox(height: 10,),
-
-                                    Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Text("${business_description}", style:TextStyle(
-                                        color: Colors.grey[300],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ),
-
-                                  ],
-                                ),
-                              ),
-                            ],
                           ),
-                        ),
 
-                        SizedBox(height: 20,),
+                          SizedBox(
+                            width: 30,
+                          ),
 
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                child: Icon(Icons.payment, size: 25, color: Colors.grey[200],),
+                          Container(
+                            child:Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
 
-                              ),
+                                Text("About Us", style:TextStyle(
+                                  color:HexColor("#1A434E"),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                )),
 
-                              SizedBox(
-                                width: 30,
-                              ),
+                                SizedBox(height: 10,),
 
-                              Container(
-                                child:Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-
-                                    Text("Payment Details And Terms", style:TextStyle(
-                                      color: Colors.grey[200],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-
-                                    SizedBox(height: 10,),
-
-                                    payment_details_terms.length == 1?   Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Text("${payment_details_terms[0]}", style:TextStyle(
-                                        color: Colors.grey[300],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ):
-                                    payment_details_terms.length == 2?   Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]}", style:TextStyle(
-                                        color: Colors.grey[300],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ):
-                                    payment_details_terms.length == 3?   Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]} \n  ${payment_details_terms[2]}", style:TextStyle(
-                                        color: Colors.grey[300],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ):Container() ,
-
-                                  ],
+                                Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Text("${business_description}", style:TextStyle(
+                                    color: HexColor("#1A434E"),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  )),
                                 ),
 
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+                    ),
 
-                        SizedBox(height: 20,),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                child: Icon(Icons.bubble_chart_outlined, size: 25, color: Colors.grey[200],),
+                    SizedBox(height: 20,),
 
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Icon(Icons.payment, size: 25, color: HexColor("#1A434E"),),
+
+                          ),
+
+                          SizedBox(
+                            width: 30,
+                          ),
+
+                          Container(
+                            child:Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                Text("Payment Details And Terms", style:TextStyle(
+                                  color: HexColor("#1A434E"),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                )),
+
+                                SizedBox(height: 10,),
+
+                                payment_details_terms.length == 1?   Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Text("${payment_details_terms[0]}", style:TextStyle(
+                                    color: HexColor("#1A434E"),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                                ):
+                                payment_details_terms.length == 2?   Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]}", style:TextStyle(
+                                    color:HexColor("#1A434E"),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                                ):
+                                payment_details_terms.length == 3?   Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Text("${payment_details_terms[0]}\n ${payment_details_terms[1]} \n  ${payment_details_terms[2]}", style:TextStyle(
+                                    color: HexColor("#1A434E"),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                                ):Container() ,
+
+                              ],
+                            ),
+
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Icon(Icons.bubble_chart_outlined, size: 25, color: HexColor("#1A434E"),),
+
+                          ),
+
+                          SizedBox(
+                            width: 30,
+                          ),
+
+                          InkWell(
+                            onTap:(){
+                              Navigator.of(context).push(
+                                  MaterialPageRoute
+                                  (builder: (context)=>Wholesaler_Products(
+                                    wholesaler_name: company_name,
+                                    wholesaler_id: wholesalerid,)));
+                            },
+                            child: Container(
+
+                              child:Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("View Our Products", style:TextStyle(
+                                      color: HexColor("#1A434E"),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                  )),
+
+                                  SizedBox(height: 10,),
+
+                                  Container(
+                                    width: MediaQuery.of(context).size.width-122,
+                                    child: Text("${distribution_category}", style:TextStyle(
+                                      color: HexColor("#1A434E"),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                                  ),
+
+                                ],
                               ),
 
-                              SizedBox(
-                                width: 30,
-                              ),
 
-                              InkWell(
-                                onTap:(){
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute
-                                      (builder: (context)=>Wholesaler_Products(
-                                        wholesaler_name: company_name,
-                                        wholesaler_id: wholesalerid,)));
-                                },
-                                child: Container(
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                                  child:Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(height: 20,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Icon(Icons.access_time_filled_sharp, size: 25, color: HexColor("#1A434E"),),
+
+                          ),
+
+                          SizedBox(
+                            width: 30,
+                          ),
+
+                          Container(
+                            child:Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Working Hours", style:TextStyle(
+                                  color: HexColor("#1A434E"),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                )),
+
+                                SizedBox(height: 10,),
+
+                                Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Text("open: ${working_hours.split("-")[0]} \n close: ${working_hours.split("-")[1]}", style:TextStyle(
+                                    color: HexColor("#1A434E"),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                                ),
+
+                              ],
+                            ),
+
+
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Icon(Icons.location_on, size: 25, color: HexColor("#1A434E"),),
+
+                          ),
+
+                          SizedBox(
+                            width: 30,
+                          ),
+
+                          Container(
+                            child:Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Location", style:TextStyle(
+                                  color: HexColor("#1A434E"),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                )),
+
+                                SizedBox(height: 10,),
+
+                                Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Text("located in:${location}", style:TextStyle(
+                                    color: HexColor("#1A434E"),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                                ),
+
+                              ],
+                            ),
+
+
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            child: Icon(Icons.call, size: 25, color: HexColor("#1A434E"),),
+
+                          ),
+
+                          SizedBox(
+                            width: 30,
+                          ),
+
+                          Container(
+                            child:Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Contact us", style:TextStyle(
+                                  color: HexColor("#1A434E"),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                )),
+
+                                SizedBox(height: 10,),
+
+                                Container(
+                                  width: MediaQuery.of(context).size.width-122,
+                                  child: Column(
                                     children: [
-                                      Text("View Our Products", style:TextStyle(
-                                          color: Colors.grey[200],
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                      )),
+                                      InkWell(
+                                        onTap:() async {
+                                          final Email email_data = Email(
+                                            body: 'Email body',
+                                            subject: 'Email subject',
+                                            recipients: ['${email}'],
+                                            attachmentPaths: ['/path/to/attachment.zip'],
+                                            isHTML: false,
+                                          );
 
-                                      SizedBox(height: 10,),
-
-                                      Container(
-                                        width: MediaQuery.of(context).size.width-122,
-                                        child: Text("${distribution_category}", style:TextStyle(
-                                          color: Colors.grey[300],
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                        )),
+                                          await FlutterEmailSender.send(email_data);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.email,color: HexColor("#1A434E"), ),
+                                            Text(" : ${email}", style:TextStyle(
+                                              color: HexColor("#1A434E"),
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                          ],
+                                        ),
                                       ),
+                                      SizedBox(height: 7,),
+                                      InkWell(
+                                        onTap:() async {
+
+
+                                          await FlutterPhoneDirectCaller.callNumber(contact_details);
+
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.call,color: HexColor("#1A434E"), ),
+                                            Text(" : ${contact_details}", style:TextStyle(
+                                              color: HexColor("#1A434E"),
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                          ],
+                                        ),
+                                      ),
+
+                                      SizedBox(height: 7,),
+                                      InkWell(
+                                        onTap:() async {
+
+
+                                        if(user_email == ''){
+
+                                          //toast please try again or
+
+
+                                        }
+                                        else
+                                          {
+
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute
+                                                  (builder: (context)=>Chat_Page(
+                                                  product_name: product_name,
+                                                  product_photo: photosLinks[0],
+                                                  product_description: product_description,
+                                                  product_price: product_price,
+                                                  wholesaler_id: widget.wholesalerid,
+                                                  retailer_id:retailer_id ,
+                                                  email_reciever:email_reciever ,
+                                                  email_user: user_email,
+                                                  sender_name:sender_name,
+                                                  opponent_name: opponent_name,
+                                                  auth_email:user_email, product_id: "not",)));
+
+                                          }
+
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Icon(Icons.message,color: HexColor("#1A434E"), ),
+                                            Text(" : Leave a message", style:TextStyle(
+                                              color: HexColor("#1A434E"),
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                          ],
+                                        ),
+                                      ),
+
+                                      SizedBox(height: 7,),
 
                                     ],
                                   ),
-
-
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
 
-                        SizedBox(height: 20,),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                child: Icon(Icons.access_time_filled_sharp, size: 25, color: Colors.grey[200],),
-
-                              ),
-
-                              SizedBox(
-                                width: 30,
-                              ),
-
-                              Container(
-                                child:Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Working Hours", style:TextStyle(
-                                      color: Colors.grey[200],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-
-                                    SizedBox(height: 10,),
-
-                                    Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Text("open: ${working_hours.split("-")[0]} \n close: ${working_hours.split("-")[1]}", style:TextStyle(
-                                        color: Colors.grey[300],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ),
-
-                                  ],
-                                ),
-
-
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 20,),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                child: Icon(Icons.location_on, size: 25, color: Colors.grey[200],),
-
-                              ),
-
-                              SizedBox(
-                                width: 30,
-                              ),
-
-                              Container(
-                                child:Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Location", style:TextStyle(
-                                      color: Colors.grey[200],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-
-                                    SizedBox(height: 10,),
-
-                                    Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Text("located in:${location}", style:TextStyle(
-                                        color: Colors.grey[300],
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ),
-
-                                  ],
-                                ),
-
-
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 20,),
-
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                child: Icon(Icons.call, size: 25, color: Colors.grey[200],),
-
-                              ),
-
-                              SizedBox(
-                                width: 30,
-                              ),
-
-                              Container(
-                                child:Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Contact us", style:TextStyle(
-                                      color: Colors.grey[200],
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-
-                                    SizedBox(height: 10,),
-
-                                    Container(
-                                      width: MediaQuery.of(context).size.width-122,
-                                      child: Column(
-                                        children: [
-                                          InkWell(
-                                            onTap:() async {
-                                              final Email email_data = Email(
-                                                body: 'Email body',
-                                                subject: 'Email subject',
-                                                recipients: ['${email}'],
-                                                attachmentPaths: ['/path/to/attachment.zip'],
-                                                isHTML: false,
-                                              );
-
-                                              await FlutterEmailSender.send(email_data);
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.email,color: Colors.grey[200], ),
-                                                Text(" : ${email}", style:TextStyle(
-                                                  color: Colors.grey[300],
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w500,
-                                                )),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(height: 7,),
-                                          InkWell(
-                                            onTap:() async {
-
-
-                                              await FlutterPhoneDirectCaller.callNumber(contact_details);
-
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.call,color: Colors.grey[200], ),
-                                                Text(" : ${contact_details}", style:TextStyle(
-                                                  color: Colors.grey[300],
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w500,
-                                                )),
-                                              ],
-                                            ),
-                                          ),
-
-                                          SizedBox(height: 7,),
-                                          InkWell(
-                                            onTap:() async {
-
-
-                                            if(user_email == ''){
-
-                                              //toast please try again or
-
-
-                                            }
-                                            else
-                                              {
-
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute
-                                                      (builder: (context)=>Chat_Page(
-                                                      product_name: product_name,
-                                                      product_photo: photosLinks[0],
-                                                      product_description: product_description,
-                                                      product_price: product_price,
-                                                      wholesaler_id: widget.wholesalerid,
-                                                      retailer_id:retailer_id ,
-                                                      email_reciever:email_reciever ,
-                                                      email_user: user_email,
-                                                      sender_name:sender_name,
-                                                      opponent_name: opponent_name,
-                                                      auth_email:user_email, product_id: "not",)));
-
-                                              }
-
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.message,color: Colors.grey[200], ),
-                                                Text(" : Leave a message", style:TextStyle(
-                                                  color: Colors.grey[300],
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w500,
-                                                )),
-                                              ],
-                                            ),
-                                          ),
-
-                                          SizedBox(height: 7,),
-
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              SizedBox(height: 20,),
-                            ],
-                          ),
-                        ),
-                      ],
+                          SizedBox(height: 20,),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          )
+            ],
+          ),
+        ),
       )
 
 

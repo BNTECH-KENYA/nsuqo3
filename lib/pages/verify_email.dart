@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nsuqo/pages/home_page_categories.dart';
+import 'package:nsuqo/pages/home/homepagecategories/home_page_categories.dart';
 import 'package:toast/toast.dart';
 
 import '../helpers/exit_pop.dart';

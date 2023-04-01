@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nsuqo/pages/product_information.dart';
+import 'package:nsuqo/pages/product_information/product_information.dart';
 
 import 'models/products_model.dart';
 

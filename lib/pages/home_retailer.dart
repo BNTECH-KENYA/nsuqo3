@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nsuqo/pages/messanger.dart';
-import 'package:nsuqo/pages/product_information.dart';
+import 'package:nsuqo/pages/messanger/messanger_retailer/messanger.dart';
+import 'package:nsuqo/pages/product_information/product_information.dart';
 import 'package:nsuqo/pages/search_page.dart';
-import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/Login/sign_in.dart';
 import 'package:nsuqo/pages/single_category.dart';
 import 'package:share/share.dart';
 
@@ -14,7 +14,7 @@ import '../models/filters_params.dart';
 import '../models/products_model.dart';
 import 'all_categories.dart';
 import 'edit_profile_retailer.dart';
-import 'home_page_categories.dart';
+import 'home/homepagecategories/home_page_categories.dart';
 
 class Home_Ui_Retailer extends StatefulWidget {
   const Home_Ui_Retailer({Key? key}) : super(key: key);

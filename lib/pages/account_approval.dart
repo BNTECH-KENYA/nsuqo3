@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../helpers/exit_pop.dart';
-import 'home_page_categories.dart';
+import 'home/homepagecategories/home_page_categories.dart';
 
 class Account_Approval extends StatefulWidget {
   const Account_Approval({Key? key, required this.email_val}) : super(key: key);

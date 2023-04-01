@@ -8,7 +8,7 @@ import 'package:nsuqo/helpers/storage.dart';
 import 'package:nsuqo/models/categories_model.dart';
 import 'package:nsuqo/models/subcategory_model.dart';
 import 'package:nsuqo/pages/product_category.dart';
-import 'package:nsuqo/pages/product_information.dart';
+import 'package:nsuqo/pages/product_information/product_information.dart';
 import 'package:nsuqo/pages/product_subcategories.dart';
 import 'package:nsuqo/pages/product_subsubcategories.dart';
 import 'package:nsuqo/pages/select_availability.dart';

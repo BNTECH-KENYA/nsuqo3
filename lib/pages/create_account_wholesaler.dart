@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/places_picker_ai.dart';
 import 'package:nsuqo/pages/product_category.dart';
-import 'package:nsuqo/pages/wholesaler_categories.new_edition.dart';
+import 'package:nsuqo/pages/home/homepagecategories/wholesaler/wholesaler_categories.new_edition.dart';
 import 'package:nsuqo/pages/wholesaler_home_new.dart';
 import 'package:toast/toast.dart';
 
 import '../models/categories_model.dart';
-import 'home_page_categories.dart';
+import 'home/homepagecategories/home_page_categories.dart';
 
 class Create_Account_WholeSaler extends StatefulWidget {
   const Create_Account_WholeSaler({Key? key}) : super(key: key);
@@ -65,6 +65,9 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
       "who_can_view":"all",
       "exchange_rate":_exchange_rate.text.toString(),
       "version_changes":0,
+      "listcategories":[],
+      "listsubcategories":[],
+      "listsubsubcategories":[],
     };
 
     db.collection("userdd").doc(_email.text).update(data).then(

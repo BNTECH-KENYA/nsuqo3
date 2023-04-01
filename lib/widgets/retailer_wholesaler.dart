@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../pages/create_account_retailer.dart';
 import '../pages/create_account_wholesaler.dart';
-import '../pages/sign_up_retailer.dart';
-import '../pages/sign_up_wholesaler.dart';
+import '../pages/sign_up/retailer/sign_up_retailer.dart';
+import '../pages/sign_up/wholesaler/sign_up_wholesaler.dart';
 
 Future<bool> Retailer_Wholesaler(context) async{
   return await showDialog(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class Reset_Password extends StatefulWidget {
   const Reset_Password({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _Reset_PasswordState extends State<Reset_Password> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      backgroundColor: Colors.white,
+      backgroundColor: HexColor("#F5F5F5"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -30,24 +31,19 @@ class _Reset_PasswordState extends State<Reset_Password> {
 
 
                 SizedBox(height: 20,),
-                   InkWell(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_back, color: (Colors.black),)),
-
-                Container(
-                  width:MediaQuery.of(context).size.width,
-                  height:MediaQuery.of(context).size.height*0.25,
-                  child: Center(
-                    child: Image(
-                      image: AssetImage("assets/launch_image.png"),
-                      width: 150,
-                      height: 150,
-
-                    ),
+                InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                      width:40,
+                      height:40,
+                      child:
+                      Card(child: Center(child: Icon(Icons.arrow_back_ios, )))
                   ),
                 ),
+
+                SizedBox(height: 20,),
 
                 Text("Forgot Password", style: TextStyle(
                   color: Colors.black,
@@ -70,13 +66,14 @@ class _Reset_PasswordState extends State<Reset_Password> {
 
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 40,
+                  height: 56,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    color: HexColor("#E8ECF4"),
+
                     border: Border.all(
-                        color: Colors.white
+                      color: HexColor("#F7F8F9"),
                     ),
-                    borderRadius: BorderRadius.circular(2),
                   ),
                   child: Row(
                     children: [
@@ -129,9 +126,9 @@ class _Reset_PasswordState extends State<Reset_Password> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color:  HexColor("#1A434E"),
                         border: Border.all(
-                            color: Colors.deepOrange
+                            color:  HexColor("#1A434E")
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),

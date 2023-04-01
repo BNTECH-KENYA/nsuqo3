@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/create_account_wholesaler.dart';
-import 'package:nsuqo/pages/messangerwholesaler.dart';
+import 'package:nsuqo/pages/messanger/messanger_wholesaler/messangerwholesaler.dart';
 import 'package:nsuqo/pages/retialers_who_can_view_products.dart';
 import 'package:nsuqo/pages/search_page.dart';
-import 'package:nsuqo/pages/sign_in.dart';
+import 'package:nsuqo/pages/Login/sign_in.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
 import 'package:nsuqo/pages/verify_email_wholesaler.dart';
 import 'package:share/share.dart';
@@ -15,7 +15,7 @@ import '../helpers/exit_pop.dart';
 import 'Edit_Profile.dart';
 import 'account_approval_wholesaler.dart';
 import 'add_product.dart';
-import 'messanger.dart';
+import 'messanger/messanger_retailer/messanger.dart';
 
 class Whole_Saler_categories_old extends StatefulWidget {
   const Whole_Saler_categories_old({Key? key}) : super(key: key);
