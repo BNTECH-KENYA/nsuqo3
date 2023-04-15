@@ -13,6 +13,7 @@ import 'add_product_from_catalogue.dart';
 import 'create_account_wholesaler.dart';
 
 class Catalogue_Page extends StatefulWidget {
+
   const Catalogue_Page({Key? key}) : super(key: key);
 
   @override
@@ -125,6 +126,7 @@ class _Catalogue_PageState extends State<Catalogue_Page> {
                       partner: element.data()['partner'],
                       subcategory: element.data()['subcategory'],
                       subsubcategory: element.data()['subsubcategory'],
+                      brandname: element.data()['brandname'],
 
                       filters_params: Filters_Params_Model(
                           availability: element.data()['filters_params']['availability'],
@@ -179,6 +181,7 @@ class _Catalogue_PageState extends State<Catalogue_Page> {
                       partner: element.data()['partner'],
                       subcategory: element.data()['subcategory'],
                       subsubcategory: element.data()['subsubcategory'],
+                      brandname: element.data()['brandname'],
                       filters_params: Filters_Params_Model(
                           availability: element.data()['filters_params']['availability'],
                           warrant_period:element.data()['filters_params']['warrant_period'],
@@ -545,17 +548,19 @@ class _Catalogue_PageState extends State<Catalogue_Page> {
                                 });
                               }
                           );
+
                         },
                         child: Container(
 
                             decoration: BoxDecoration(
+
                               color: More? Colors.grey[800]!:Colors.white,
                               borderRadius:BorderRadius.all(Radius.circular(10)),
                               border: Border.all(color:More?Colors.grey[700]!: Colors.grey[500]! ),
 
                             ),
-                            child:
-                            Padding(
+
+                            child: Padding(
                               padding: const EdgeInsets.only(left:10.0, right:10.0, top:4.5),
                               child:More?
                               Text("More",style: TextStyle( color: Colors.white) )
@@ -594,7 +599,9 @@ class _Catalogue_PageState extends State<Catalogue_Page> {
                     );
 
                   }, separatorBuilder: (BuildContext context, int index) {
+
                     return SizedBox(height:10);
+
                 },
                 ),
               )

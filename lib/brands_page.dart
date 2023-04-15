@@ -1,30 +1,28 @@
-/*
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:nsuqo/pages/sub_categories.dart';
+import 'package:nsuqo/pages/sub_sub_categories.dart';
 
-import '../../../models/subsubcategory_model.dart';
-import '../../home/homepageproducts/home_page_products.dart';
-import '../../wholesalersproductlist/wholesalers_product_list.dart';
-import '../wholesaler_specific_products.dart';
+import '../models/filters_params.dart';
+import '../models/subcategory_model.dart';
 
-class Sub_Sub_Categories_on_wholesaleraccnt extends StatefulWidget {
-  const Sub_Sub_Categories_on_wholesaleraccnt({Key? key,required this.cat, required this.subcat, required this.subsubcategory, required this.wholesalerid}) : super(key: key);
-  final String cat,subcat, wholesalerid;
-  final List<dynamic> subsubcategory;
+class Brands extends StatefulWidget {
+  const Brands({Key? key, required this.category}) : super(key: key);
+  final String category;
 
   @override
-  State<Sub_Sub_Categories_on_wholesaleraccnt> createState() => _Sub_Sub_Categories_on_wholesaleraccntState();
+  State<Brands> createState() => _BrandsState();
 }
 
-class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categories_on_wholesaleraccnt> {
+class _BrandsState extends State<Brands> {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   bool isLoading = true;
 
-  List<SubSubCategoriesModel> subsubcategories = [];
+  List<String> brands = [];
   List<Color> colors_list=[
 
     Colors.grey[800]!, Colors.grey[700]!, Colors.black, Colors.grey[800]!,
@@ -32,11 +30,14 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
     Colors.grey[800]!, Colors.grey[700]!, Colors.black, Colors.grey[800]!,
 
   ];
-  int color_increment = 0;
-  Future <void> get_subsubcategories() async{
 
-    final service_listings = db.collection("subsubcategories")
-        .where("subcategoryname", isEqualTo: widget.subcat);
+  int color_increment =0;
+
+
+  Future <void> get_subcategories() async{
+
+    final service_listings = db.collection("brands")
+        .where("brandcategory", isEqualTo: widget.category);
 
     await service_listings.get().then((ref) {
       setState(
@@ -44,25 +45,15 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
 
             ref.docs.forEach((element) {
 
+
               if(color_increment == 11)
               {
                 color_increment = 0;
               }
 
-              print("${widget.subsubcategory.contains(element.data()['subsubcategoryname'])}");
-              print("${widget.subsubcategory}");
-              if(widget.subsubcategory.contains(element.data()['subsubcategoryname']))
-                {
 
+              brands.add(element.data()['brandname']);
 
-                  subsubcategories.add(
-                      SubSubCategoriesModel(
-                        sub_sub_category_name: element.data()['subsubcategoryname'],
-                        sub_category_id: element.id,
-                        color: colors_list[color_increment],)
-                  );
-
-                }
 
 
 
@@ -81,9 +72,9 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
     // TODO: implement initState
     super.initState();
 
-    ()async{
+        ()async{
 
-      await get_subsubcategories();
+      await get_subcategories();
 
     }();
   }
@@ -91,7 +82,6 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
 
       body: SafeArea(
@@ -108,31 +98,29 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
 
                     child: Icon(Icons.arrow_back, color: HexColor("#1A434E"), size: 30,)),
                 SizedBox(height: 20,),
-                Text("${widget.subcat}",style:TextStyle(
+                Text("${widget.category} Brands",style:TextStyle(
                     fontWeight: FontWeight.w600,
                     color: HexColor("#1A434E"),
                     fontSize:18
                 )),
                 SizedBox(height: 10,),
                 Container(
+
                   width: MediaQuery.of(context).size.width,
-                  height: subsubcategories.length *65,
+                  height: MediaQuery.of(context).size.height-151,
+
                   child: ListView.builder(
-                      itemCount: subsubcategories.length,
+                      itemCount: brands.length,
 
                       itemBuilder:(BuildContext context, int index) {
                         return InkWell(
                           onTap: (){
                             Navigator.of(context).push(
                                 MaterialPageRoute
-                                  (builder: (context)=>Home_Page_Products_specific(
-                                  subcategory: widget.subcat,
-                                  category: widget.cat,
-                                   subsubcategory: subsubcategories[index].sub_sub_category_name,
-                                  wholesalerid: widget.wholesalerid,)));
+                                  (builder: (context)=>Sub_Categories(  subcat: widget.category, brand:brands[index] ,)));
                           },
 
-                          child:Card(
+                          child: Card(
                             color: Colors.grey[200],
                             child: Container(
 
@@ -143,18 +131,19 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
                                 padding: const EdgeInsets.only(left:0.0),
                                 child: Container(
                                   width: MediaQuery.of(context).size.width,
+
                                   child: ListTile(
                                     leading: CircleAvatar(
-                                      backgroundColor: subsubcategories[index].color,
-                                      child: Text("${subsubcategories[index].sub_sub_category_name[0].toUpperCase()}${subsubcategories[index].sub_sub_category_name[1].toUpperCase()}",
+                                      backgroundColor: Colors.black,
+                                      child: Text("${brands[index][0].toUpperCase()}${brands[index][1].toUpperCase()}",
 
                                         style: TextStyle(
-                                            color: Colors.grey[200],
+                                            color: HexColor("#FFFFFF"),
                                             fontWeight: FontWeight.bold
                                         ),
                                       ),
                                     ),
-                                    title: Text("${subsubcategories[index].sub_sub_category_name}",
+                                    title: Text("${brands[index]}",
                                       style: TextStyle(
                                         color: HexColor("#1A434E"),
 
@@ -179,5 +168,3 @@ class _Sub_Sub_Categories_on_wholesaleraccntState extends State<Sub_Sub_Categori
     );
   }
 }
-
- */

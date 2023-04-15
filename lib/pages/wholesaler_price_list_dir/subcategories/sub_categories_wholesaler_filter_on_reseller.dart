@@ -7,11 +7,12 @@ import 'package:nsuqo/pages/sub_sub_categories.dart';
 import '../../../models/filters_params.dart';
 import '../../../models/subcategory_model.dart';
 import '../subsubcategories/sub_sub_categories.dart';
+import '../wholesaler_specific_products.dart';
 
 class Sub_Categories_On_Resseler extends StatefulWidget {
-  const Sub_Categories_On_Resseler({Key? key, required this.subcat, required this.wholesalerid, required this.subcategories, required this.subsubcategories}) : super(key: key);
-  final String subcat, wholesalerid;
-  final List<dynamic> subcategories,subsubcategories;
+  const Sub_Categories_On_Resseler({Key? key, required this.category, required this.wholesalerid, required this.subcategories, required this.brand}) : super(key: key);
+  final String category, wholesalerid, brand;
+  final List<dynamic> subcategories;
 
   @override
   State<Sub_Categories_On_Resseler> createState() => _Sub_Categories_On_ResselerState();
@@ -37,7 +38,8 @@ class _Sub_Categories_On_ResselerState extends State<Sub_Categories_On_Resseler>
   Future <void> get_subcategories() async{
 
     final service_listings = db.collection("subcategories")
-        .where("categoryname", isEqualTo: widget.subcat);
+        .where("categoryname", isEqualTo: widget.category)
+        .where("brandname", isEqualTo: widget.brand);
 
     await service_listings.get().then((ref) {
       setState(
@@ -127,7 +129,7 @@ class _Sub_Categories_On_ResselerState extends State<Sub_Categories_On_Resseler>
 
                     child: Icon(Icons.arrow_back, color: HexColor("#1A434E"), size: 30,)),
                 SizedBox(height: 20,),
-                Text("${widget.subcat}",style:TextStyle(
+                Text("${widget.category}",style:TextStyle(
                     fontWeight: FontWeight.w600,
                     color: HexColor("#1A434E"),
                     fontSize:18
@@ -142,6 +144,14 @@ class _Sub_Categories_On_ResselerState extends State<Sub_Categories_On_Resseler>
                       itemBuilder:(BuildContext context, int index) {
                         return InkWell(
                           onTap: (){
+
+                            Navigator.of(context).push(
+                                MaterialPageRoute
+                                  (builder: (context)=>Home_Page_Products_specific(
+                                  subcategory: subcategories[index].sub_category_name,
+                                  category: widget.category,
+                                  wholesalerid: widget.wholesalerid, brand: widget.brand,)));
+                         /*
                             Navigator.of(context).push(
                                 MaterialPageRoute
                                   (builder: (context)=>Sub_Sub_Categories_on_wholesaleraccnt(
@@ -149,6 +159,7 @@ class _Sub_Categories_On_ResselerState extends State<Sub_Categories_On_Resseler>
                                   cat: widget.subcat,
                                   subsubcategory: widget.subsubcategories,
                                   wholesalerid: widget.wholesalerid,)));
+                          */
                           },
 
                           child: Card(

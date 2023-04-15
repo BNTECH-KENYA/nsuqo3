@@ -87,6 +87,7 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                         resolution: element.data()['resolution'],
                         package: element.data()['package'],
                         partner: element.data()['partner'],
+                        brandname: element.data()['brandname'],
                         filters_params: Filters_Params_Model(
                             availability: element.data()['filters_params']['availability'],
                             warrant_period:element.data()['filters_params']['warrant_period'],
@@ -134,6 +135,8 @@ class _Wholesaler_Product_ListState extends State<Wholesaler_Product_List> {
                       resolution: element.data()['resolution'],
                       package: element.data()['package'],
                       partner: element.data()['partner'],
+                      brandname: element.data()['brandname'],
+
                       filters_params: Filters_Params_Model(
                           availability: element.data()['filters_params']['availability'],
                           warrant_period:element.data()['filters_params']['warrant_period'],

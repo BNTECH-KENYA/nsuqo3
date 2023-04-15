@@ -27,6 +27,7 @@ class Item_Model {
   final String partner;
   final String package;
   final String exchange_rate;
+  final String brandname;
    String ? subcategory;
    String ? subsubcategory;
   final Filters_Params_Model filters_params;
@@ -58,6 +59,7 @@ class Item_Model {
     required this.package,
     required this.filters_params,
     required this.exchange_rate,
+    required this.brandname,
     this.subcategory,
     this.subsubcategory,
 

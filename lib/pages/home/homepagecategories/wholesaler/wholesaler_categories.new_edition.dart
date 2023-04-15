@@ -15,6 +15,8 @@ import 'package:nsuqo/pages/verify_email_wholesaler.dart';
 import 'package:nsuqo/pages/wholesalersproductlist/wholesalers_product_list.dart';
 import 'package:share/share.dart';
 
+import '../../../../brands_page.dart';
+import '../../../../brands_page_wholesaler.dart';
 import '../../../../constants.dart';
 import '../../../../helpers/update_pop.dart';
 import '../widgets/cat_home_new_ui_look.dart';
@@ -40,6 +42,61 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
   String company_name = "";
   String location = "";
 
+
+  List<dynamic> listcategories = [];
+  List<dynamic> listsubcategories = [];
+  List<dynamic> listsubsubcategories = [];
+  List<dynamic> listbrands = [];
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  Future<void> getuserdata()
+  async {
+    final docref = db.collection("userdd").doc(user_email);
+    await docref.get().then((res) {
+
+      if(res.data() != null)
+      {
+
+        if(res.data()!['fname'] != "")
+        {
+          if(res.data()!['approved'] == "approved"){
+            setState(
+                    (){
+
+                  company_name = res.data()!['company_name'];
+                  location = res.data()!['location'];
+                  listcategories = res.data()!['listcategories'];
+                  listsubcategories = res.data()!['listsubcategories'];
+                  listsubsubcategories = res.data()!['listsubsubcategories'];
+                  listbrands = res.data()!['listbrands'];
+                  isLoading = false;
+
+                }
+            );
+          }
+          else
+          {
+            Navigator.of(context).push(
+                MaterialPageRoute
+                  (builder: (context)=>Account_Approval_WholeSaler(email_val: user_email,)));
+          }
+        }
+        else
+        {
+          Navigator.of(context).push(
+              MaterialPageRoute
+                (builder: (context)=>Create_Account_WholeSaler()));
+        }
+
+
+      }
+
+    });
+
+  }
+
+/*
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   Future<void> getuserdata()
@@ -83,6 +140,7 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
     });
 
   }
+ */
 
   Future<void> checkAuth()async {
     await FirebaseAuth.instance
@@ -141,10 +199,6 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
         });
 
       }
-
-
-
-
 
     }).catchError(
             (e){
@@ -311,13 +365,12 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
            children: [
              Row(
                  children:[
-                   InkWell(
+                   listcategories.contains("Computing")?  InkWell(
                      onTap:(){
 
                        Navigator.of(context).push(
                            MaterialPageRoute
-                             (builder: (context)=>Sub_Categories(subcat:'Computing',)));
-
+                             (builder: (context)=>Brands_Wholesaler(category: 'Computing',listbrands: listbrands, listcategories: [], listsubcategories: [],)));;
 
                      },
                      child: Cat_Home_New_UI(
@@ -325,14 +378,16 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                        cat_name: "computing",
                        icon: Icons.computer, new_item: false,
                        hexcolor: "#E5DEF6" ,),
-                   ),
+                   ): Container(),
+
                    SizedBox(width:20),
-                   InkWell(
+
+                   listcategories.contains("CONSUMER ELECTRONICS")? InkWell(
                      onTap:(){
 
                        Navigator.of(context).push(
                            MaterialPageRoute
-                             (builder: (context)=>Sub_Categories(subcat: 'Consumer Electronic',)));
+                             (builder: (context)=>Brands_Wholesaler(category: 'CONSUMER ELECTRONICS',listbrands: listbrands, listcategories: [], listsubcategories: [],)));
 
 
                      },
@@ -343,36 +398,36 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                        new_item: false,
 
                      ),
-                   ),
+                   ):Container(),
                  ]
              ),
              SizedBox(height:20),
 
              Row(
                  children:[
-                   InkWell(
+                   listcategories.contains("PHONES AND ACCESSORIES")? InkWell(
                      onTap:(){
 
                        Navigator.of(context).push(
                            MaterialPageRoute
-                             (builder: (context)=>Sub_Categories(subcat: 'Phones and Tablets',)));
+                             (builder: (context)=>Brands_Wholesaler(category: 'PHONES AND ACCESSORIES', listbrands: listbrands, listcategories: [], listsubcategories: [],)));
 
 
                      },
                      child: Cat_Home_New_UI(image_path: "assets/phonestabs.jpeg",
-                       cat_name: "Phones and Tablets",
+                       cat_name: "PHONES AND ACCESSORIES",
                        hexcolor: "#FAF3EB",
                        icon: Icons.phone_android,
                        new_item: false,
                      ),
-                   ),
+                   ): Container(),
                    SizedBox(width:20),
-                   InkWell(
+                   listcategories.contains("More")? InkWell(
                      onTap:(){
 
                        Navigator.of(context).push(
                            MaterialPageRoute
-                             (builder: (context)=>Sub_Categories(subcat: 'More',)));
+                             (builder: (context)=>Brands_Wholesaler(category: 'More',listbrands: listbrands, listcategories: [], listsubcategories: [],)));
 
 
                      },
@@ -382,7 +437,7 @@ class _Whole_Saler_categoriesState extends State<Whole_Saler_categories> {
                        hexcolor: "#E5DEF6",
                        new_item: false,
                      ),
-                   ),
+                   ):Container(),
                  ]
              ),
            ],

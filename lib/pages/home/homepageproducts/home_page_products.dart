@@ -23,11 +23,13 @@ import '../../edit_profile_retailer.dart';
 import '../../messanger/messanger_retailer/messanger.dart';
 
 class Home_Page_Products extends StatefulWidget {
-  const Home_Page_Products({Key? key,required this.subsubcategory, required this.subcategory, required this.category}) : super(key: key);
-  final String  subsubcategory, subcategory, category;
+
+  const Home_Page_Products({Key? key,required this.brand, required this.subcategory, required this.category}) : super(key: key);
+  final String  brand, subcategory, category;
 
   @override
   State<Home_Page_Products> createState() => _Home_Page_ProductsState();
+
 }
 
 class _Home_Page_ProductsState extends State<Home_Page_Products> {
@@ -112,6 +114,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                             package: element.data()['filters_params']['package'],
                             size: element.data()['filters_params']['size']),
                         exchange_rate: exchange_rate!,
+                        brandname: element.data()['brandname'],
 
                       )
 
@@ -143,6 +146,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                         resolution: element.data()['resolution'],
                         package: element.data()['package'],
                         partner: element.data()['partner'],
+                        brandname: element.data()['brandname'],
                         filters_params: Filters_Params_Model(
                             availability: element.data()['filters_params']['availability'],
                             warrant_period:element.data()['filters_params']['warrant_period'],
@@ -195,7 +199,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
     final service_listings = db.collection("products")
         .where("category", isEqualTo: widget.category)
         .where("subcategory", isEqualTo: widget.subcategory)
-        .where("subsubcategory", isEqualTo: widget.subsubcategory);
+        .where("brandname", isEqualTo: widget.brand);
 
     await service_listings.get().then((ref) async {
       print("redata 1 &****************************${ref.docs}");
@@ -233,13 +237,10 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
         .where("wholesalerid", isEqualTo: useremail)
         .where("category", isEqualTo: widget.category)
         .where("subcategory", isEqualTo: widget.subcategory)
-        .where("subsubcategory", isEqualTo: widget.subsubcategory);
+        .where("brandname", isEqualTo: widget.brand);
 
     await service_listings.get().then((ref) async {
       print("redata 1 &****************************${ref.docs}");
-
-
-
 
             ref.docs.forEach((element) async {
               print(element.data()['productname']);
@@ -764,6 +765,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                     height: 30,
                   ),
 
+             /*
                   Padding(
                     padding: const EdgeInsets.only(left:8.0, right:8.0),
                     child: Container(
@@ -1000,14 +1002,16 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                    SizedBox(
                     height:20,
                   ),
+              */
+
 
 
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height:MediaQuery.of(context).size.height-341,
+                    height:MediaQuery.of(context).size.height-291,
                     decoration: BoxDecoration(
                       color: HexColor("#FFFFFF"),
                       borderRadius: BorderRadius.only(topLeft:Radius.circular(20),
@@ -1159,8 +1163,6 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                   ),
                 ),
 
-
-
                 InkWell(
 
                   onTap: () async {
@@ -1183,6 +1185,7 @@ class _Home_Page_ProductsState extends State<Home_Page_Products> {
                     ),
                   ),
                 ),
+
 
                 InkWell(
 

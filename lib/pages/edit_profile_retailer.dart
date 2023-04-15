@@ -435,7 +435,7 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                             border: Border.all(
                                 color: HexColor("#1A434E"),
                             ),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -476,7 +476,7 @@ class _Edit_Retailer_ProfileState extends State<Edit_Retailer_Profile> {
                             border: Border.all(
                                 color: HexColor("#1A434E"),
                             ),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),

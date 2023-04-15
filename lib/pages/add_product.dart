@@ -18,6 +18,7 @@ import 'package:toast/toast.dart';
 
 import '../models/filters_params.dart';
 import '../models/subsubcategory_model.dart';
+import '../select_brands.dart';
 import '../widgets/add_product_photos.dart';
 
 class Add_Products extends StatefulWidget {
@@ -89,6 +90,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
    );
 
+
   var imagePath;
   var imageName;
   String imageLink = "";
@@ -108,6 +110,8 @@ class _Add_ProductsState extends State<Add_Products> {
   String partner ="";
   String package = "";
   String size ="";
+  String ? _brandname;
+
 
   FirebaseFirestore db = FirebaseFirestore.instance;
   Future<String> uploadingItemData()
@@ -147,8 +151,9 @@ class _Add_ProductsState extends State<Add_Products> {
      "partner":_partner.text.toString(),
      "package":_package.text.toString(),
       "size":_size.text.toString(),
+      "brandname":_brandname,
 
-     "filters_params":{
+      "filters_params":{
            "availability":_filters_params_model.availability,
            "warrant_period":_filters_params_model.warrant_period,
            "moq": _filters_params_model.moq,
@@ -158,7 +163,7 @@ class _Add_ProductsState extends State<Add_Products> {
            "ram": _filters_params_model.ram,
            "processor": _filters_params_model.processor,
            "screen":_filters_params_model.screen,
-           "brand": _filters_params_model.brand,
+           "brand": _brandname,
            "resolution": _filters_params_model.resolution,
            "storage": _filters_params_model.storage,
            "screensize": _filters_params_model.screensize,
@@ -166,24 +171,32 @@ class _Add_ProductsState extends State<Add_Products> {
            "package": _filters_params_model.package,
            "size": _filters_params_model.size,
     }
-
     };
+
 
     await db.collection("products").add(data).then(
             (DocumentReference doc) async {
               document_id = doc.id;
 
               final updateproductretailerfilters = {
+
                 "listcategories":FieldValue.arrayUnion([
                   _category
 
                 ]),
+
                 "listsubcategories":FieldValue.arrayUnion([
 
                   _subcategory
+
                 ]),
+
                 "listsubsubcategories":FieldValue.arrayUnion([
                   _subsubcategory
+                ]),
+
+                "listbrands":FieldValue.arrayUnion([
+                  _brandname
                 ]),
               };
               await db.collection("userdd").doc(widget.user_email).update(updateproductretailerfilters);
@@ -195,10 +208,8 @@ class _Add_ProductsState extends State<Add_Products> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
-
 
     return isLoading? Container(
       width: MediaQuery.of(context).size.width,
@@ -383,16 +394,16 @@ class _Add_ProductsState extends State<Add_Products> {
 
                   else
                     {
-                      SubCategoriesModel subcategory_model= await Navigator.push(context,
+                      String select_Brands= await Navigator.push(context,
                           MaterialPageRoute(builder:
-                              (context) => Select_Sub_Category(categoryId: _categoryId,)));
+                              (context) => Select_Brands( category: _category,)));
 
-                      if(subcategory_model != null)
+                      if(select_Brands != null)
                       {
                         setState(() {
-                          _subcategory = subcategory_model.sub_category_name;
-                          _subcategoryId = subcategory_model.sub_category_id;
-                          _filters_params_model = subcategory_model.filters_params_model;
+
+
+                          _brandname = select_Brands;
                         });
                       }
                     }
@@ -403,7 +414,7 @@ class _Add_ProductsState extends State<Add_Products> {
 
                   children: [
 
-                    Text("Select Product Subcategory", style:TextStyle(
+                    Text("Select Product Brand", style:TextStyle(
 
                         color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
@@ -429,7 +440,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                 "${_subcategory}", style: TextStyle(
+                 "${_brandname}", style: TextStyle(
                     color: HexColor("#1A434E")
                   ),
 
@@ -443,23 +454,27 @@ class _Add_ProductsState extends State<Add_Products> {
               InkWell(
                 onTap:() async {
 
-                  if(_subcategory.length <1)
+                  if(_brandname!.length <1)
 
                     {
-                      Toast.show("Select Product Subcategory".toString(), context,duration:Toast.LENGTH_SHORT,
+                      Toast.show("Select Product Brand".toString(), context,duration:Toast.LENGTH_SHORT,
                           gravity: Toast.BOTTOM);
                     }
 
                   else
                     {
-                      SubSubCategoriesModel subsubcategory_model= await Navigator.push(context,
-                          MaterialPageRoute(builder:
-                              (context) => Select_Sub_Sub_Category(subcategoryId: _subcategoryId,)));
 
-                      if(subsubcategory_model != null)
+                      SubCategoriesModel subcategory_model= await Navigator.push(context,
+                          MaterialPageRoute(builder:
+                              (context) => Select_Sub_Category(brandname: _brandname!, categoryId: _categoryId,)));
+
+
+                      if(subcategory_model != null)
                       {
                         setState(() {
-                          _subsubcategory = subsubcategory_model.sub_sub_category_name;
+                          _subcategory = subcategory_model.sub_category_name;
+                          _subcategoryId = subcategory_model.sub_category_id;
+                          _filters_params_model = subcategory_model.filters_params_model;
                         });
                       }
                     }
@@ -489,13 +504,13 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                 "${_subsubcategory}", style: TextStyle(
+                 "${_subcategory}", style: TextStyle(
                     color:HexColor("#1A434E")
                   ),
 
@@ -523,7 +538,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: Colors.grey[500]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 2.0, bottom: 2),
@@ -720,7 +735,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: Colors.grey[400]!
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
@@ -755,7 +770,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   border: Border.all(
                       color: HexColor("#1A434E")
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
 
                 child: Padding(
@@ -782,15 +797,15 @@ class _Add_ProductsState extends State<Add_Products> {
 
               SizedBox(height: 20,),
 
-            _filters_params_model.brand? Text("Enter Brand Name", style:TextStyle(
+            false? Text("Enter Brand Name", style:TextStyle(
 
                   color:HexColor("#1A434E"),
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
-              _filters_params_model.brand? SizedBox( height: 10,): Container(),
+              false? SizedBox( height: 10,): Container(),
 
-              _filters_params_model.brand?  Container(
+              false?  Container(
                 width: MediaQuery.of(context).size.width,
                 height: 40,
                 decoration: BoxDecoration(
@@ -820,7 +835,7 @@ class _Add_ProductsState extends State<Add_Products> {
                 ),
               ):Container(),
 
-              _filters_params_model.brand? SizedBox( height: 20,): Container(),
+              false? SizedBox( height: 20,): Container(),
 
               _filters_params_model.package? Text("Enter package Name", style:TextStyle(
 
@@ -1104,6 +1119,7 @@ class _Add_ProductsState extends State<Add_Products> {
                   fontWeight: FontWeight.w400,
                   fontSize:16
               )):Container(),
+
               _filters_params_model.screensize? SizedBox( height: 10,): Container(),
 
               _filters_params_model.size? Container(
@@ -1181,20 +1197,25 @@ class _Add_ProductsState extends State<Add_Products> {
                 onTap: () async {
 
                   print(">>>>>>>>>>>>>>>>>>|-pdflength${photoFiles?.length}");
+
                   final result = await FilePicker.platform.pickFiles(
                       allowMultiple:true,
                       type: FileType.custom,
                       allowedExtensions: ['png','jpg']
                   );
+
                   if(result == null) return;
                   print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> |-result ${result.count}");
                   if(result.count <= 2){
+
                     setState(
                             (){
 
-                          photoFiles =result.paths.map((path) => File(path!)).toList() ;
+                          photoFiles =result.paths.map((path) => File(path!)).toList();
+
                         }
                     );
+
                   }
                   else
                   {
@@ -1220,9 +1241,12 @@ class _Add_ProductsState extends State<Add_Products> {
               SizedBox(height: 10,),
 
               SizedBox(
+
                 width: MediaQuery.of(context).size.width,
                 height:(photoFiles?.length == null)? 0 :photoFiles!.length * 280,
+
                 child: ListView.builder(
+
                 itemCount: (photoFiles?.length == null)? 0:photoFiles?.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, int index) {
@@ -1398,7 +1422,7 @@ class _Add_ProductsState extends State<Add_Products> {
                     border: Border.all(
                         color: Colors.grey[500]!
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Center(
                       child: Text("Save Product", style: TextStyle(

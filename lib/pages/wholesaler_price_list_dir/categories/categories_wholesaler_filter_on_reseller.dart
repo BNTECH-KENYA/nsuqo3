@@ -22,9 +22,11 @@ import '../../account_approval_wholesaler.dart';
 import '../../create_account_wholesaler.dart';
 import '../../home/homepagecategories/widgets/cat_home_new_ui_look.dart';
 import '../../messanger/messanger_wholesaler/messangerwholesaler.dart';
+import '../brands_wholesaler_dir/brands_page.dart';
 import '../subcategories/sub_categories_wholesaler_filter_on_reseller.dart';
 
 class Whole_Saler_categories_On_Resseler extends StatefulWidget {
+
   const Whole_Saler_categories_On_Resseler({Key? key, required this.wholesalerid}) : super(key: key);
   final String wholesalerid;
   @override
@@ -37,6 +39,7 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
   List<dynamic> listcategories = [];
   List<dynamic> listsubcategories = [];
   List<dynamic> listsubsubcategories = [];
+  List<dynamic> listbrands = [];
 
   bool isLoading = true;
   String user_email = "";
@@ -64,6 +67,7 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
                   listcategories = res.data()!['listcategories'];
                   listsubcategories = res.data()!['listsubcategories'];
                   listsubsubcategories = res.data()!['listsubsubcategories'];
+                  listbrands = res.data()!['listbrands'];
                   isLoading = false;
 
                 }
@@ -218,10 +222,19 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
 
             Padding(
               padding: const EdgeInsets.only(left:20.0),
-              child: Text("@${(widget.wholesalerid).split("@")[0]} Procuct Categories", style: TextStyle(
-                  color: HexColor("#FFFFFF"),
-                  fontSize: 20
-              ),),
+              child: Row(
+                children: [
+                  InkWell(
+                      onTap:(){
+                        Navigator.pop(context);
+                               },
+                      child: Icon(Icons.arrow_back_ios, color: Colors.white,)),
+                  Text("@${(widget.wholesalerid).split("@")[0]} Procuct Categories", style: TextStyle(
+                      color: HexColor("#FFFFFF"),
+                      fontSize: 20
+                  ),),
+                ],
+              ),
             ),
 
             SizedBox(height:20),
@@ -257,7 +270,6 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
                          fontSize: 18
                      ),),
 
-
                    ]
                ),
              )
@@ -277,8 +289,8 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
                        Navigator.of(context).push(
                            MaterialPageRoute
                              (builder: (context)=>
-                               Sub_Categories_On_Resseler(subcat:'Computing', subcategories: listsubcategories, subsubcategories: listsubsubcategories,
-                                 wholesalerid:widget.wholesalerid,)));
+                               wholesaler_Specific_Brands( subcategories: listsubcategories,
+                                 wholesalerid:widget.wholesalerid, category: 'Computing', listbrands: listbrands,)));
 
 
                      },
@@ -295,8 +307,8 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
                        Navigator.of(context).push(
                            MaterialPageRoute
                              (builder: (context)=>
-                               Sub_Categories_On_Resseler(subcat:'Consumer Electronic', subcategories: listsubcategories, subsubcategories: listsubsubcategories,
-                                 wholesalerid:widget.wholesalerid,)));
+                               wholesaler_Specific_Brands(category:'Consumer Electronic', subcategories: listsubcategories,
+                                 wholesalerid:widget.wholesalerid, listbrands: listbrands, )));
 
 
                      },
@@ -320,8 +332,8 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
                        Navigator.of(context).push(
                            MaterialPageRoute
                              (builder: (context)=>
-                               Sub_Categories_On_Resseler(subcat:'Phones and Tablets', subcategories: listsubcategories, subsubcategories: listsubsubcategories,
-                                 wholesalerid: widget.wholesalerid,)));
+                               wholesaler_Specific_Brands(category:'Phones and Tablets', subcategories: listsubcategories,
+                                 wholesalerid: widget.wholesalerid, listbrands: listbrands,)));
 
 
                      },
@@ -339,8 +351,8 @@ class _Whole_Saler_categories_On_ResselerState extends State<Whole_Saler_categor
                        Navigator.of(context).push(
                            MaterialPageRoute
                              (builder: (context)=>
-                               Sub_Categories_On_Resseler(subcat:'More', subcategories: listsubcategories, subsubcategories: listsubsubcategories,
-                                 wholesalerid:widget.wholesalerid,)));
+                               wholesaler_Specific_Brands(category:'More', subcategories: listsubcategories,
+                                 wholesalerid:widget.wholesalerid, listbrands: listbrands,)));
 
 
                      },

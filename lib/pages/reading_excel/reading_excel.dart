@@ -1,3 +1,6 @@
+/*
+
+
 import 'dart:io';
 
 import 'package:excel/excel.dart';
@@ -15,7 +18,7 @@ class Reading_Excel_File extends StatefulWidget {
 
 class _Reading_Excel_FileState extends State<Reading_Excel_File> {
 
- /*
+
   void readexcelsheet() async {
 
     var colIterableSheet = excel['ColumnIterables'];
@@ -34,7 +37,7 @@ class _Reading_Excel_FileState extends State<Reading_Excel_File> {
 
 
   }
-  */
+
 
   List<String> rowdetail = [];
   List<File> photoFiles = [];
@@ -76,7 +79,7 @@ class _Reading_Excel_FileState extends State<Reading_Excel_File> {
           Data data = row?.firstWhere((element) => element?.value?.toString()?.toLowerCase() == email);
           emailIndex = data.colIndex;
         }
-        if (nameIndex != null && emailIndex != null) {
+        if (nameIndex != nu ll && emailIndex != null) {
           if (row[nameIndex]?.value.toString().toLowerCase() != name.toLowerCase() && row[emailIndex]?.value.toString().toLowerCase() != email.toLowerCase())
             excelList.add(
               ExcelSheetData(
@@ -129,3 +132,5 @@ class _Reading_Excel_FileState extends State<Reading_Excel_File> {
     );
   }
 }
+
+ */

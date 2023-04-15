@@ -19,6 +19,7 @@ import 'package:toast/toast.dart';
 import '../models/filters_params.dart';
 import '../models/products_model.dart';
 import '../models/subsubcategory_model.dart';
+import '../select_brands.dart';
 import '../widgets/add_product_photos.dart';
 
 class Add_Products_Catalogue extends StatefulWidget {
@@ -118,6 +119,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
   String partner ="";
   String package = "";
   String size ="";
+  String _brandname ="";
 
 
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -157,6 +159,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
      "partner":_partner.text.toString(),
      "package":_package.text.toString(),
       "size":_size.text.toString(),
+      "brandname":_brandname,
 
      "filters_params":{
            "availability":_filters_params_model.availability,
@@ -193,6 +196,9 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                 ]),
                 "listsubsubcategories":FieldValue.arrayUnion([
                   _subsubcategory
+                ]),
+                "listbrands":FieldValue.arrayUnion([
+                  _brandname
                 ]),
               };
               await db.collection("userdd").doc(widget.user_email).update(updateproductretailerfilters);
@@ -416,27 +422,27 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                     }
 
                   else
-                    {
-                      SubCategoriesModel subcategory_model= await Navigator.push(context,
-                          MaterialPageRoute(builder:
-                              (context) => Select_Sub_Category(categoryId: _categoryId,)));
+                  {
+                    String select_Brands= await Navigator.push(context,
+                        MaterialPageRoute(builder:
+                            (context) => Select_Brands( category: _category,)));
 
-                      if(subcategory_model != null)
-                      {
-                        setState(() {
-                          _subcategory = subcategory_model.sub_category_name;
-                          _subcategoryId = subcategory_model.sub_category_id;
-                          _filters_params_model = subcategory_model.filters_params_model;
-                        });
-                      }
+                    if(select_Brands != null)
+                    {
+                      setState(() {
+
+
+                        _brandname = select_Brands;
+                      });
                     }
+                  }
                 },
 
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
-                    Text("Select Product Subcategory", style:TextStyle(
+                    Text("Select Product Brand", style:TextStyle(
 
                         color:HexColor("#1A434E"),
                         fontWeight: FontWeight.w400,
@@ -464,7 +470,7 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
                   padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
                   child: Text(
 
-                 "${_subcategory}", style: TextStyle(
+                 "${_brandname}", style: TextStyle(
                     color: Colors.grey[700]
                   ),
 
@@ -477,27 +483,30 @@ class _Add_Products_CatalogueState extends State<Add_Products_Catalogue> {
 
               InkWell(
                 onTap:() async {
+                  if(_brandname!.length <1)
 
-                  if(_subcategory.length <1)
-
-                    {
-                      Toast.show("Select Product Subcategory".toString(), context,duration:Toast.LENGTH_SHORT,
-                          gravity: Toast.BOTTOM);
-                    }
+                  {
+                    Toast.show("Select Product Brand".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+                  }
 
                   else
-                    {
-                      SubSubCategoriesModel subsubcategory_model= await Navigator.push(context,
-                          MaterialPageRoute(builder:
-                              (context) => Select_Sub_Sub_Category(subcategoryId: _subcategoryId,)));
+                  {
 
-                      if(subsubcategory_model != null)
-                      {
-                        setState(() {
-                          _subsubcategory = subsubcategory_model.sub_sub_category_name;
-                        });
-                      }
+                    SubCategoriesModel subcategory_model= await Navigator.push(context,
+                        MaterialPageRoute(builder:
+                            (context) => Select_Sub_Category(brandname: _brandname!, categoryId: _categoryId,)));
+
+
+                    if(subcategory_model != null)
+                    {
+                      setState(() {
+                        _subcategory = subcategory_model.sub_category_name;
+                        _subcategoryId = subcategory_model.sub_category_id;
+                        _filters_params_model = subcategory_model.filters_params_model;
+                      });
                     }
+                  }
 
                 },
 

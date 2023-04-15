@@ -100,6 +100,7 @@ class _WholeSaler_Home_PageState extends State<WholeSaler_Home_Page> {
                     resolution: element.data()['resolution'],
                     package: element.data()['package'],
                     partner: element.data()['partner'],
+                    brandname: element.data()['brandname'],
                     filters_params: element.data()['filters'].map((e) => Filters_Params_Model(
                         availability: e.availability,
                         warrant_period:e.warrant_period,

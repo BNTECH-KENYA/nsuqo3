@@ -13,7 +13,6 @@ class Brands extends StatefulWidget {
 
 class _BrandsState extends State<Brands> {
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +42,7 @@ class _BrandsState extends State<Brands> {
                 ),
               ),
             );
+
           }
       ),
     );

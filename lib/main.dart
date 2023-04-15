@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nsuqo/helpers/storage.dart';
-import 'package:nsuqo/pages/home_page_categories_final_Ui.dart';
 import 'package:nsuqo/pages/Login/sign_in.dart';
-import 'package:nsuqo/pages/reading_excel/reading_excel.dart';
-import 'package:nsuqo/pages/welcomepage/welcome_page.dart';
+import 'package:provider/provider.dart' as provider;
+
+import 'package:nsuqo/helpers/storage.dart';
 import 'package:workmanager/workmanager.dart';
+
+import 'package:flutter/services.dart';
+
 
 late FirebaseFirestore db_global;
 late storage _storage_global;
@@ -116,11 +118,15 @@ class MyApp extends StatelessWidget {
         primarySwatch:  Colors.grey,
       ),
 
-      home: const Reading_Excel_File(),
+      home:Sign_In(),
 
     );
   }
+
 }
+
+
+
 
 
 

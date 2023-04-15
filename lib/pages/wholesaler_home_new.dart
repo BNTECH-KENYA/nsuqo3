@@ -11,6 +11,7 @@ import 'package:nsuqo/pages/sub_categories.dart';
 import 'package:nsuqo/pages/verify_email_wholesaler.dart';
 import 'package:share/share.dart';
 
+import '../brands_page.dart';
 import '../helpers/exit_pop.dart';
 import 'Edit_Profile.dart';
 import 'account_approval_wholesaler.dart';
@@ -224,15 +225,14 @@ class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old>
 
                                             Navigator.of(context).push(
                                                 MaterialPageRoute
-                                                  (builder: (context)=>Sub_Categories(subcat:'Computing',)));
+                                                  (builder: (context)=>Brands(category:'Computing',)));
 
                                           }
                                           else if(categories[index] == "Phones and Tablets")
                                           {
-
                                             Navigator.of(context).push(
                                                 MaterialPageRoute
-                                                  (builder: (context)=>Sub_Categories(subcat: 'Phones and Tablets',)));
+                                                  (builder: (context)=>Brands(category: 'Phones and Tablets',)));
 
                                           }
                                           else if(categories[index] == "Consumer Electronic")
@@ -240,14 +240,14 @@ class _Whole_Saler_categories_oldState extends State<Whole_Saler_categories_old>
 
                                             Navigator.of(context).push(
                                                 MaterialPageRoute
-                                                  (builder: (context)=>Sub_Categories(subcat: 'Consumer Electronic',)));
+                                                  (builder: (context)=>Brands(category: 'Consumer Electronic',)));
 
                                           }
                                           else if(categories[index] == "More")
                                           {
                                             Navigator.of(context).push(
                                                 MaterialPageRoute
-                                                  (builder: (context)=>Sub_Categories(subcat: 'More',)));
+                                                  (builder: (context)=>Brands(category: 'More',)));
 
                                           }
 

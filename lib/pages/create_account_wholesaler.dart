@@ -68,6 +68,7 @@ class _Create_Account_WholeSalerState extends State<Create_Account_WholeSaler> {
       "listcategories":[],
       "listsubcategories":[],
       "listsubsubcategories":[],
+      "listbrands":[],
     };
 
     db.collection("userdd").doc(_email.text).update(data).then(

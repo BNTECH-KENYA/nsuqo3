@@ -6,8 +6,9 @@ import 'package:nsuqo/models/filters_params.dart';
 import 'package:nsuqo/models/subcategory_model.dart';
 
 class Select_Sub_Category extends StatefulWidget {
-  const Select_Sub_Category({Key? key, required this.categoryId}) : super(key: key);
+  const Select_Sub_Category({Key? key, required this.categoryId, required this.brandname}) : super(key: key);
   final String categoryId;
+  final String brandname;
 
   @override
   State<Select_Sub_Category> createState() => _Select_Sub_CategoryState();
@@ -33,7 +34,8 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
   Future <void> get_subcategories() async{
 
     final service_listings = db.collection("subcategories")
-        .where("categoryid", isEqualTo: widget.categoryId);
+        .where("categoryid", isEqualTo: widget.categoryId)
+        .where("brandname", isEqualTo: widget.brandname);
 
     await service_listings.get().then((ref) {
       setState(
@@ -77,7 +79,6 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
           }
       );
     });
-
   }
 
 
@@ -92,6 +93,7 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
 
     }();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +105,7 @@ class _Select_Sub_CategoryState extends State<Select_Sub_Category> {
               Navigator.pop(context);
             },
             child: Icon(Icons.arrow_back, color: Colors.white,)),
-        title: Text("Select Product Category", style:TextStyle(
+        title: Text("Select Brand SubCategory", style:TextStyle(
             color:Colors.white
         )),
 

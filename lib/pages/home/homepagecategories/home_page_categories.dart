@@ -14,6 +14,7 @@ import 'package:nsuqo/pages/wholesalerslist/wholesalers.dart';
 import 'package:share/share.dart';
 import 'package:upgrader/upgrader.dart';
 
+import '../../../brands_page.dart';
 import '../../../helpers/exit_pop.dart';
 import '../../../helpers/update_pop.dart';
 import 'widgets/cat_home_new_ui_look.dart';
@@ -277,129 +278,160 @@ class _Home_CategoriesState extends State<Home_Categories> {
                   ),
 
                   SizedBox(height:50),
-
-                  SizedBox(height:20),
-
+                  
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height:MediaQuery.of(context).size.height-288,
+                    height:MediaQuery.of(context).size.height-268,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topLeft:Radius.circular(20),
                           topRight:Radius.circular(20))
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                            width: MediaQuery.of(context).size.width,
-                            child:
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:20.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+
+                            SizedBox(height:20),
+
+                         Padding(
+
+                         padding: EdgeInsets.only(left:8.0, right:8.0),
+                         child:  InkWell(
+                           onTap:(){
+
+                             Navigator.of(context).push(
+                                 MaterialPageRoute
+                                   (builder: (context)=>WholeSalers()));
+                           },
+                           child: Container(
+                               width: MediaQuery.of(context).size.width,
+                               height:150,
+                               decoration: BoxDecoration(
+                                   color: Colors.grey[200],
+                                   borderRadius: BorderRadius.all(Radius.circular(10))
+                               ),
+                               child: Center(
+                                 child: Text("Wholesalers PriceList"),
+                               ),
+                             ),
+                         ),
+                         ),
+
+                            SizedBox(height:10),
+                            Container(
+                                width: MediaQuery.of(context).size.width,
+                                child:
+                                Padding(
+
+                                  padding: const EdgeInsets.only(left:20.0, right:8.0, top:20.0),
+
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children:[
+
+                                        Text("Categories", style: TextStyle(
+                                            color: HexColor("#000000"),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18
+                                        ),),
+
+
+                                      ]
+                                  ),
+                                )
+                            ),
+                            SizedBox(height:20),
                             Padding(
+                              padding: const EdgeInsets.only(left:10.0),
+                              child: Container(
+                                height:400,
+                                width:MediaQuery.of(context).size.width,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                        children:[
+                                          InkWell(
+                                            onTap:(){
 
-                              padding: const EdgeInsets.only(left:20.0, right:8.0, top:20.0),
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute
+                                                    (builder: (context)=>Brands(category:'Computing',)));
 
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children:[
+                                            },
+                                            child: Cat_Home_New_UI(
+                                              image_path: "assets/comps.jpeg",
+                                              cat_name: "Computing",
+                                              icon: Icons.computer,
+                                              new_item: categories_notify_new.contains("Computing"),
+                                              hexcolor: "#E5DEF6",),
+                                          ),
+                                          SizedBox(width:20),
+                                          InkWell(
+                                            onTap:(){
 
-                                    Text("Categories", style: TextStyle(
-                                      color: HexColor("#000000"),
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18
-                                    ),),
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute
+                                                    (builder: (context)=>Brands(category: 'CONSUMER ELECTRONICS',)));
 
 
-                                  ]
+                                            },
+                                            child: Cat_Home_New_UI(image_path: "assets/consumerelectronics.jpeg",
+                                                cat_name: "Consumer Electronic",
+                                                icon: Icons.cable,
+                                                 hexcolor: "#FAF3EB",
+                                                new_item: categories_notify_new.contains("Consumer Electronic")
+                                            ),
+                                          ),
+                                        ]
+                                    ),
+                                    SizedBox(height:20),
+
+                                    Row(
+                                        children:[
+                                          InkWell(
+                                            onTap:(){
+
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute
+                                                    (builder: (context)=>Brands(category: 'PHONES AND ACCESSORIES',)));
+
+
+                                            },
+                                            child: Cat_Home_New_UI(image_path: "assets/phonestabs.jpeg",
+                                                cat_name: "Phones and Tablets",
+                                                icon: Icons.phone_android,
+                                                hexcolor: "#FAF3EB",
+                                                new_item: categories_notify_new.contains("Phones and Tablets")
+                                            ),
+                                          ),
+                                          SizedBox(width:20),
+                                          InkWell(
+                                            onTap:(){
+
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute
+                                                    (builder: (context)=>Brands(category: 'More',)));
+
+                                            },
+                                            child: Cat_Home_New_UI(image_path: "assets/more.jpeg",
+                                                cat_name: "More",
+                                                icon: Icons.more_horiz,
+                                                hexcolor: "#E5DEF6",
+                                                new_item: categories_notify_new.contains("More")
+                                            ),
+                                          ),
+                                        ]
+                                    ),
+                                  ],
+                                ),
                               ),
                             )
+                          ],
                         ),
-                        SizedBox(height:20),
-                        Padding(
-                          padding: const EdgeInsets.only(left:10.0),
-                          child: Container(
-                            height:400,
-                            width:MediaQuery.of(context).size.width,
-                            child: Column(
-                              children: [
-                                Row(
-                                    children:[
-                                      InkWell(
-                                        onTap:(){
-
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute
-                                                (builder: (context)=>Sub_Categories(subcat:'Computing',)));
-
-                                        },
-                                        child: Cat_Home_New_UI(
-                                          image_path: "assets/comps.jpeg",
-                                          cat_name: "Computing",
-                                          icon: Icons.computer,
-                                          new_item: categories_notify_new.contains("Computing"),
-                                          hexcolor: "#E5DEF6",),
-                                      ),
-                                      SizedBox(width:20),
-                                      InkWell(
-                                        onTap:(){
-
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute
-                                                (builder: (context)=>Sub_Categories(subcat: 'Consumer Electronic',)));
-
-
-                                        },
-                                        child: Cat_Home_New_UI(image_path: "assets/consumerelectronics.jpeg",
-                                            cat_name: "Consumer Electronic",
-                                            icon: Icons.cable,
-                                             hexcolor: "#FAF3EB",
-                                            new_item: categories_notify_new.contains("Consumer Electronic")
-                                        ),
-                                      ),
-                                    ]
-                                ),
-                                SizedBox(height:20),
-
-                                Row(
-                                    children:[
-                                      InkWell(
-                                        onTap:(){
-
-
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute
-                                                (builder: (context)=>Sub_Categories(subcat: 'Phones and Tablets',)));
-
-                                        },
-                                        child: Cat_Home_New_UI(image_path: "assets/phonestabs.jpeg",
-                                            cat_name: "Phones and Tablets",
-                                            icon: Icons.phone_android,
-                                            hexcolor: "#FAF3EB",
-                                            new_item: categories_notify_new.contains("Phones and Tablets")
-                                        ),
-                                      ),
-                                      SizedBox(width:20),
-                                      InkWell(
-                                        onTap:(){
-
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute
-                                                (builder: (context)=>Sub_Categories(subcat: 'More',)));
-
-                                        },
-                                        child: Cat_Home_New_UI(image_path: "assets/more.jpeg",
-                                            cat_name: "More",
-                                            icon: Icons.more_horiz,
-                                            hexcolor: "#E5DEF6",
-                                            new_item: categories_notify_new.contains("More")
-                                        ),
-                                      ),
-                                    ]
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   )
                 ],
@@ -450,6 +482,7 @@ class _Home_CategoriesState extends State<Home_Categories> {
                       ),
                     ),
 
+/*
                     InkWell(
 
                       onTap: (){
@@ -475,6 +508,7 @@ class _Home_CategoriesState extends State<Home_Categories> {
                         ),
                       ),
                     ),
+ */
 
                     InkWell(
 

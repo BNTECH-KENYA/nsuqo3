@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nsuqo/pages/sub_categories.dart';
@@ -151,3 +152,5 @@ class _Home_Page_design_uiState extends State<Home_Page_design_ui> {
     );
   }
 }
+
+ */

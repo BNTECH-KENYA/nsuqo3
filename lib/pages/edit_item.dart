@@ -17,6 +17,7 @@ import 'package:toast/toast.dart';
 
 import '../models/filters_params.dart';
 import '../models/subsubcategory_model.dart';
+import '../select_brands.dart';
 import '../widgets/add_product_photos.dart';
 
 class Edit_Item extends StatefulWidget {
@@ -27,6 +28,7 @@ class Edit_Item extends StatefulWidget {
   State<Edit_Item> createState() => _Edit_ItemState();
 
 }
+
 
 class _Edit_ItemState extends State<Edit_Item> {
 
@@ -103,6 +105,7 @@ class _Edit_ItemState extends State<Edit_Item> {
   String partner ="";
   String package = "";
   String size ="";
+  String _brandname ="";
 
   final  _warrant_length = ["days", "months", "years"];
   String ? _selectedVal = "days";
@@ -144,6 +147,7 @@ class _Edit_ItemState extends State<Edit_Item> {
       "partner":_partner.text.toString(),
       "package":_package.text.toString(),
       "size":_size.text.toString(),
+      "brandname":_brandname,
 
       "filters_params":{
         "availability":_filters_params_model.availability,
@@ -194,7 +198,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                       ram: res.data()!['filters_params']["ram"],
                       processor: res.data()!['filters_params']["processor"],
                       screen: res.data()!['filters_params']["screen"],
-                      brand: res.data()!['filters_params']["brand"],
+                      brand: false,
                       resolution: res.data()!['filters_params']["resolution"],
                       storage: res.data()!['filters_params']["storage"],
                       screensize: res.data()!['filters_params']["screensize"],
@@ -221,6 +225,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                    _resolution.text =res.data()!['resolution'];
                    _ram.text =res.data()!['ram'];
                    photoLinksin = res.data()!['photosLinks'];
+                  _brandname = res.data()!['brandname'];
                    max_photos = 2- photoLinksin!.length;
 
                    _subcategory = res.data()!['subcategory'];
@@ -259,9 +264,9 @@ class _Edit_ItemState extends State<Edit_Item> {
     }();
 
   }
+
   @override
   Widget build(BuildContext context) {
-
 
     return isLoading? Container(
       width: MediaQuery.of(context).size.width,
@@ -281,6 +286,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               onTap:(){
 
                 Navigator.pop(context);
+
               },
               child: Icon(Icons.arrow_back, color:Colors.white)),
           title:Text(
@@ -336,6 +342,7 @@ class _Edit_ItemState extends State<Edit_Item> {
               ),
 
               SizedBox(height: 20,),
+
               Text("Enter  Product part number", style:TextStyle(
 
                   color:Colors.grey[200],
@@ -343,6 +350,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   fontSize:16
 
               )),
+
               SizedBox(height: 10,),
 
               Container(
@@ -375,8 +383,8 @@ class _Edit_ItemState extends State<Edit_Item> {
 
                 ),
               ),
-              SizedBox(height: 20,),
 
+              SizedBox(height: 20,),
 
               InkWell(
                 onTap:() async {
@@ -407,6 +415,7 @@ class _Edit_ItemState extends State<Edit_Item> {
                   ],
                 ),
               ),
+
               SizedBox(height: 10,),
 
               Container(
@@ -446,9 +455,81 @@ class _Edit_ItemState extends State<Edit_Item> {
 
                   else
                   {
+
+                    String select_Brands= await Navigator.push(context,
+                        MaterialPageRoute(builder:
+                            (context) => Select_Brands( category: _category,)));
+
+                    if(select_Brands != null)
+                    {
+                      setState(() {
+
+
+                        _brandname = select_Brands;
+                      });
+                    }
+
+                  }
+
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+                    Text("Select Product Brand", style:TextStyle(
+
+                        color:Colors.grey[200],
+                        fontWeight: FontWeight.w400,
+                        fontSize:16
+                    )),
+                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
+                  ],
+                ),
+              ),
+              SizedBox(height: 10,),
+
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      color: Colors.grey[500]!
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
+                  child: Text(
+
+                    "${_brandname}", style: TextStyle(
+                      color: Colors.grey[700]
+                  ),
+
+                  ),
+
+                ),
+              ),
+
+              SizedBox(height: 20,),
+
+              InkWell(
+                onTap:() async {
+
+                  if(_brandname.length <1)
+
+                  {
+
+                    Toast.show("Select Product Brand".toString(), context,duration:Toast.LENGTH_SHORT,
+                        gravity: Toast.BOTTOM);
+
+                  }
+
+                  else
+                  {
                     SubCategoriesModel subcategory_model= await Navigator.push(context,
                         MaterialPageRoute(builder:
-                            (context) => Select_Sub_Category(categoryId: _categoryId,)));
+                            (context) => Select_Sub_Category(categoryId: _categoryId, brandname: _brandname,)));
 
                     if(subcategory_model != null)
                     {
@@ -492,72 +573,6 @@ class _Edit_ItemState extends State<Edit_Item> {
                   child: Text(
 
                     "${_subcategory}", style: TextStyle(
-                      color: Colors.grey[700]
-                  ),
-
-                  ),
-
-                ),
-              ),
-
-              SizedBox(height: 20,),
-
-              InkWell(
-                onTap:() async {
-
-                  if(_subcategory.length <1)
-
-                  {
-                    Toast.show("Select Product Subcategory".toString(), context,duration:Toast.LENGTH_SHORT,
-                        gravity: Toast.BOTTOM);
-                  }
-
-                  else
-                  {
-                    SubSubCategoriesModel subsubcategory_model= await Navigator.push(context,
-                        MaterialPageRoute(builder:
-                            (context) => Select_Sub_Sub_Category(subcategoryId: _subcategoryId,)));
-
-                    if(subsubcategory_model != null)
-                    {
-                      setState(() {
-                        _subsubcategory = subsubcategory_model.sub_sub_category_name;
-                      });
-                    }
-                  }
-
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    Text("Select Product Subcategory", style:TextStyle(
-
-                        color:Colors.grey[200],
-                        fontWeight: FontWeight.w400,
-                        fontSize:16
-                    )),
-                    Icon(Icons.arrow_forward_ios, size: 20, color: Colors.grey[500],)
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Colors.grey[500]!
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0,top: 12.0, bottom: 4),
-                  child: Text(
-
-                    "${_subsubcategory}", style: TextStyle(
                       color: Colors.grey[700]
                   ),
 

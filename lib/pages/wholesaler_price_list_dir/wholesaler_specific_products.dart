@@ -21,8 +21,8 @@ import '../messanger/messanger_retailer/messanger.dart';
 
 class Home_Page_Products_specific extends StatefulWidget {
 
-  const Home_Page_Products_specific({Key? key,required this.subsubcategory, required this.subcategory, required this.category, required this.wholesalerid}) : super(key: key);
-  final String  subsubcategory, subcategory, category, wholesalerid;
+  const Home_Page_Products_specific({Key? key,required this.brand, required this.subcategory, required this.category, required this.wholesalerid}) : super(key: key);
+  final String  brand, subcategory, category, wholesalerid;
 
   @override
   State<Home_Page_Products_specific> createState() => _Home_Page_Products_specificState();
@@ -93,6 +93,7 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
                         resolution: element.data()['resolution'],
                         package: element.data()['package'],
                         partner: element.data()['partner'],
+                        brandname: element.data()['brandname'],
                         filters_params: Filters_Params_Model(
                             availability: element.data()['filters_params']['availability'],
                             warrant_period:element.data()['filters_params']['warrant_period'],
@@ -142,7 +143,10 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
                         resolution: element.data()['resolution'],
                         package: element.data()['package'],
                         partner: element.data()['partner'],
+                        brandname: element.data()['brandname'],
+
                         filters_params: Filters_Params_Model(
+
                             availability: element.data()['filters_params']['availability'],
                             warrant_period:element.data()['filters_params']['warrant_period'],
                             moq: element.data()['filters_params']['moq'],
@@ -164,15 +168,11 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
                       )
 
                   );
-                  isLoading = false;
 
+                  isLoading = false;
 
                 }
             );
-
-
-
-
 
             return exchange_rate;
           }
@@ -194,7 +194,7 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
     final service_listings = db.collection("products")
         .where("category", isEqualTo: widget.category)
         .where("subcategory", isEqualTo: widget.subcategory)
-        .where("subsubcategory", isEqualTo: widget.subsubcategory)
+        .where("brandname", isEqualTo: widget.brand)
         .where("wholesalerid", isEqualTo: widget.wholesalerid);
 
     await service_listings.get().then((ref) async {
@@ -218,12 +218,12 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
             });
 
             isLoading = false;
+
           }
       );
     });
 
   }
-
 
   Future<void> get_Products2(useremail) async {
 
@@ -232,19 +232,16 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
         .where("wholesalerid", isEqualTo: useremail)
         .where("category", isEqualTo: widget.category)
         .where("subcategory", isEqualTo: widget.subcategory)
-        .where("subsubcategory", isEqualTo: widget.subsubcategory);
+        .where("brandname", isEqualTo: widget.brand);
 
     await service_listings.get().then((ref) async {
       print("redata 1 &****************************${ref.docs}");
-
-
 
 
             ref.docs.forEach((element) async {
               print(element.data()['productname']);
 
               await  getexchangeratedata(element.data()['wholesalerid'], element);
-
 
             });
 
@@ -253,6 +250,7 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
             isLoading = false;
           }
       );
+
     });
 
   }
@@ -763,6 +761,7 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
                   SizedBox(
                     height: 30,
                   ),
+/*
 
                   Padding(
                     padding: const EdgeInsets.only(left:8.0, right:8.0),
@@ -1000,6 +999,7 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
                       ),
                     ),
                   ),
+ */
                   SizedBox(
                     height:20,
                   ),
@@ -1007,12 +1007,13 @@ class _Home_Page_Products_specificState extends State<Home_Page_Products_specifi
 
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height:MediaQuery.of(context).size.height-341,
+                    height:MediaQuery.of(context).size.height-311,
                     decoration: BoxDecoration(
                       color: HexColor("#FFFFFF"),
                       borderRadius: BorderRadius.only(topLeft:Radius.circular(20),
                           topRight: Radius.circular(20))
                     ),
+
                     child:
                     Padding(
                       padding: const EdgeInsets.all(8.0),

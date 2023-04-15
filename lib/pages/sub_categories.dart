@@ -9,8 +9,8 @@ import '../models/subcategory_model.dart';
 import 'home/homepageproducts/home_page_products.dart';
 
 class Sub_Categories extends StatefulWidget {
-  const Sub_Categories({Key? key, required this.subcat}) : super(key: key);
-  final String subcat;
+  const Sub_Categories({Key? key, required this.subcat, required this.brand}) : super(key: key);
+  final String subcat, brand;
 
   @override
   State<Sub_Categories> createState() => _Sub_CategoriesState();
@@ -37,7 +37,8 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
   Future <void> get_subcategories() async{
 
     final service_listings = db.collection("subcategories")
-        .where("categoryname", isEqualTo: widget.subcat);
+        .where("categoryname", isEqualTo: widget.subcat)
+        .where("brandname", isEqualTo: widget.brand);
 
     await service_listings.get().then((ref) {
       setState(
@@ -125,19 +126,26 @@ class _Sub_CategoriesState extends State<Sub_Categories> {
                     color: HexColor("#1A434E"),
                     fontSize:18
                 )),
+
                 SizedBox(height: 10,),
+                
                 Container(
+
                   width: MediaQuery.of(context).size.width,
-                  height: subcategories.length *60,
+                  height: MediaQuery.of(context).size.height-299,
+
                   child: ListView.builder(
                       itemCount: subcategories.length,
 
                       itemBuilder:(BuildContext context, int index) {
                         return InkWell(
                           onTap: (){
+
                             Navigator.of(context).push(
                                 MaterialPageRoute
-                                  (builder: (context)=>Sub_Sub_Categories(  subcat: subcategories[index].sub_category_name, cat: widget.subcat,)));
+                                  (builder: (context)=>Home_Page_Products(  brand: widget.brand, subcategory: subcategories[index].sub_category_name, category: widget.subcat,)));
+
+
                           },
 
                           child: Card(

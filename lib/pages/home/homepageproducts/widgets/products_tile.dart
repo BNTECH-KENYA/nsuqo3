@@ -61,7 +61,7 @@ class _Product_TileState extends State<Product_Tile> {
 
     return Container(
       width:MediaQuery.of(context).size.width * 0.45,
-      height:254,
+      height:150,
       decoration: BoxDecoration(
 
         color:HexColor("#FFFFFF")
@@ -73,25 +73,25 @@ class _Product_TileState extends State<Product_Tile> {
           children: [
           widget.item_model.photosLinks.length == 0 ? Image(
 
-              height: 115,
+              height: 50,
               width: MediaQuery.of(context).size.width * 0.45,
               image: AssetImage("assets/computing.jpeg")
 
           ):
             Image(
-                height: 115,
+                height: 50,
                 width: MediaQuery.of(context).size.width * 0.45,
                 image: NetworkImage(widget.item_model.photosLinks[0],)),
 
             Text("${widget.item_model.itemname}", style: TextStyle(
               color: HexColor("#1A434E"),
-              fontSize: 10.06,
+              fontSize: 14,
               fontWeight: FontWeight.w500
             ),),
             SizedBox(height:6),
-            Text("${widget.item_model.partno}", style: TextStyle(
+            Text("PartNo ${widget.item_model.partno}", style: TextStyle(
               color:HexColor("#1A434E"),
-              fontSize: 5.87,
+              fontSize: 10,
               fontWeight: FontWeight.w400
             ),),
 
@@ -101,12 +101,11 @@ class _Product_TileState extends State<Product_Tile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(),
-                Text("${
-                  widget.item_model.itemprice== null?  widget.item_model.itemprice.split("_")[1] == "USD"?
+                Text("Price ${  widget.item_model.itemprice.split("_")[1] == "USD"?
                 widget.item_model.itemprice.split("_")[0]:(double.parse(widget.item_model.itemprice.split("_")[0])/double.parse(widget.exchange_rate)).toStringAsFixed(3)
-                :widget.item_model.itemprice} usd", style: TextStyle(
+                } usd", style: TextStyle(
                   color:HexColor("#1A434E"),
-                  fontSize: 7.55,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500
                 ),),
 
@@ -142,13 +141,11 @@ class _Product_TileState extends State<Product_Tile> {
                 Row(
                   children: [
                     Text("${
-                        widget.item_model.itemprice== null?
                         widget.item_model.itemprice.split("_")[1] == "USD"?
                     (double.parse(widget.item_model.itemprice.split("_")[0])*double.parse(widget.exchange_rate)).toStringAsFixed(3)
-                    :widget.item_model.itemprice.split("_")[0]
-                    :widget.item_model.itemprice}", style: TextStyle(
+                    :widget.item_model.itemprice.split("_")[0]}", style: TextStyle(
                       color: HexColor("#1A434E"),
-                      fontSize: 16.03,
+                      fontSize: 20.03,
                       fontWeight: FontWeight.w500
 
                     ),),
